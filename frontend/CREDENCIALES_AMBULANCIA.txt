@@ -1,0 +1,64 @@
+===============================================
+🚑 CREDENCIALES DE USUARIOS AMBULANCIA 🚑
+===============================================
+
+Para acceder al sistema como personal de ambulancia, usa cualquiera de estas credenciales:
+
+📋 AMBULANCIA 1:
+   Usuario: ambulancia1
+   Contraseña: amb123
+   Conductor: Carlos Mendoza
+   Unidad: AMB-001
+   Estado: Disponible
+
+📋 AMBULANCIA 2:
+   Usuario: ambulancia2
+   Contraseña: amb123
+   Conductor: María González
+   Unidad: AMB-002
+   Estado: En Camino
+
+📋 AMBULANCIA 3:
+   Usuario: ambulancia3
+   Contraseña: amb123
+   Conductor: Roberto Silva
+   Unidad: AMB-003
+   Estado: Disponible
+
+📋 AMBULANCIA 4:
+   Usuario: ambulancia4
+   Contraseña: amb123
+   Conductor: Ana Morales
+   Unidad: AMB-004
+   Estado: En Sitio
+
+📋 AMBULANCIA 5:
+   Usuario: ambulancia5
+   Contraseña: amb123
+   Conductor: Fernando López
+   Unidad: AMB-005
+   Estado: Fuera de Servicio (Mantenimiento)
+
+===============================================
+🔧 CARACTERÍSTICAS DISPONIBLES:
+===============================================
+
+✅ Sistema de Seguimiento de Emergencias
+✅ Agregar Notas durante la atención
+✅ Actualizar Posición de Ambulancia 
+✅ Completar Emergencias (original)
+✅ Tracking GPS en tiempo real
+✅ Historial de notas categorizadas
+✅ Estados de movimiento de unidad
+
+===============================================
+🚀 CÓMO USAR:
+===============================================
+
+1. Ve a la página de login
+2. Ingresa cualquier usuario (ej: ambulancia1)
+3. Ingresa la contraseña: amb123
+4. El sistema te llevará al Dashboard de Ambulancia
+5. Podrás usar todas las funciones de seguimiento
+
+===============================================

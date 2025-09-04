@@ -1,0 +1,200 @@
+import React, { lazy, Suspense } from 'react'
+import { useAmbulanceManagement } from '../../hooks/useAmbulanceManagement'
+import AssignmentMap from './AssignmentMap'
+import { UnitsTab, AssignmentsTab } from './ambulance'
+import LoadingSkeleton from '../shared/LoadingSkeleton'
+import ErrorMessage from '../shared/ErrorMessage'
+import { MOCK_PENDING_EMERGENCIES } from '../../mocks/emergencyData'
+
+// Lazy loading de modal (Regla #5)
+const AmbulanceFormModal = lazy(() => import('./ambulance/AmbulanceFormModal'))
+
+/**
+ * Componente principal de gestión de ambulancias
+ * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * Componente <200 líneas siguiendo Regla #3
+ */
+const AmbulanceManagement = () => {
+  // ============================================
+  // HOOK - Toda la lógica de negocio compleja
+  // ============================================
+  const {
+    ambulanceUsers,
+    filteredAmbulances,
+    availableUnits,
+    showCreateForm,
+    filter,
+    activeTab,
+    loading,
+    error,
+    setShowCreateForm,
+    setFilter,
+    setActiveTab,
+    handleCreateAmbulance,
+    handleEditAmbulance,
+    handleDeleteAmbulance,
+    handleSaveAmbulance,
+    getStatusColor,
+    getCurrentStatusColor,
+    getStatusText,
+    getCurrentStatusText,
+    clearError
+  } = useAmbulanceManagement()
+
+  // ============================================
+  // MANEJO DE ERRORES (Regla #8)
+  // ============================================
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <ErrorMessage message={`Error en gestión de ambulancias: ${error}`} onRetry={clearError} />
+      </div>
+    )
+  }
+
+  if (loading) {
+    return <LoadingSkeleton rows={5} />
+  }
+
+  // ============================================
+  // FUNCIONES DE RENDERIZADO DE TABS
+  // ============================================
+  const renderActiveTab = () => {
+    switch (activeTab) {
+      case 'units':
+        return (
+          <UnitsTab
+            ambulances={ambulanceUsers}
+            filteredAmbulances={filteredAmbulances}
+            onEdit={handleEditAmbulance}
+            onDelete={handleDeleteAmbulance}
+            getStatusColor={getStatusColor}
+            getCurrentStatusColor={getCurrentStatusColor}
+            getStatusText={getStatusText}
+            getCurrentStatusText={getCurrentStatusText}
+          />
+        )
+      case 'assignments':
+        return (
+          <AssignmentsTab
+            pendingEmergencies={MOCK_PENDING_EMERGENCIES}
+            availableUnits={availableUnits}
+          />
+        )
+      case 'map':
+        return <AssignmentMap />
+      default:
+        return (
+          <UnitsTab
+            ambulances={ambulanceUsers}
+            filteredAmbulances={filteredAmbulances}
+            onEdit={handleEditAmbulance}
+            onDelete={handleDeleteAmbulance}
+            getStatusColor={getStatusColor}
+            getCurrentStatusColor={getCurrentStatusColor}
+            getStatusText={getStatusText}
+            getCurrentStatusText={getCurrentStatusText}
+          />
+        )
+    }
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header y Controles */}
+      <div className="bg-white rounded-xl shadow-medium p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-xl sm:text-2xl font-exo font-bold text-gray-800">
+              Gestión de Unidades Médicas
+            </h2>
+            <p className="text-sm sm:text-base text-gray-600 font-roboto">
+              Administra unidades y asigna servicios manualmente
+            </p>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 sm:space-x-4 sm:flex-nowrap">
+            {activeTab === 'units' && (
+              <>
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                >
+                  <option value="all">Todas</option>
+                  <option value="active">Activas</option>
+                  <option value="inactive">Inactivas</option>
+                  <option value="on_duty">En Servicio</option>
+                </select>
+
+                <button
+                  onClick={handleCreateAmbulance}
+                  className="bg-helpmed-blue hover:bg-primary-blue text-white px-3 sm:px-4 py-2 rounded-lg font-exo font-medium transition-colors flex items-center space-x-1 sm:space-x-2 text-sm"
+                >
+                  <i className="fas fa-plus"></i>
+                  <span className="hidden sm:inline">Nueva Unidad</span>
+                  <span className="sm:hidden">Nueva</span>
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="border-b border-gray-200">
+          <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto scrollbar-hide">
+            <button
+              onClick={() => setActiveTab('units')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'units'
+                  ? 'border-helpmed-blue text-helpmed-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } font-exo`}
+            >
+              <i className="fas fa-ambulance mr-2"></i>
+              Unidades ({ambulanceUsers.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('assignments')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'assignments'
+                  ? 'border-helpmed-blue text-helpmed-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } font-exo`}
+            >
+              <i className="fas fa-clipboard-list mr-2"></i>
+              Asignaciones ({MOCK_PENDING_EMERGENCIES?.length || 0})
+            </button>
+            <button
+              onClick={() => setActiveTab('map')}
+              className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
+                activeTab === 'map'
+                  ? 'border-helpmed-blue text-helpmed-blue'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              } font-exo`}
+            >
+              <i className="fas fa-map-marked-alt mr-2"></i>
+              Mapa de Asignaciones
+            </button>
+          </nav>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      {renderActiveTab()}
+
+      {/* Modal con Lazy Loading (Regla #5) */}
+      {showCreateForm && (
+        <Suspense fallback={<LoadingSkeleton />}>
+          <AmbulanceFormModal
+            ambulance={null} // selectedAmbulance removido por simplicidad
+            onClose={() => setShowCreateForm(false)}
+            onSave={handleSaveAmbulance}
+          />
+        </Suspense>
+      )}
+    </div>
+  )
+}
+
+export default AmbulanceManagement
