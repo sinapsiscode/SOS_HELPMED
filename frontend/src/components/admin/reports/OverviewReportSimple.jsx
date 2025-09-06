@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useAppStore from '../../../stores/useAppStore'
+import { LABELS } from '../../../config/labels'
 
 // Componente KPI Card
 const KPICard = ({ title, value, change, icon, color }) => {
@@ -31,6 +32,7 @@ const KPICard = ({ title, value, change, icon, color }) => {
 }
 
 const OverviewReportSimple = ({ dateRange, revenueSummary }) => {
+  const labels = LABELS.admin.reports.overviewReportSimple
   const { allUsers, transactions, activeEmergencies } = useAppStore()
   const [metrics, setMetrics] = useState({
     totalUsers: 0,
@@ -69,25 +71,25 @@ const OverviewReportSimple = ({ dateRange, revenueSummary }) => {
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
-          title="Total Usuarios"
+          title={labels.kpis.totalUsers}
           value={metrics.totalUsers.toLocaleString()}
           icon="fas fa-users"
           color="blue"
         />
         <KPICard
-          title="Emergencias Activas"
+          title={labels.kpis.activeEmergencies}
           value={metrics.activeEmergencies.toString()}
           icon="fas fa-exclamation-triangle"
           color="red"
         />
         <KPICard
-          title="Ingresos Totales"
+          title={labels.kpis.totalRevenue}
           value={`S/ ${metrics.revenue.toLocaleString()}`}
           icon="fas fa-dollar-sign"
           color="purple"
         />
         <KPICard
-          title="Servicios Completados"
+          title={labels.kpis.completedServices}
           value={metrics.completedServices.toString()}
           icon="fas fa-check-circle"
           color="yellow"
@@ -96,25 +98,25 @@ const OverviewReportSimple = ({ dateRange, revenueSummary }) => {
 
       {/* Resumen de Estado */}
       <div className="bg-white rounded-xl shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Estado del Sistema</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.systemStatus.title}</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-blue-600">
               {Object.keys(allUsers).length}
             </div>
-            <p className="text-sm text-gray-600 mt-1">Tipos de Usuario</p>
+            <p className="text-sm text-gray-600 mt-1">{labels.systemStatus.userTypes}</p>
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-green-600">
               {transactions?.length || 0}
             </div>
-            <p className="text-sm text-gray-600 mt-1">Total Transacciones</p>
+            <p className="text-sm text-gray-600 mt-1">{labels.systemStatus.totalTransactions}</p>
           </div>
           <div className="text-center p-4 bg-gray-50 rounded-lg">
             <div className="text-2xl font-bold text-purple-600">
               {activeEmergencies?.filter(e => e.status === 'completed').length || 0}
             </div>
-            <p className="text-sm text-gray-600 mt-1">Emergencias Completadas</p>
+            <p className="text-sm text-gray-600 mt-1">{labels.systemStatus.completedEmergencies}</p>
           </div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import ContactRequestsStats from './ContactRequestsStats'
 import ContactRequestItem from './ContactRequestItem'
 import ContactModal from './ContactModal'
 import ContractDetailsModal from './ContractDetailsModal'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Tab de solicitudes de contacto refactorizado
@@ -12,6 +13,9 @@ import ContractDetailsModal from './ContractDetailsModal'
  * Restaurado con el diseño original de la imagen
  */
 const ContactRequestsTab = () => {
+  const labels = LABELS.admin.dashboard.contactRequestsTab
+  const headerLabels = LABELS.admin.dashboard.contactRequestsHeader
+  
   const { allUsers, contactRequests } = useAppStore()
   const [filter, setFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState('all')
@@ -24,13 +28,13 @@ const ContactRequestsTab = () => {
   // Función para obtener nombre legible del tipo de servicio
   const getServiceTypeName = (serviceType) => {
     const serviceNames = {
-      'EMERGENCIA': 'Emergencias',
-      'URGENCIA': 'Urgencias',
-      'MEDICO_DOMICILIO': 'Médico a Domicilio',
-      'TRASLADO_PROGRAMADO': 'Traslados',
-      'ZONA_PROTEGIDA': 'Zona Protegida',
-      'EXAMENES_LABORATORIO': 'Exámenes Lab.',
-      'ORIENTACION_TELEFONICA': 'Orientación Tel.'
+      [headerLabels.filters.service.values.emergency]: headerLabels.filters.service.options.emergency,
+      [headerLabels.filters.service.values.urgency]: headerLabels.filters.service.options.urgency,
+      [headerLabels.filters.service.values.homeDoctor]: headerLabels.filters.service.options.homeDoctor,
+      [headerLabels.filters.service.values.programmedTransfer]: headerLabels.filters.service.options.programmedTransfer,
+      [headerLabels.filters.service.values.protectedZone]: headerLabels.filters.service.options.protectedZone,
+      [headerLabels.filters.service.values.labExams]: headerLabels.filters.service.options.labExams,
+      [headerLabels.filters.service.values.phoneOrientation]: headerLabels.filters.service.options.phoneOrientation
     }
     return serviceNames[serviceType] || serviceType
   }
@@ -51,17 +55,17 @@ const ContactRequestsTab = () => {
             id: `req_${user.id}_help`,
             userId: user.id,
             userName: user.profile.name,
-            userType: 'Familiar',
+            userType: labels.userTypes.familiar,
             planName: user.plan.name,
             planType: user.plan.subtype,
-            urgency: remainingServices === 0 ? 'crítica' : 'alta',
+            urgency: remainingServices === 0 ? labels.urgencyValues.critical : labels.urgencyValues.high,
             reason: remainingServices === 0 
-              ? 'Servicios agotados - Plan Help'
-              : `Solo ${remainingServices} servicios restantes - Plan Help`,
+              ? labels.reasons.servicesExhausted
+              : labels.reasons.onlyXServicesRemaining.replace('{count}', remainingServices),
             contactPhone: user.profile.phone || '+51 9 7777 8888',
-            contactEmail: user.profile.email || 'cliente@email.com',
+            contactEmail: user.profile.email || labels.demo.emails[1],
             requestDate: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
-            status: 'pendiente',
+            status: labels.status.pending,
             servicesUsed: (user.plan.total_services || 10) - remainingServices,
             servicesTotal: user.plan.total_services || 10,
             lastServiceDate: new Date(Date.now() - Math.random() * 3 * 24 * 60 * 60 * 1000)
@@ -78,17 +82,17 @@ const ContactRequestsTab = () => {
                 id: `req_${user.id}_${serviceType}`,
                 userId: user.id,
                 userName: user.profile.name,
-                userType: 'Familiar',
+                userType: labels.userTypes.familiar,
                 planName: user.plan.name,
                 planType: user.plan.subtype,
-                urgency: remaining === 0 ? 'crítica' : 'alta',
+                urgency: remaining === 0 ? labels.urgencyValues.critical : labels.urgencyValues.high,
                 reason: remaining === 0 
-                  ? `${getServiceTypeName(serviceType)} - Servicio agotado`
-                  : `${getServiceTypeName(serviceType)} - Solo ${remaining} restante${remaining > 1 ? 's' : ''}`,
+                  ? labels.reasons.serviceExhausted.replace('{service}', getServiceTypeName(serviceType))
+                  : labels.reasons.onlyXRemaining.replace('{service}', getServiceTypeName(serviceType)).replace('{count}', remaining).replace('{plural}', remaining > 1 ? 's' : ''),
                 contactPhone: user.profile.phone || '+51 9 7777 8888',
-                contactEmail: user.profile.email || 'cliente@email.com',
+                contactEmail: user.profile.email || labels.demo.emails[1],
                 requestDate: new Date(Date.now() - Math.random() * 5 * 24 * 60 * 60 * 1000),
-                status: 'pendiente',
+                status: labels.status.pending,
                 serviceType,
                 servicesUsed: serviceData.used,
                 servicesTotal: serviceData.limit,
@@ -108,15 +112,15 @@ const ContactRequestsTab = () => {
           id: `req_${user.id}_corp`,
           userId: user.id,
           userName: user.profile.name,
-          userType: 'Corporativo',
-          planName: 'Área Protegida',
+          userType: labels.userTypes.corporate,
+          planName: labels.planNames.protectedArea,
           companyName: user.company?.name,
-          urgency: remainingServices === 0 ? 'crítica' : remainingServices <= 2 ? 'alta' : 'media',
+          urgency: remainingServices === 0 ? labels.urgencyValues.critical : remainingServices <= 2 ? labels.urgencyValues.high : labels.urgencyValues.medium,
           reason: remainingServices === 0 
-            ? 'Servicios corporativos agotados'
-            : `Solo ${remainingServices} servicios restantes`,
+            ? labels.reasons.corporateServicesExhausted
+            : labels.reasons.onlyXCorporateRemaining.replace('{count}', remainingServices),
           contactPhone: user.profile.phone || '+51 2 2555 1000',
-          contactEmail: user.profile.email || 'corporativo@empresa.com',
+          contactEmail: user.profile.email || labels.demo.emails[2],
           requestDate: new Date(Date.now() - Math.random() * 4 * 24 * 60 * 60 * 1000),
           status: 'pendiente',
           servicesUsed: (user.company?.contracted_services || 50) - remainingServices,
@@ -133,13 +137,13 @@ const ContactRequestsTab = () => {
         {
           id: 'demo_1',
           userId: 'demo_1',
-          userName: 'Eduardo Silva',
+          userName: labels.demo.names[0],
           userType: 'Familiar',
-          planName: 'Plan VIP',
-          urgency: 'crítica',
+          planName: labels.demo.plans[0],
+          urgency: labels.urgencyValues.critical,
           reason: 'Traslados - Servicio agotado',
-          contactPhone: '+51 9 7777 8888',
-          contactEmail: 'eduardo.silva@gmail.com',
+          contactPhone: labels.demo.phones[0],
+          contactEmail: labels.demo.emails[0],
           requestDate: new Date('2025-08-31'),
           status: 'pendiente',
           serviceType: 'TRASLADO_PROGRAMADO',
@@ -150,14 +154,14 @@ const ContactRequestsTab = () => {
         {
           id: 'demo_2',
           userId: 'demo_2',
-          userName: 'Empresa ABC Ltda.',
-          userType: 'Corporativo',
-          planName: 'Área Protegida',
-          companyName: 'Carlos Ramírez',
-          urgency: 'crítica',
+          userName: labels.demo.names[1],
+          userType: labels.userTypes.corporate,
+          planName: labels.planNames.protectedArea,
+          companyName: labels.demo.names[2],
+          urgency: labels.urgencyValues.critical,
           reason: 'Servicios corporativos agotados',
-          contactPhone: '+51 2 2555 1000',
-          contactEmail: 'carlos.ramirez@empresaabc.cl',
+          contactPhone: labels.demo.phones[1],
+          contactEmail: labels.demo.emails[3],
           requestDate: new Date('2025-08-30'),
           status: 'pendiente',
           servicesUsed: 50,
@@ -192,7 +196,7 @@ const ContactRequestsTab = () => {
     // Combinar y ordenar por urgencia y fecha
     const allRequests = [...requests, ...realRequests]
     return allRequests.sort((a, b) => {
-      const urgencyOrder = { 'crítica': 3, 'alta': 2, 'media': 1 }
+      const urgencyOrder = { [labels.urgencyValues.critical]: 3, [labels.urgencyValues.high]: 2, [labels.urgencyValues.medium]: 1 }
       if (urgencyOrder[a.urgency] !== urgencyOrder[b.urgency]) {
         return urgencyOrder[b.urgency] - urgencyOrder[a.urgency]
       }
@@ -225,7 +229,7 @@ const ContactRequestsTab = () => {
   }
 
   const handleMarkAsContacted = (request) => {
-    console.log('Marcando como contactado:', request)
+    console.log(labels.logs.markingAsContacted, request)
     // TODO: Implementar actualización del estado en el store
     // Aquí podrías actualizar el estado de la solicitud en el store
   }
@@ -241,7 +245,7 @@ const ContactRequestsTab = () => {
   }
 
   const handleEditContract = (request) => {
-    console.log('Editando contrato:', request)
+    console.log(labels.logs.editingContract, request)
     // TODO: Implementar funcionalidad de edición de contrato
   }
 
@@ -269,7 +273,7 @@ const ContactRequestsTab = () => {
       <div className="bg-white rounded-xl shadow-medium overflow-hidden">
         <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
           <h3 className="text-base sm:text-lg font-semibold text-gray-800">
-            Solicitudes Pendientes ({filteredRequests.length})
+            {labels.titleWithCount.replace('{count}', filteredRequests.length)}
           </h3>
         </div>
 
@@ -287,7 +291,7 @@ const ContactRequestsTab = () => {
         ) : (
           <div className="p-8 text-center">
             <i className="fas fa-inbox text-4xl text-gray-300 mb-3"></i>
-            <p className="text-gray-500">No hay solicitudes que coincidan con los filtros seleccionados</p>
+            <p className="text-gray-500">{labels.empty}</p>
           </div>
         )}
       </div>

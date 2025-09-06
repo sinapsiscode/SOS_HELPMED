@@ -1,9 +1,10 @@
 import React from 'react'
 import { useEmergencyTracking } from '../../../hooks/useEmergencyTracking'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Item de emergencia para vista timeline
- * ENFOQUE BALANCEADO: Solo presentación con funciones del hook
+ * ${LABELS.admin.emergency.emergencyTimelineItem.comments.title}
+ * ${LABELS.admin.emergency.emergencyTimelineItem.comments.approach}
  */
 const EmergencyTimelineItem = ({
   emergency,
@@ -14,6 +15,7 @@ const EmergencyTimelineItem = ({
   isSelected
 }) => {
   const { getPriorityColor, getStatusColor, getElapsedTime } = useEmergencyTracking()
+  const labels = LABELS.admin.emergency.emergencyTimelineItem
 
   if (!emergency) return null
 
@@ -53,7 +55,7 @@ const EmergencyTimelineItem = ({
                 {emergency.location?.landmark}
               </span>
               <span>
-                <i className="fas fa-clock mr-1"></i>Hace {getElapsedTime(emergency.startTime)} min
+                <i className="fas fa-clock mr-1"></i>{labels.time.elapsed.replace('{time}', getElapsedTime(emergency.startTime))}
               </span>
               {emergency.assignedUnit && (
                 <span className="text-blue-600">
@@ -66,20 +68,20 @@ const EmergencyTimelineItem = ({
         </div>
 
         <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
-          {!emergency.assignedUnit && emergency.status === 'PENDIENTE' && onAssignUnit && (
+          {!emergency.assignedUnit && emergency.status === labels.status.pending && onAssignUnit && (
             <button
               onClick={() => onAssignUnit(emergency)}
               className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded text-sm"
             >
-              Asignar Unidad
+              {labels.buttons.assignUnit}
             </button>
           )}
-          {emergency.status !== 'COMPLETADA' && onUpdateStatus && (
+          {emergency.status !== labels.status.completed && onUpdateStatus && (
             <button
-              onClick={() => onUpdateStatus(emergency, 'COMPLETADA')}
+              onClick={() => onUpdateStatus(emergency, labels.status.completed)}
               className="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm"
             >
-              Completar
+              {labels.buttons.complete}
             </button>
           )}
           {onAddNote && (
@@ -87,7 +89,7 @@ const EmergencyTimelineItem = ({
               onClick={() => onAddNote(emergency)}
               className="bg-gray-600 hover:bg-gray-700 text-white py-1 px-3 rounded text-sm"
             >
-              + Nota
+              {labels.buttons.addNote}
             </button>
           )}
         </div>

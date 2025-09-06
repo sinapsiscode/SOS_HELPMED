@@ -1,43 +1,46 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Panel de estadísticas resumidas del sistema
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.notifications.summaryStats.comments.title}
+ * ${LABELS.admin.notifications.summaryStats.comments.approach}
  *
  * @param {Object} summaryStats - Estadísticas del sistema
  * @returns {JSX.Element} Grid de estadísticas
  */
 const SummaryStats = ({ summaryStats }) => {
+  const labels = LABELS.admin.notifications.summaryStats
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!summaryStats || typeof summaryStats !== 'object') {
-    console.error('SummaryStats: summaryStats es requerido y debe ser un objeto')
+    console.error(labels.errors.summaryStatsObject)
     return null
   }
 
   const statsConfig = [
     {
       key: 'activeEmergenciesCount',
-      label: 'Emergencias Activas',
+      label: labels.stats.activeEmergencies,
       icon: 'fas fa-ambulance',
       color: 'text-red-400'
     },
     {
       key: 'availableAmbulancesCount',
-      label: 'Ambulancias Libres',
+      label: labels.stats.availableAmbulances,
       icon: 'fas fa-truck-medical',
       color: 'text-green-400'
     },
     {
       key: 'activeClientsCount',
-      label: 'Clientes Activos',
+      label: labels.stats.activeClients,
       icon: 'fas fa-users',
       color: 'text-blue-400'
     },
     {
       key: 'todayServicesCount',
-      label: 'Servicios Hoy',
+      label: labels.stats.todayServices,
       icon: 'fas fa-check-circle',
       color: 'text-purple-400'
     }

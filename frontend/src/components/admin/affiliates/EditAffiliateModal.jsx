@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { RELATIONSHIP_OPTIONS } from '../../../constants/affiliateConstants'
 import { useAffiliateForm } from '../../../hooks/useAffiliateForm'
 import { FormField, SelectField, ErrorAlert, ModalHeader, FormButtons } from './FormComponents'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Modal para editar un afiliado existente
@@ -50,57 +51,57 @@ const EditAffiliateModal = React.memo(({ affiliate, onClose, onSave, loading = f
       <div className="bg-white rounded-xl shadow-2xl max-w-md w-full m-4">
         <div className="px-6 py-4 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-gray-800">Editar Afiliado</h3>
+            <h3 className="text-lg font-bold text-gray-800">{LABELS.admin.affiliates.edit.title}</h3>
             <button
               onClick={onClose}
               disabled={isDisabled}
               className="text-gray-400 hover:text-gray-600 transition-colors disabled:cursor-not-allowed"
-              aria-label="Cerrar modal"
+              aria-label={LABELS.buttons.close}
             >
               ✕
             </button>
           </div>
-          <p className="text-sm text-gray-600 mt-1">Editando: {affiliate.name}</p>
+          <p className="text-sm text-gray-600 mt-1">{LABELS.admin.affiliates.edit.editingLabel}: {affiliate.name}</p>
         </div>
 
         <form onSubmit={onFormSubmit} className="p-6 space-y-4">
           <ErrorAlert message={errors.general} />
 
           <FormField
-            label="Nombre Completo"
+            label={LABELS.admin.affiliates.add.fields.name.label}
             name="name"
             value={formData.name}
             onChange={handleInputChange}
             error={errors.name}
             disabled={isDisabled}
-            placeholder="Ingresa el nombre completo"
+            placeholder={LABELS.admin.affiliates.add.fields.name.placeholder}
             required
           />
 
           <FormField
-            label="DNI"
+            label={LABELS.admin.affiliates.add.fields.dni.label}
             name="dni"
             value={formData.dni}
             onChange={handleInputChange}
             error={errors.dni}
             disabled={isDisabled}
-            placeholder="Ingresa el DNI"
+            placeholder={LABELS.admin.affiliates.add.fields.dni.placeholder}
             required
           />
 
           <FormField
-            label="Teléfono"
+            label={LABELS.admin.affiliates.add.fields.phone.label}
             name="phone"
             type="tel"
             value={formData.phone}
             onChange={handleInputChange}
             error={errors.phone}
             disabled={isDisabled}
-            placeholder="Ingresa el número de teléfono"
+            placeholder={LABELS.admin.affiliates.add.fields.phone.placeholder}
           />
 
           <SelectField
-            label="Relación Familiar"
+            label={LABELS.admin.affiliates.add.fields.relationship.label}
             name="relationship"
             value={formData.relationship}
             onChange={handleInputChange}
@@ -111,7 +112,7 @@ const EditAffiliateModal = React.memo(({ affiliate, onClose, onSave, loading = f
           />
 
           <FormField
-            label="Fecha de Nacimiento"
+            label={LABELS.admin.affiliates.add.fields.birthDate.label}
             name="birthDate"
             type="date"
             value={formData.birthDate}
@@ -125,8 +126,8 @@ const EditAffiliateModal = React.memo(({ affiliate, onClose, onSave, loading = f
             onCancel={onClose}
             isDisabled={isDisabled}
             isSubmitting={isSubmitting}
-            submitText="Guardar Cambios"
-            submittingText="Guardando..."
+            submitText={LABELS.admin.affiliates.edit.submitButton}
+            submittingText={LABELS.admin.affiliates.edit.submittingButton}
           />
         </form>
       </div>

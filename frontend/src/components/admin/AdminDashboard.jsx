@@ -5,6 +5,7 @@ import { AdminHeader } from './shared'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
 import ErrorBoundary from '../shared/ErrorBoundary'
+import { LABELS } from '../../config/labels'
 
 // Lazy loading de TODOS los componentes
 const OverviewTab = lazy(() => import('./dashboard/OverviewTab'))
@@ -26,9 +27,10 @@ const ExternalUsersManagement = lazy(() => import('./ExternalUsersManagement'))
 const AssignmentMap = lazy(() => import('./AssignmentMap'))
 
 /**
- * Dashboard principal de administrador con TODOS los módulos
+ * ${LABELS.admin.adminDashboard.comments.title}
  */
 const AdminDashboard = () => {
+  const labels = LABELS.admin.adminDashboard
   const { activeTab, setActiveTab, tabs, user, loading, error } = useAdminDashboard()
 
   // Validación de props y datos
@@ -40,7 +42,7 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <ErrorMessage
-          message={`Error al cargar dashboard: ${error}`}
+          message={labels.errors.loadingError.replace('{error}', error)}
           onRetry={() => window.location.reload()}
         />
       </div>
@@ -51,8 +53,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600">Error de Autenticación</h2>
-          <p className="text-gray-600">Usuario no encontrado</p>
+          <h2 className="text-xl font-semibold text-red-600">{labels.errors.authenticationError}</h2>
+          <p className="text-gray-600">{labels.errors.userNotFound}</p>
         </div>
       </div>
     )
@@ -62,8 +64,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600">Error de Configuración</h2>
-          <p className="text-gray-600">No se pudieron cargar los tabs</p>
+          <h2 className="text-xl font-semibold text-red-600">{labels.errors.configurationError}</h2>
+          <p className="text-gray-600">{labels.errors.tabsLoadError}</p>
         </div>
       </div>
     )
@@ -76,8 +78,8 @@ const AdminDashboard = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600">Acceso Denegado</h2>
-          <p className="text-gray-600">No tienes permisos de administrador</p>
+          <h2 className="text-xl font-semibold text-red-600">{labels.errors.accessDenied}</h2>
+          <p className="text-gray-600">{labels.errors.noAdminPermissions}</p>
         </div>
       </div>
     )

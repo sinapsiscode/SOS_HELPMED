@@ -1,4 +1,6 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
+import { DATE_FORMATS } from '../../../config/constants'
 
 /**
  * Componente de lista de contratos corporativos
@@ -19,36 +21,39 @@ const ContractsList = ({
   onViewContract,
   onRenewContract
 }) => {
+  const labels = LABELS.admin.corporate.contracts.list
+  const detailLabels = LABELS.admin.corporate.contracts.detail
+  
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(contracts)) {
-    console.error('ContractsList: contracts debe ser un array')
+    console.error(labels.errors.contractsRequired)
     return null
   }
 
   if (typeof getContractStatus !== 'function') {
-    console.error('ContractsList: getContractStatus debe ser una función')
+    console.error(labels.errors.getContractStatusRequired)
     return null
   }
 
   if (typeof getUsageColor !== 'function') {
-    console.error('ContractsList: getUsageColor debe ser una función')
+    console.error(labels.errors.getUsageColorRequired)
     return null
   }
 
   if (typeof getContractStatusClass !== 'function') {
-    console.error('ContractsList: getContractStatusClass debe ser una función')
+    console.error(labels.errors.getContractStatusClassRequired)
     return null
   }
 
   if (typeof onViewContract !== 'function') {
-    console.error('ContractsList: onViewContract debe ser una función')
+    console.error(labels.errors.onViewContractRequired)
     return null
   }
 
   if (typeof onRenewContract !== 'function') {
-    console.error('ContractsList: onRenewContract debe ser una función')
+    console.error(labels.errors.onRenewContractRequired)
     return null
   }
 
@@ -56,12 +61,12 @@ const ContractsList = ({
     return (
       <div className="bg-white rounded-xl shadow-medium overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-800">Contratos Corporativos (0)</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{labels.titleWithCount.replace('{count}', '0')}</h3>
         </div>
         <div className="p-8 text-center">
           <i className="fas fa-file-contract text-4xl text-gray-400 mb-4"></i>
-          <h3 className="text-lg font-semibold text-gray-800 mb-2">No hay contratos</h3>
-          <p className="text-gray-600">No se encontraron contratos con los filtros aplicados.</p>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">{labels.empty.title}</h3>
+          <p className="text-gray-600">{labels.empty.description}</p>
         </div>
       </div>
     )
@@ -71,7 +76,7 @@ const ContractsList = ({
     <div className="bg-white rounded-xl shadow-medium overflow-hidden">
       <div className="px-6 py-4 border-b border-gray-200">
         <h3 className="text-lg font-semibold text-gray-800">
-          Contratos Corporativos ({contracts.length})
+          {labels.titleWithCount.replace('{count}', contracts.length)}
         </h3>
       </div>
 
@@ -103,40 +108,40 @@ const ContractsList = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-3">
                       <div>
                         <p className="text-sm text-gray-600">
-                          <strong>Contacto:</strong> {contract.company?.contact_person?.name}
+                          <strong>{labels.fields.contact}:</strong> {contract.company?.contact_person?.name}
                         </p>
                         <p className="text-sm text-gray-600">
-                          <strong>RUC:</strong> {contract.company?.rut}
+                          <strong>{labels.fields.ruc}:</strong> {contract.company?.rut}
                         </p>
                       </div>
                       <div></div>
                       <div>
                         <p className="text-sm text-gray-600">
-                          <strong>Uso:</strong>
+                          <strong>{labels.fields.usage}:</strong>
                           <span className={`ml-1 font-medium ${getUsageColor(usagePercentage)}`}>
                             {contract.service_usage?.current_period?.used_services || 0}/
                             {contract.plan?.contract_services || 0} ({usagePercentage}%)
                           </span>
                         </p>
                         <p className="text-sm text-gray-600">
-                          <strong>Renovación:</strong>{' '}
-                          {new Date(contract.plan?.renewal_date).toLocaleDateString('es-CL')}
+                          <strong>{labels.fields.renewal}:</strong>{' '}
+                          {new Date(contract.plan?.renewal_date).toLocaleDateString(DATE_FORMATS.locale)}
                         </p>
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">
-                          <strong>Costo Mensual:</strong> S/{' '}
+                          <strong>{labels.fields.monthlyCost}:</strong> {detailLabels.defaults.currencySymbol}{' '}
                           {contract.billing?.monthly_cost?.toLocaleString()}
                         </p>
                         <p className="text-sm text-gray-600">
-                          <strong>ID:</strong> {contract.plan?.contract_id}
+                          <strong>{labels.fields.id}:</strong> {contract.plan?.contract_id}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="text-xs text-gray-500">
-                        Teléfono: {contract.company?.contact_person?.phone} • Email:{' '}
+                        {labels.fields.phone}: {contract.company?.contact_person?.phone} • {labels.fields.email}:{' '}
                         {contract.company?.contact_person?.email}
                       </div>
 
@@ -146,7 +151,7 @@ const ContractsList = ({
                           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
                         >
                           <i className="fas fa-eye"></i>
-                          <span>Ver Detalle</span>
+                          <span>{labels.buttons.viewDetail}</span>
                         </button>
                         {contractStatus.status === 'expiring' && (
                           <button
@@ -154,7 +159,7 @@ const ContractsList = ({
                             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center space-x-2"
                           >
                             <i className="fas fa-sync-alt"></i>
-                            <span>Renovar</span>
+                            <span>{labels.buttons.renew}</span>
                           </button>
                         )}
                       </div>
@@ -195,25 +200,25 @@ const ContractsList = ({
                   <div className="space-y-2 mt-3 text-xs">
                     <div className="grid grid-cols-2 gap-2">
                       <div>
-                        <span className="text-gray-500">RUC:</span>
+                        <span className="text-gray-500">{labels.fields.ruc}:</span>
                         <p className="font-medium text-gray-900">{contract.company?.rut}</p>
                       </div>
                       <div>
-                        <span className="text-gray-500">Uso:</span>
+                        <span className="text-gray-500">{labels.fields.usage}:</span>
                         <span className={`font-semibold ${getUsageColor(usagePercentage)}`}>
                           {usagePercentage}%
                         </span>
                       </div>
                       <div>
-                        <span className="text-gray-500">Costo:</span>
+                        <span className="text-gray-500">{labels.fields.cost}:</span>
                         <p className="font-bold text-green-600">
-                          S/ {contract.billing?.monthly_cost?.toLocaleString()}
+                          {detailLabels.defaults.currencySymbol} {contract.billing?.monthly_cost?.toLocaleString()}
                         </p>
                       </div>
                       <div>
-                        <span className="text-gray-500">Renovación:</span>
+                        <span className="text-gray-500">{labels.fields.renewal}:</span>
                         <p className="font-medium text-gray-900">
-                          {new Date(contract.plan?.renewal_date).toLocaleDateString('es-CL')}
+                          {new Date(contract.plan?.renewal_date).toLocaleDateString(DATE_FORMATS.locale)}
                         </p>
                       </div>
                     </div>
@@ -226,7 +231,7 @@ const ContractsList = ({
                       onClick={() => onViewContract(contract)}
                       className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded text-sm font-medium"
                     >
-                      Ver Detalle
+                      {labels.buttons.viewDetail}
                     </button>
 
                     {contractStatus.status === 'expiring' && (
@@ -234,7 +239,7 @@ const ContractsList = ({
                         onClick={() => onRenewContract(contract)}
                         className="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded text-sm font-medium"
                       >
-                        Renovar Contrato
+                        {labels.buttons.renewContract}
                       </button>
                     )}
                   </div>

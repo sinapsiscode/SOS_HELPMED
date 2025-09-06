@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para mostrar tarjeta de usuario en desktop y mobile
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, datos del hook
+ * ${LABELS.admin.user.userCard.comments.title}
+ * ${LABELS.admin.user.userCard.comments.rule3}
+ * ${LABELS.admin.user.userCard.comments.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object} props.user - Datos del usuario
@@ -24,16 +25,20 @@ const UserCard = ({
   onManageAffiliates,
   onManageServices
 }) => {
+  const labels = LABELS.admin.user.userCard
   const getUserDisplayInfo = () => {
     switch (userType) {
       case 'familiar':
         const affiliatesCount = user.affiliatesCount || user.affiliates?.length || 0
+        const affiliatesText = labels.userTypes.familiar.affiliatesFormat
+          .replace('{count}', affiliatesCount)
+          .replace('{plural}', affiliatesCount !== 1 ? 's' : '')
         return {
           name: user.profile?.name,
-          subtitle: `${user.plan?.name} • ${affiliatesCount} afiliado${affiliatesCount !== 1 ? 's' : ''}`,
+          subtitle: `${user.plan?.name} • ${affiliatesText}`,
           email: user.profile?.email,
           phone: user.profile?.phone,
-          icon: 'fas fa-user',
+          icon: labels.icons.familiar,
           color: 'green'
         }
       case 'corporativo':
@@ -42,7 +47,7 @@ const UserCard = ({
           subtitle: user.profile?.name + ' - ' + user.profile?.position,
           email: user.profile?.email,
           phone: user.profile?.phone,
-          icon: 'fas fa-building',
+          icon: labels.icons.corporativo,
           color: 'purple'
         }
       case 'externo':
@@ -51,7 +56,7 @@ const UserCard = ({
           subtitle: user.client_company?.name + ' - ' + user.plan?.name,
           email: user.profile?.email,
           phone: user.profile?.phone,
-          icon: 'fas fa-users',
+          icon: labels.icons.externo,
           color: 'blue'
         }
       case 'admin':
@@ -60,16 +65,16 @@ const UserCard = ({
           subtitle: user.profile?.position,
           email: user.profile?.email,
           phone: user.profile?.phone,
-          icon: 'fas fa-user-shield',
+          icon: labels.icons.admin,
           color: 'red'
         }
       default:
         return {
-          name: 'Usuario',
-          subtitle: 'Sin información',
+          name: labels.userTypes.default.name,
+          subtitle: labels.userTypes.default.subtitle,
           email: '',
           phone: '',
-          icon: 'fas fa-user',
+          icon: labels.icons.default,
           color: 'gray'
         }
     }
@@ -98,7 +103,7 @@ const UserCard = ({
                     isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                   }`}
                 >
-                  {isActive ? 'Activo' : 'Inactivo'}
+                  {isActive ? labels.status.active : labels.status.inactive}
                 </span>
               </div>
               <p className="text-sm text-gray-600">{displayInfo.subtitle}</p>
@@ -127,11 +132,11 @@ const UserCard = ({
             {/* Contador de servicios para corporativos */}
             {userType === 'corporativo' && (
               <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded">
-                {user.service_usage?.current_period?.used_services || 0}/
-                {user.plan?.contract_services ||
-                  (user.service_usage?.current_period?.used_services || 0) +
-                    (user.service_usage?.current_period?.remaining_services || 20)}{' '}
-                servicios
+                {labels.userTypes.corporativo.servicesFormat
+                  .replace('{used}', user.service_usage?.current_period?.used_services || 0)
+                  .replace('{total}', user.plan?.contract_services ||
+                    (user.service_usage?.current_period?.used_services || 0) +
+                      (user.service_usage?.current_period?.remaining_services || 20))}
               </span>
             )}
 
@@ -140,7 +145,7 @@ const UserCard = ({
               <button
                 onClick={() => onManageServices('consume')}
                 className="w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded transition-colors flex items-center justify-center"
-                title="Registrar servicios consumidos"
+                title={labels.buttons.registerUsage}
               >
                 <i className="fas fa-plus text-sm"></i>
               </button>
@@ -151,7 +156,7 @@ const UserCard = ({
               <button
                 onClick={() => onManageServices('add')}
                 className="w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded transition-colors flex items-center justify-center"
-                title="Gestionar servicios adicionales"
+                title={labels.buttons.manageAdditional}
               >
                 <i className="fas fa-plus text-sm"></i>
               </button>
@@ -162,7 +167,7 @@ const UserCard = ({
               <button
                 onClick={() => onManageServices('default')}
                 className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                title="Gestionar servicios adicionales"
+                title={labels.buttons.manageAdditional}
               >
                 <i className="fas fa-plus"></i>
               </button>
@@ -173,7 +178,7 @@ const UserCard = ({
               <button
                 onClick={onManageAffiliates}
                 className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
-                title="Gestionar afiliados"
+                title={labels.buttons.manageAffiliates}
               >
                 <i className="fas fa-users"></i>
               </button>
@@ -184,7 +189,7 @@ const UserCard = ({
               className={`p-2 rounded-lg transition-colors ${
                 isActive ? 'text-yellow-600 hover:bg-yellow-50' : 'text-green-600 hover:bg-green-50'
               }`}
-              title={isActive ? 'Desactivar usuario' : 'Activar usuario'}
+              title={isActive ? labels.buttons.deactivateUser : labels.buttons.activateUser}
             >
               <i className={`fas fa-${isActive ? 'pause' : 'play'}`}></i>
             </button>
@@ -192,7 +197,7 @@ const UserCard = ({
             <button
               onClick={onEdit}
               className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-              title="Editar usuario"
+              title={labels.buttons.editUser}
             >
               <i className="fas fa-edit"></i>
             </button>
@@ -200,7 +205,7 @@ const UserCard = ({
             <button
               onClick={onDelete}
               className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Eliminar usuario"
+              title={labels.buttons.deleteUser}
             >
               <i className="fas fa-trash"></i>
             </button>
@@ -239,14 +244,14 @@ const UserCard = ({
                         : 'bg-green-100 text-green-700'
                     }`}
                   >
-                    {Math.random() > 0.5 ? 'Vencido' : 'Salud'}
+                    {Math.random() > 0.5 ? labels.planStatus.expired : labels.planStatus.health}
                   </span>
                 )}
 
                 {/* Badge de días para familiares */}
                 {userType === 'familiar' && (
                   <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                    {Math.floor(Math.random() * 30) + 1} días
+                    {labels.userTypes.familiar.daysFormat.replace('{days}', Math.floor(Math.random() * 30) + 1)}
                   </span>
                 )}
               </div>
@@ -262,11 +267,11 @@ const UserCard = ({
           <div className="space-y-2 text-xs">
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <span className="text-gray-500">Contacto:</span>
+                <span className="text-gray-500">{labels.fields.contact}</span>
                 <p className="font-medium text-gray-900 truncate">{displayInfo.name}</p>
               </div>
               <div>
-                <span className="text-gray-500">RUC:</span>
+                <span className="text-gray-500">{labels.fields.ruc}</span>
                 <p className="font-medium text-gray-900">
                   {user.profile?.dni || user.company?.rut || '12345678'}-
                   {Math.floor(Math.random() * 9) + 1}
@@ -278,7 +283,7 @@ const UserCard = ({
           {/* Métricas compactas */}
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <span className="text-gray-500">Empleados:</span>
+              <span className="text-gray-500">{labels.fields.employees}</span>
               <span className="font-semibold text-gray-900 ml-1">
                 {userType === 'corporativo'
                   ? user.company?.employees || 50
@@ -286,7 +291,7 @@ const UserCard = ({
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Servicios:</span>
+              <span className="text-gray-500">{labels.fields.services}</span>
               <span className="font-semibold text-gray-900 ml-1">
                 {userType === 'corporativo'
                   ? Math.floor((user.company?.employees || 50) / 4)
@@ -294,28 +299,32 @@ const UserCard = ({
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Uso:</span>
+              <span className="text-gray-500">{labels.fields.usage}</span>
               <span className="font-semibold text-blue-600 ml-1">
                 {userType === 'corporativo'
-                  ? `${user.service_usage?.current_period?.used_services || 0}/${user.plan?.contract_services || (user.service_usage?.current_period?.used_services || 0) + (user.service_usage?.current_period?.remaining_services || 20)}`
-                  : `${user.service_usage?.current_period?.used_services || Math.floor(Math.random() * 10) + 1}/${user.plan?.services || 10}`}
+                  ? labels.userTypes.corporativo.servicesFormat
+                      .replace('{used}', user.service_usage?.current_period?.used_services || 0)
+                      .replace('{total}', user.plan?.contract_services || (user.service_usage?.current_period?.used_services || 0) + (user.service_usage?.current_period?.remaining_services || 20))
+                  : labels.userTypes.corporativo.servicesFormat
+                      .replace('{used}', user.service_usage?.current_period?.used_services || Math.floor(Math.random() * 10) + 1)
+                      .replace('{total}', user.plan?.services || 10)}
                 <span className="text-gray-600 ml-1">
-                  (
-                  {userType === 'corporativo'
-                    ? Math.round(
-                        ((user.service_usage?.current_period?.used_services || 0) /
-                          (user.plan?.contract_services ||
-                            (user.service_usage?.current_period?.used_services || 0) +
-                              (user.service_usage?.current_period?.remaining_services || 20))) *
-                          100
-                      )
-                    : Math.floor(Math.random() * 80) + 20}
-                  %)
+                  {labels.userTypes.corporativo.percentageFormat.replace('{percentage}',
+                    userType === 'corporativo'
+                      ? Math.round(
+                          ((user.service_usage?.current_period?.used_services || 0) /
+                            (user.plan?.contract_services ||
+                              (user.service_usage?.current_period?.used_services || 0) +
+                                (user.service_usage?.current_period?.remaining_services || 20))) *
+                            100
+                        )
+                      : Math.floor(Math.random() * 80) + 20
+                  )}
                 </span>
               </span>
             </div>
             <div>
-              <span className="text-gray-500">Renovación:</span>
+              <span className="text-gray-500">{labels.fields.renewal}</span>
               <span className="font-semibold text-gray-900 ml-1">
                 31-{String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-2025
               </span>
@@ -325,13 +334,13 @@ const UserCard = ({
           {/* Información financiera compacta */}
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
-              <span className="text-gray-500">Costo Mensual:</span>
+              <span className="text-gray-500">{labels.fields.monthlyCost}</span>
               <p className="font-bold text-green-600">
                 S/ {(Math.floor(Math.random() * 500) + 200).toLocaleString()}
               </p>
             </div>
             <div>
-              <span className="text-gray-500">ID:</span>
+              <span className="text-gray-500">{labels.fields.id}</span>
               <p className="font-mono text-gray-700 text-xs">
                 {userType.toUpperCase()}-{user.username?.toUpperCase() || 'USR'}-
                 {String(Math.floor(Math.random() * 999) + 1).padStart(3, '0')}
@@ -342,7 +351,7 @@ const UserCard = ({
           {/* Contacto compacto */}
           <div className="space-y-1 text-xs">
             <div>
-              <span className="text-gray-500">Teléfono:</span>
+              <span className="text-gray-500">{labels.fields.phone}</span>
               <a
                 href={`tel:${displayInfo.phone || `+51927772000`}`}
                 className="text-blue-600 hover:text-blue-800 ml-1 font-medium"
@@ -351,7 +360,7 @@ const UserCard = ({
               </a>
             </div>
             <div>
-              <span className="text-gray-500">Email:</span>
+              <span className="text-gray-500">{labels.fields.email}</span>
               <a
                 href={`mailto:${displayInfo.email || `${user.username}@email.com`}`}
                 className="text-blue-600 hover:text-blue-800 ml-1 font-medium break-all text-xs"
@@ -370,7 +379,7 @@ const UserCard = ({
               onClick={onEdit}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded text-sm font-medium"
             >
-              Ver Detalle
+              {labels.buttons.viewDetail}
             </button>
 
             {/* Botones pequeños en línea */}
@@ -380,14 +389,14 @@ const UserCard = ({
                   <button
                     onClick={() => onManageServices('consume')}
                     className="w-8 h-8 bg-red-500 text-white rounded flex items-center justify-center"
-                    title="Registrar uso"
+                    title={labels.buttons.registerUseShort}
                   >
                     <i className="fas fa-plus text-xs"></i>
                   </button>
                   <button
                     onClick={() => onManageServices('add')}
                     className="w-8 h-8 bg-green-500 text-white rounded flex items-center justify-center"
-                    title="+ Servicios"
+                    title={labels.buttons.addServicesShort}
                   >
                     <i className="fas fa-plus text-xs"></i>
                   </button>
@@ -434,7 +443,7 @@ const UserCard = ({
 
               {isActive && (
                 <span className="bg-green-500 text-white px-2 py-1 rounded text-xs ml-2">
-                  Online
+                  {labels.status.online}
                 </span>
               )}
             </div>

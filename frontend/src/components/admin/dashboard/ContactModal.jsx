@@ -1,7 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 const ContactModal = ({ isOpen, onClose, request, onMarkAsContacted }) => {
   if (!isOpen || !request) return null
+  
+  const labels = LABELS.admin.dashboard.contactModal
 
   const handleMarkAsContacted = () => {
     onMarkAsContacted(request)
@@ -14,7 +17,7 @@ const ContactModal = ({ isOpen, onClose, request, onMarkAsContacted }) => {
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800 text-center">
-            Contactar Cliente
+            {labels.title}
           </h2>
         </div>
 
@@ -23,42 +26,36 @@ const ContactModal = ({ isOpen, onClose, request, onMarkAsContacted }) => {
           {/* Cliente info */}
           <div className="space-y-3">
             <div>
-              <span className="font-medium text-gray-700">Cliente:</span>
+              <span className="font-medium text-gray-700">{labels.fields.client}:</span>
               <span className="ml-2 text-gray-600">{request.userName}</span>
             </div>
             
             <div>
-              <span className="font-medium text-gray-700">Teléfono:</span>
+              <span className="font-medium text-gray-700">{labels.fields.phone}:</span>
               <span className="ml-2 text-gray-600">{request.contactPhone}</span>
             </div>
             
             <div>
-              <span className="font-medium text-gray-700">Email:</span>
+              <span className="font-medium text-gray-700">{labels.fields.email}:</span>
               <span className="ml-2 text-gray-600">{request.contactEmail}</span>
             </div>
             
             <div>
-              <span className="font-medium text-gray-700">Motivo:</span>
+              <span className="font-medium text-gray-700">{labels.fields.reason}:</span>
               <span className="ml-2 text-gray-600">{request.reason}</span>
             </div>
           </div>
 
           {/* Acciones sugeridas */}
           <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-medium text-gray-700 mb-3">Acciones sugeridas:</h3>
+            <h3 className="font-medium text-gray-700 mb-3">{labels.suggestedActions.title}:</h3>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li className="flex items-start">
-                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Llamar al cliente para ofrecerle upgrade
-              </li>
-              <li className="flex items-start">
-                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Enviar propuesta personalizada por email
-              </li>
-              <li className="flex items-start">
-                <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                Programar reunión comercial
-              </li>
+              {labels.suggestedActions.items.map((action, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="w-1.5 h-1.5 bg-gray-400 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                  {action}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -69,13 +66,13 @@ const ContactModal = ({ isOpen, onClose, request, onMarkAsContacted }) => {
             onClick={handleMarkAsContacted}
             className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Marcar como Contactado
+            {labels.buttons.markAsContacted}
           </button>
           <button
             onClick={onClose}
             className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Cerrar
+            {labels.buttons.close}
           </button>
         </div>
       </div>

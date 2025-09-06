@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Vista jerárquica de entidades externas con usuarios
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.externalUsers.hierarchicalView.comments.title}
+ * ${LABELS.admin.externalUsers.hierarchicalView.comments.approach}
  *
  * @param {Array} entities - Lista filtrada de entidades
  * @param {string} expandedEntity - ID de entidad expandida
@@ -24,46 +25,48 @@ const HierarchicalView = ({
   getUserStatusColor,
   getUserStatusText
 }) => {
+  const labels = LABELS.admin.externalUsers.hierarchicalView
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(entities)) {
-    console.error('HierarchicalView: entities debe ser un array')
+    console.error(labels.errors.entitiesRequired)
     return null
   }
 
   if (typeof expandedEntity !== 'string' && expandedEntity !== null) {
-    console.error('HierarchicalView: expandedEntity debe ser string o null')
+    console.error(labels.errors.expandedEntityRequired)
     return null
   }
 
   if (typeof onToggleExpansion !== 'function') {
-    console.error('HierarchicalView: onToggleExpansion debe ser una función')
+    console.error(labels.errors.onToggleExpansionRequired)
     return null
   }
 
   if (typeof onToggleUserStatus !== 'function') {
-    console.error('HierarchicalView: onToggleUserStatus debe ser una función')
+    console.error(labels.errors.onToggleUserStatusRequired)
     return null
   }
 
   if (typeof getEntityIcon !== 'function') {
-    console.error('HierarchicalView: getEntityIcon debe ser una función')
+    console.error(labels.errors.getEntityIconRequired)
     return null
   }
 
   if (typeof getEntityColor !== 'function') {
-    console.error('HierarchicalView: getEntityColor debe ser una función')
+    console.error(labels.errors.getEntityColorRequired)
     return null
   }
 
   if (typeof getUserStatusColor !== 'function') {
-    console.error('HierarchicalView: getUserStatusColor debe ser una función')
+    console.error(labels.errors.getUserStatusColorRequired)
     return null
   }
 
   if (typeof getUserStatusText !== 'function') {
-    console.error('HierarchicalView: getUserStatusText debe ser una función')
+    console.error(labels.errors.getUserStatusTextRequired)
     return null
   }
 
@@ -87,26 +90,26 @@ const HierarchicalView = ({
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-gray-800">{entity.entity}</h3>
-                  <p className="text-sm text-gray-600">Código: {entity.entityCode}</p>
+                  <p className="text-sm text-gray-600">{labels.fields.code.replace('{code}', entity.entityCode)}</p>
                 </div>
               </div>
 
               <div className="flex items-center space-x-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-gray-800">{entity.stats.totalUsers}</div>
-                  <div className="text-xs text-gray-600">Usuarios</div>
+                  <div className="text-xs text-gray-600">{labels.fields.users}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-green-600">
                     {entity.stats.activeUsers}
                   </div>
-                  <div className="text-xs text-gray-600">Activos</div>
+                  <div className="text-xs text-gray-600">{labels.fields.active}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">
                     {entity.stats.monthlyServices}
                   </div>
-                  <div className="text-xs text-gray-600">Servicios/Mes</div>
+                  <div className="text-xs text-gray-600">{labels.fields.monthlyServices}</div>
                 </div>
                 <i
                   className={`fas fa-chevron-${expandedEntity === entity.entityCode ? 'up' : 'down'} text-gray-400`}
@@ -123,7 +126,7 @@ const HierarchicalView = ({
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-semibold text-gray-800 flex items-center">
                     <i className="fas fa-user-shield text-orange-600 mr-2"></i>
-                    Administrador de Entidad
+                    {labels.sections.admin.title}
                   </h4>
                 </div>
 
@@ -147,7 +150,7 @@ const HierarchicalView = ({
                               : 'bg-red-100 text-red-700'
                           }`}
                         >
-                          {entity.admin.status === 'active' ? 'Activo' : 'Inactivo'}
+                          {entity.admin.status === 'active' ? labels.sections.admin.status.active : labels.sections.admin.status.inactive}
                         </span>
                       </div>
                     </div>
@@ -155,9 +158,9 @@ const HierarchicalView = ({
                 ) : (
                   <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
                     <i className="fas fa-exclamation-triangle text-red-400 text-2xl mb-2"></i>
-                    <p className="text-red-600 font-medium">Error: Entidad sin administrador</p>
+                    <p className="text-red-600 font-medium">{labels.sections.admin.noAdmin.error}</p>
                     <p className="text-sm text-red-500 mt-1">
-                      Contacte al administrador del sistema
+                      {labels.sections.admin.noAdmin.contact}
                     </p>
                   </div>
                 )}
@@ -168,7 +171,7 @@ const HierarchicalView = ({
                 <div className="flex items-center justify-between mb-3">
                   <h4 className="font-semibold text-gray-800 flex items-center">
                     <i className="fas fa-users text-blue-600 mr-2"></i>
-                    Usuarios ({entity.users.length})
+                    {labels.sections.users.title.replace('{count}', entity.users.length)}
                   </h4>
                 </div>
 
@@ -199,10 +202,10 @@ const HierarchicalView = ({
                             {user.email}
                           </p>
                           <p>
-                            <i className="fas fa-calendar mr-1"></i>Último acceso: {user.lastAccess}
+                            <i className="fas fa-calendar mr-1"></i>{labels.fields.lastAccess.replace('{date}', user.lastAccess)}
                           </p>
                           <p>
-                            <i className="fas fa-heartbeat mr-1"></i>Servicios: {user.servicesUsed}
+                            <i className="fas fa-heartbeat mr-1"></i>{labels.fields.services.replace('{count}', user.servicesUsed)}
                           </p>
                         </div>
 
@@ -215,10 +218,10 @@ const HierarchicalView = ({
                                 : 'bg-green-100 hover:bg-green-200 text-green-700'
                             }`}
                           >
-                            {user.status === 'active' ? 'Desactivar' : 'Activar'}
+                            {user.status === 'active' ? labels.buttons.deactivate : labels.buttons.activate}
                           </button>
                           <button className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded text-xs font-medium transition-colors">
-                            Editar
+                            {labels.buttons.edit}
                           </button>
                         </div>
                       </div>
@@ -227,15 +230,15 @@ const HierarchicalView = ({
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
                     <i className="fas fa-users-slash text-gray-400 text-2xl mb-2"></i>
-                    <p className="text-gray-600">No hay usuarios registrados</p>
+                    <p className="text-gray-600">{labels.sections.users.noUsers}</p>
                     {!entity.admin ? (
                       <p className="text-sm text-red-500 mt-1">
-                        Error: La entidad no tiene administrador
+                        {labels.sections.users.noAdminError}
                       </p>
                     ) : (
                       <p className="text-sm text-blue-600 mt-2">
                         <i className="fas fa-info-circle mr-1"></i>
-                        Los usuarios externos se registran directamente desde el aplicativo
+                        {labels.sections.users.registerInfo}
                       </p>
                     )}
                   </div>

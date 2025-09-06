@@ -1,9 +1,10 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente de marcadores de emergencias
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.map.emergencyMarkers.comments.title}
+ * ${LABELS.admin.map.emergencyMarkers.comments.approach}
  *
  * @param {Array} emergencies - Lista de emergencias
  * @param {Function} getEmergencyIcon - Función para obtener icono
@@ -17,31 +18,33 @@ const EmergencyMarkers = ({
   handleSetArrivalTime,
   getPriorityClass
 }) => {
+  const labels = LABELS.admin.map.emergencyMarkers
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(emergencies)) {
-    console.error('EmergencyMarkers: emergencies debe ser un array')
+    console.error(labels.errors.emergenciesArray)
     return null
   }
 
   if (typeof getEmergencyIcon !== 'function') {
-    console.error('EmergencyMarkers: getEmergencyIcon debe ser una función')
+    console.error(labels.errors.getEmergencyIconFunction)
     return null
   }
 
   if (typeof handleEmergencyClick !== 'function') {
-    console.error('EmergencyMarkers: handleEmergencyClick debe ser una función')
+    console.error(labels.errors.handleEmergencyClickFunction)
     return null
   }
 
   if (typeof handleSetArrivalTime !== 'function') {
-    console.error('EmergencyMarkers: handleSetArrivalTime debe ser una función')
+    console.error(labels.errors.handleSetArrivalTimeFunction)
     return null
   }
 
   if (typeof getPriorityClass !== 'function') {
-    console.error('EmergencyMarkers: getPriorityClass debe ser una función')
+    console.error(labels.errors.getPriorityClassFunction)
     return null
   }
 
@@ -70,17 +73,17 @@ const EmergencyMarkers = ({
               </div>
               <div className="space-y-1 text-sm">
                 <p>
-                  <strong>Paciente:</strong> {emergency.affiliateInfo.name}
+                  <strong>{labels.popup.labels.patient}</strong> {emergency.affiliateInfo.name}
                 </p>
                 <p>
-                  <strong>Descripción:</strong> {emergency.description}
+                  <strong>{labels.popup.labels.description}</strong> {emergency.description}
                 </p>
                 <p>
-                  <strong>Ubicación:</strong> {emergency.location.address}
+                  <strong>{labels.popup.labels.location}</strong> {emergency.location.address}
                 </p>
                 <p>
-                  <strong>Tiempo:</strong>{' '}
-                  {Math.floor((Date.now() - emergency.timestamp) / (1000 * 60))} min
+                  <strong>{labels.popup.labels.time}</strong>{' '}
+                  {Math.floor((Date.now() - emergency.timestamp) / (1000 * 60))}{labels.popup.timeUnit}
                 </p>
               </div>
               <div className="space-y-2 mt-2">
@@ -89,13 +92,13 @@ const EmergencyMarkers = ({
                   className="w-full bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
                 >
                   <i className="fas fa-clock mr-1"></i>
-                  Establecer Tiempo de Llegada
+                  {labels.popup.buttons.setArrivalTime}
                 </button>
                 <button
                   onClick={() => handleEmergencyClick(emergency)}
                   className="w-full bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
                 >
-                  Seleccionar para Asignación
+                  {labels.popup.buttons.selectForAssignment}
                 </button>
               </div>
             </div>

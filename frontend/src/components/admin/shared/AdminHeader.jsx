@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useAdminHeader } from '../../../hooks/useAdminHeader'
 import useAppStore from '../../../stores/useAppStore'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Header del dashboard de administrador
- * COMPONENTE UI PURO - Solo presentación, CERO lógica (Regla #2)
- * Toda la lógica está en useAdminHeader
- * Optimizado con React.memo (Regla #13)
- * Menos de 200 líneas (Regla #3)
+ * ${LABELS.admin.shared.adminHeader.comments.title}
+ * ${LABELS.admin.shared.adminHeader.comments.approach}
+ * ${LABELS.admin.shared.adminHeader.comments.logic}
+ * ${LABELS.admin.shared.adminHeader.comments.optimization}
+ * ${LABELS.admin.shared.adminHeader.comments.size}
  *
  * @param {Object} user - Datos del usuario
  */
 const AdminHeader = React.memo(({ user }) => {
+  const labels = LABELS.admin.shared.adminHeader
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
   const { logout } = useAppStore()
@@ -45,7 +47,7 @@ const AdminHeader = React.memo(({ user }) => {
           <div className={leftSection.className}>
             <img 
               src="/public/Logo-Helpmed-negativo.png" 
-              alt="Help MED Logo" 
+              alt={labels.logo.alt} 
               className="h-10 w-auto object-contain"
             />
           </div>
@@ -65,7 +67,7 @@ const AdminHeader = React.memo(({ user }) => {
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                 className={`${rightSection.avatar.className} cursor-pointer hover:ring-2 hover:ring-blue-400 transition-all`}
-                aria-label="Menu de usuario"
+                aria-label={labels.userMenu.ariaLabel}
                 aria-expanded={isDropdownOpen}
               >
                 <span className={rightSection.avatar.initial.className}>
@@ -85,7 +87,7 @@ const AdminHeader = React.memo(({ user }) => {
                       {rightSection.userInfo.email.text}
                     </p>
                     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
-                      Administrador
+                      {labels.userMenu.role}
                     </span>
                   </div>
                   
@@ -99,7 +101,7 @@ const AdminHeader = React.memo(({ user }) => {
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors"
                     >
                       <i className="fas fa-sign-out-alt"></i>
-                      Cerrar Sesión
+                      {labels.userMenu.logout}
                     </button>
                   </div>
                 </div>

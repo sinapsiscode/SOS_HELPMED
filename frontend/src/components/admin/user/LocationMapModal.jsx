@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal con mapa interactivo para seleccionar ubicación
- * Usa OpenStreetMap sin necesidad de API keys
+ * ${LABELS.admin.user.locationMapModal.comments.title}
+ * ${LABELS.admin.user.locationMapModal.comments.description}
  */
 const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinates }) => {
+  const labels = LABELS.admin.user.locationMapModal
   const [selectedLat, setSelectedLat] = useState(initialCoordinates?.lat || -12.0464)
   const [selectedLng, setSelectedLng] = useState(initialCoordinates?.lng || -77.0428)
   const [address, setAddress] = useState('')
@@ -60,7 +62,7 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
 
       // Agregar tiles de OpenStreetMap
       window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+        attribution: labels.map.attribution
       }).addTo(map)
 
       // Marcador inicial
@@ -106,11 +108,11 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
       if (data && data.display_name) {
         setAddress(data.display_name)
       } else {
-        setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`)
+        setAddress(labels.map.coordinateFormat.replace('{lat}', lat.toFixed(6)).replace('{lng}', lng.toFixed(6)))
       }
     } catch (error) {
-      console.error('Error obteniendo dirección:', error)
-      setAddress(`Lat: ${lat.toFixed(6)}, Lng: ${lng.toFixed(6)}`)
+      console.error(labels.errors.geocodeError, error)
+      setAddress(labels.map.coordinateFormat.replace('{lat}', lat.toFixed(6)).replace('{lng}', lng.toFixed(6)))
     }
     setIsLoadingAddress(false)
   }
@@ -140,11 +142,11 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
           }
         }
       } else {
-        alert('No se encontró la dirección. Intente ser más específico.')
+        alert(labels.errors.addressNotFound)
       }
     } catch (error) {
-      console.error('Error buscando dirección:', error)
-      alert('Error al buscar la dirección')
+      console.error(labels.errors.searchError, error)
+      alert(labels.errors.searchError)
     }
     setIsLoadingAddress(false)
   }
@@ -176,7 +178,7 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
           }
         },
         () => {
-          alert('No se pudo obtener tu ubicación actual')
+          alert(labels.errors.locationError)
         }
       )
     }
@@ -191,7 +193,7 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="text-xl font-semibold text-gray-800">
             <i className="fas fa-map-marked-alt mr-2 text-red-500"></i>
-            Seleccionar Ubicación en el Mapa
+            {labels.header.title}
           </h2>
           <button
             onClick={onClose}
@@ -209,7 +211,7 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && searchAddress()}
-              placeholder="Buscar dirección... (Ej: Av. Arequipa 1234, Lima)"
+              placeholder={labels.search.placeholder}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               disabled={isLoadingAddress}
             />
@@ -219,14 +221,14 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
             >
               <i className="fas fa-search mr-2"></i>
-              Buscar
+              {labels.search.searchButton}
             </button>
             <button
               onClick={handleUseMyLocation}
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
             >
               <i className="fas fa-location-arrow mr-2"></i>
-              Mi Ubicación
+              {labels.search.myLocationButton}
             </button>
           </div>
 
@@ -242,12 +244,12 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
             <div className="absolute bottom-4 left-4 bg-white bg-opacity-95 rounded-lg p-3 shadow-lg max-w-xs">
               <p className="text-xs text-gray-700 font-medium mb-1">
                 <i className="fas fa-info-circle mr-1 text-blue-500"></i>
-                Instrucciones:
+                {labels.instructions.title}
               </p>
               <ul className="text-xs text-gray-600 space-y-1">
-                <li>• Haz clic en el mapa para seleccionar</li>
-                <li>• Arrastra el marcador para ajustar</li>
-                <li>• Usa la búsqueda para encontrar direcciones</li>
+                <li>{labels.instructions.items.click}</li>
+                <li>{labels.instructions.items.drag}</li>
+                <li>{labels.instructions.items.search}</li>
               </ul>
             </div>
           </div>
@@ -256,17 +258,17 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
           <div className="bg-gray-50 rounded-lg p-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-700">Latitud</label>
+                <label className="text-sm font-medium text-gray-700">{labels.coordinates.latitudeLabel}</label>
                 <p className="text-lg font-mono text-gray-900">{selectedLat.toFixed(6)}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-700">Longitud</label>
+                <label className="text-sm font-medium text-gray-700">{labels.coordinates.longitudeLabel}</label>
                 <p className="text-lg font-mono text-gray-900">{selectedLng.toFixed(6)}</p>
               </div>
             </div>
             {address && (
               <div className="mt-3 pt-3 border-t border-gray-200">
-                <label className="text-sm font-medium text-gray-700">Dirección detectada</label>
+                <label className="text-sm font-medium text-gray-700">{labels.coordinates.addressLabel}</label>
                 <p className="text-sm text-gray-900 mt-1">{address}</p>
               </div>
             )}
@@ -279,14 +281,14 @@ const LocationMapModal = ({ isOpen, onClose, onSelectLocation, initialCoordinate
             onClick={onClose}
             className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
-            Cancelar
+            {labels.buttons.cancel}
           </button>
           <button
             onClick={handleConfirm}
             className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
           >
             <i className="fas fa-check mr-2"></i>
-            Confirmar Ubicación
+            {labels.buttons.confirm}
           </button>
         </div>
       </div>

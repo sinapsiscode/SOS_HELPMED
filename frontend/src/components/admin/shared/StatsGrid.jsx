@@ -1,12 +1,13 @@
 import React from 'react'
 import { useStatsGrid } from '../../../hooks/useStatsGrid'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Grid de estadísticas
- * COMPONENTE UI PURO - Solo presentación, CERO lógica (Regla #2)
- * Toda la lógica está en useStatsGrid
- * Optimizado con React.memo (Regla #13)
- * Menos de 200 líneas (Regla #3)
+ * ${LABELS.admin.shared.statsGrid.comments.title}
+ * ${LABELS.admin.shared.statsGrid.comments.approach}
+ * ${LABELS.admin.shared.statsGrid.comments.logic}
+ * ${LABELS.admin.shared.statsGrid.comments.optimization}
+ * ${LABELS.admin.shared.statsGrid.comments.size}
  *
  * @param {Array} stats - Array de estadísticas a mostrar
  */

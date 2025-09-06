@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para análisis y métricas de encuestas
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, datos calculados en hook
+ * ${LABELS.admin.survey.surveyAnalytics.comments.title}
+ * ${LABELS.admin.survey.surveyAnalytics.comments.rule3}
+ * ${LABELS.admin.survey.surveyAnalytics.comments.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object} props.metrics - Métricas calculadas de encuestas
@@ -28,7 +29,8 @@ const SurveyAnalytics = ({
   getPlanFilterText,
   getNPSLabel
 }) => {
-  const npsLabel = getNPSLabel ? getNPSLabel(metrics?.npsScore || 0) : { label: 'Sin datos', color: 'text-gray-600' }
+  const labels = LABELS.admin.survey.surveyAnalytics
+  const npsLabel = getNPSLabel ? getNPSLabel(metrics?.npsScore || 0) : { label: labels.metrics.npsScore.noData, color: 'text-gray-600' }
 
   return (
     <div className="space-y-6">
@@ -38,10 +40,10 @@ const SurveyAnalytics = ({
           <div>
             <h2 className="text-xl font-exo font-semibold text-gray-800">
               <i className="fas fa-chart-bar text-helpmed-blue mr-2"></i>
-              Análisis de Satisfacción
+              {labels.filters.title}
             </h2>
             <p className="text-gray-600 font-roboto mt-1">
-              Métricas y tendencias de las encuestas de satisfacción
+              {labels.filters.subtitle}
             </p>
           </div>
 
@@ -51,10 +53,10 @@ const SurveyAnalytics = ({
               onChange={(e) => onDateFilterChange(e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
             >
-              <option value="last7days">Últimos 7 días</option>
-              <option value="last30days">Últimos 30 días</option>
-              <option value="last3months">Últimos 3 meses</option>
-              <option value="all">Todo el período</option>
+              <option value="last7days">{labels.filters.dateOptions.last7days}</option>
+              <option value="last30days">{labels.filters.dateOptions.last30days}</option>
+              <option value="last3months">{labels.filters.dateOptions.last3months}</option>
+              <option value="all">{labels.filters.dateOptions.all}</option>
             </select>
 
             <select
@@ -62,16 +64,16 @@ const SurveyAnalytics = ({
               onChange={(e) => onPlanFilterChange(e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
             >
-              <option value="all">Todos los planes</option>
-              <option value="familiar">Plan Familiar</option>
-              <option value="corporativo">Plan Corporativo</option>
+              <option value="all">{labels.filters.planOptions.all}</option>
+              <option value="familiar">{labels.filters.planOptions.familiar}</option>
+              <option value="corporativo">{labels.filters.planOptions.corporativo}</option>
             </select>
           </div>
         </div>
 
         <div className="text-sm text-gray-600 font-roboto">
           <i className="fas fa-filter mr-1"></i>
-          Mostrando: {getDateFilterText()} • {getPlanFilterText()}
+          {labels.filters.showing.replace('{dateFilter}', getDateFilterText()).replace('{planFilter}', getPlanFilterText())}
         </div>
       </div>
 
@@ -83,7 +85,7 @@ const SurveyAnalytics = ({
               <i className="fas fa-poll text-2xl text-blue-600"></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Total Respuestas</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.metrics.totalResponses.label}</p>
               <p className="text-2xl font-exo font-bold text-gray-800">{metrics.totalResponses}</p>
             </div>
           </div>
@@ -95,9 +97,9 @@ const SurveyAnalytics = ({
               <i className="fas fa-star text-2xl text-yellow-600"></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Calificación Promedio</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.metrics.averageRating.label}</p>
               <p className="text-2xl font-exo font-bold text-gray-800">
-                {metrics.averageRating}/5.0
+                {labels.metrics.averageRating.format.replace('{rating}', metrics.averageRating)}
               </p>
             </div>
           </div>
@@ -111,9 +113,9 @@ const SurveyAnalytics = ({
               <i className={`fas fa-thumbs-up text-2xl ${npsLabel?.color || 'text-gray-600'}`}></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Net Promoter Score</p>
-              <p className={`text-2xl font-exo font-bold ${npsLabel?.color || 'text-gray-600'}`}>{metrics?.npsScore || 0}%</p>
-              <p className="text-xs text-gray-500 mt-1">{npsLabel?.label || 'Sin datos'}</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.metrics.npsScore.label}</p>
+              <p className={`text-2xl font-exo font-bold ${npsLabel?.color || 'text-gray-600'}`}>{labels.metrics.npsScore.format.replace('{score}', metrics?.npsScore || 0)}</p>
+              <p className="text-xs text-gray-500 mt-1">{npsLabel?.label || labels.metrics.npsScore.noData}</p>
             </div>
           </div>
         </div>
@@ -146,7 +148,7 @@ const SurveyAnalytics = ({
               ></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Tendencia</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.metrics.trend.label}</p>
               <p
                 className={`text-lg font-exo font-bold ${
                   metrics.satisfactionTrend === 'improving'
@@ -157,10 +159,10 @@ const SurveyAnalytics = ({
                 }`}
               >
                 {metrics.satisfactionTrend === 'improving'
-                  ? 'Mejorando'
+                  ? labels.metrics.trend.improving
                   : metrics.satisfactionTrend === 'declining'
-                    ? 'Declinando'
-                    : 'Estable'}
+                    ? labels.metrics.trend.declining
+                    : labels.metrics.trend.stable}
               </p>
             </div>
           </div>
@@ -172,7 +174,7 @@ const SurveyAnalytics = ({
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-lg font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-question-circle text-helpmed-blue mr-2"></i>
-            Calificación Promedio por Pregunta
+            {labels.questionAnalysis.title}
           </h3>
 
           <div className="space-y-4">
@@ -207,7 +209,7 @@ const SurveyAnalytics = ({
                                   : 'text-red-600'
                           }`}
                         >
-                          {average.toFixed(1)}/5.0
+                          {labels.questionAnalysis.ratingFormat.replace('{rating}', average.toFixed(1))}
                         </div>
                       </div>
                     </div>
@@ -238,7 +240,7 @@ const SurveyAnalytics = ({
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-lg font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-chart-pie text-helpmed-blue mr-2"></i>
-            Distribución de Calificaciones
+            {labels.ratingDistribution.title}
           </h3>
 
           <div className="space-y-3">
@@ -273,8 +275,8 @@ const SurveyAnalytics = ({
                   </div>
 
                   <div className="w-16 text-right">
-                    <span className="font-exo font-semibold text-gray-800">{count}</span>
-                    <span className="text-xs text-gray-500 ml-1">({percentage}%)</span>
+                    <span className="font-exo font-semibold text-gray-800">{labels.ratingDistribution.countFormat.replace('{count}', count)}</span>
+                    <span className="text-xs text-gray-500 ml-1">{labels.ratingDistribution.percentageFormat.replace('{percentage}', percentage)}</span>
                   </div>
                 </div>
               )
@@ -285,22 +287,23 @@ const SurveyAnalytics = ({
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-lg font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-users text-helpmed-blue mr-2"></i>
-            Análisis NPS Detallado
+            {labels.npsAnalysis.title}
           </h3>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
               <div className="flex items-center">
                 <i className="fas fa-thumbs-up text-green-600 mr-2"></i>
-                <span className="font-roboto text-green-800">Promotores (4-5)</span>
+                <span className="font-roboto text-green-800">{labels.npsAnalysis.promoters.label}</span>
               </div>
               <div className="text-right">
                 <div className="font-exo font-bold text-green-800">{metrics.promoters}</div>
                 <div className="text-xs text-green-600">
-                  {metrics.totalResponses > 0
-                    ? ((metrics.promoters / metrics.totalResponses) * 100).toFixed(1)
-                    : 0}
-                  %
+                  {labels.npsAnalysis.promoters.percentageFormat.replace('{percentage}', 
+                    metrics.totalResponses > 0
+                      ? ((metrics.promoters / metrics.totalResponses) * 100).toFixed(1)
+                      : 0
+                  )}
                 </div>
               </div>
             </div>
@@ -308,15 +311,16 @@ const SurveyAnalytics = ({
             <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
               <div className="flex items-center">
                 <i className="fas fa-minus text-yellow-600 mr-2"></i>
-                <span className="font-roboto text-yellow-800">Pasivos (3)</span>
+                <span className="font-roboto text-yellow-800">{labels.npsAnalysis.passives.label}</span>
               </div>
               <div className="text-right">
                 <div className="font-exo font-bold text-yellow-800">{metrics.passives}</div>
                 <div className="text-xs text-yellow-600">
-                  {metrics.totalResponses > 0
-                    ? ((metrics.passives / metrics.totalResponses) * 100).toFixed(1)
-                    : 0}
-                  %
+                  {labels.npsAnalysis.passives.percentageFormat.replace('{percentage}',
+                    metrics.totalResponses > 0
+                      ? ((metrics.passives / metrics.totalResponses) * 100).toFixed(1)
+                      : 0
+                  )}
                 </div>
               </div>
             </div>
@@ -324,15 +328,16 @@ const SurveyAnalytics = ({
             <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
               <div className="flex items-center">
                 <i className="fas fa-thumbs-down text-red-600 mr-2"></i>
-                <span className="font-roboto text-red-800">Detractores (1-2)</span>
+                <span className="font-roboto text-red-800">{labels.npsAnalysis.detractors.label}</span>
               </div>
               <div className="text-right">
                 <div className="font-exo font-bold text-red-800">{metrics.detractors}</div>
                 <div className="text-xs text-red-600">
-                  {metrics.totalResponses > 0
-                    ? ((metrics.detractors / metrics.totalResponses) * 100).toFixed(1)
-                    : 0}
-                  %
+                  {labels.npsAnalysis.detractors.percentageFormat.replace('{percentage}',
+                    metrics.totalResponses > 0
+                      ? ((metrics.detractors / metrics.totalResponses) * 100).toFixed(1)
+                      : 0
+                  )}
                 </div>
               </div>
             </div>
@@ -340,7 +345,7 @@ const SurveyAnalytics = ({
             <div className="border-t pt-4">
               <div className="text-center">
                 <div className={`text-2xl font-exo font-bold ${npsLabel.color}`}>
-                  NPS: {metrics.npsScore}%
+                  {labels.npsAnalysis.scoreFormat.replace('{score}', metrics.npsScore)}
                 </div>
                 <div className={`text-sm font-roboto ${npsLabel.color}`}>{npsLabel.label}</div>
               </div>
@@ -354,11 +359,10 @@ const SurveyAnalytics = ({
         <div className="bg-white rounded-xl shadow-medium p-12 text-center">
           <i className="fas fa-chart-bar text-6xl text-gray-300 mb-4"></i>
           <h3 className="text-xl font-exo font-semibold text-gray-700 mb-2">
-            Sin respuestas de encuestas
+            {labels.emptyState.title}
           </h3>
           <p className="text-gray-500 font-roboto">
-            No se encontraron respuestas de encuestas con los filtros seleccionados. Ajusta los
-            filtros o espera a que se generen más respuestas.
+            {labels.emptyState.message}
           </p>
         </div>
       )}

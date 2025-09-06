@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+import { LABELS } from '../config/labels'
+import { FORM_STYLES } from '../config/styles'
 
 /**
  * Hook que maneja TODA la lógica de un campo de formulario
@@ -29,26 +31,24 @@ export const useFormField = ({
    * Toda la lógica de decisión está aquí
    */
   const inputClassName = useMemo(() => {
-    const baseClasses =
-      'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors'
-    const borderClass = error ? 'border-red-300' : 'border-gray-300'
-    const disabledClass = disabled ? 'bg-gray-100 cursor-not-allowed' : ''
+    const borderClass = error ? FORM_STYLES.input.error : FORM_STYLES.input.normal
+    const disabledClass = disabled ? FORM_STYLES.input.disabled : ''
 
-    return `${baseClasses} ${borderClass} ${disabledClass} ${className}`.trim()
+    return `${FORM_STYLES.input.base} ${borderClass} ${disabledClass} ${className}`.trim()
   }, [error, disabled, className])
 
   /**
    * Clases para el label
    */
   const labelClassName = useMemo(() => {
-    return 'block text-sm font-medium text-gray-700 mb-2'
+    return FORM_STYLES.label.base
   }, [])
 
   /**
    * Clases para el mensaje de error
    */
   const errorClassName = useMemo(() => {
-    return 'mt-1 text-sm text-red-600'
+    return FORM_STYLES.error.text
   }, [])
 
   // ============================================
@@ -59,7 +59,7 @@ export const useFormField = ({
    * Texto del label con asterisco si es requerido
    */
   const labelText = useMemo(() => {
-    return required ? `${label} *` : label
+    return required ? `${label} ${LABELS.forms.fields.requiredIndicator}` : label
   }, [label, required])
 
   /**
@@ -146,26 +146,24 @@ export const useSelectField = ({
    * Clases para el select basadas en el estado
    */
   const selectClassName = useMemo(() => {
-    const baseClasses =
-      'w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors'
-    const borderClass = error ? 'border-red-300' : 'border-gray-300'
-    const disabledClass = disabled ? 'bg-gray-100 cursor-not-allowed' : ''
+    const borderClass = error ? FORM_STYLES.input.error : FORM_STYLES.input.normal
+    const disabledClass = disabled ? FORM_STYLES.input.disabled : ''
 
-    return `${baseClasses} ${borderClass} ${disabledClass}`.trim()
+    return `${FORM_STYLES.input.base} ${borderClass} ${disabledClass}`.trim()
   }, [error, disabled])
 
   /**
    * Clases para el label
    */
   const labelClassName = useMemo(() => {
-    return 'block text-sm font-medium text-gray-700 mb-2'
+    return FORM_STYLES.label.base
   }, [])
 
   /**
    * Clases para el mensaje de error
    */
   const errorClassName = useMemo(() => {
-    return 'mt-1 text-sm text-red-600'
+    return FORM_STYLES.error.text
   }, [])
 
   // ============================================
@@ -176,7 +174,7 @@ export const useSelectField = ({
    * Texto del label con asterisco si es requerido
    */
   const labelText = useMemo(() => {
-    return required ? `${label} *` : label
+    return required ? `${label} ${LABELS.forms.fields.requiredIndicator}` : label
   }, [label, required])
 
   /**

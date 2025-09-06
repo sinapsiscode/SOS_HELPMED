@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para crear administrador externo
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.external.addAdminModal.comments.title}
+ * ${LABELS.admin.external.addAdminModal.comments.approach}
  *
  * @param {boolean} isOpen - Si el modal está abierto
  * @param {Object} adminForm - Formulario de administrador
@@ -24,46 +25,48 @@ const AddAdminModal = ({
   isLoading,
   isFormValid
 }) => {
+  const labels = LABELS.admin.external.addAdminModal
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof isOpen !== 'boolean') {
-    console.error('AddAdminModal: isOpen debe ser boolean')
+    console.error(labels.errors.isOpenRequired)
     return null
   }
 
   if (!adminForm || typeof adminForm !== 'object') {
-    console.error('AddAdminModal: adminForm es requerido y debe ser un objeto')
+    console.error(labels.errors.adminFormRequired)
     return null
   }
 
   if (!Array.isArray(entitiesWithoutAdmin)) {
-    console.error('AddAdminModal: entitiesWithoutAdmin debe ser un array')
+    console.error(labels.errors.entitiesRequired)
     return null
   }
 
   if (typeof onClose !== 'function') {
-    console.error('AddAdminModal: onClose debe ser una función')
+    console.error(labels.errors.onCloseRequired)
     return null
   }
 
   if (typeof onSubmit !== 'function') {
-    console.error('AddAdminModal: onSubmit debe ser una función')
+    console.error(labels.errors.onSubmitRequired)
     return null
   }
 
   if (typeof updateAdminForm !== 'function') {
-    console.error('AddAdminModal: updateAdminForm debe ser una función')
+    console.error(labels.errors.updateFormRequired)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('AddAdminModal: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingRequired)
     return null
   }
 
   if (typeof isFormValid !== 'function') {
-    console.error('AddAdminModal: isFormValid debe ser una función')
+    console.error(labels.errors.isFormValidRequired)
     return null
   }
 
@@ -76,7 +79,7 @@ const AddAdminModal = ({
         <div className="p-4 sm:p-6 border-b">
           <div className="flex items-center justify-between">
             <h3 className="text-lg sm:text-xl font-bold text-gray-800">
-              Crear Administrador Externo
+              {labels.title}
             </h3>
             <button
               onClick={onClose}
@@ -92,17 +95,17 @@ const AddAdminModal = ({
         <div className="p-4 sm:p-6 space-y-4">
           {/* Selección de entidad */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Entidad *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.entity.label}</label>
             <select
               value={adminForm.entityId}
               onChange={(e) => updateAdminForm('entityId', e.target.value)}
               disabled={isLoading}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
             >
-              <option value="">Selecciona una entidad</option>
+              <option value="">{labels.fields.entity.placeholder}</option>
               {entitiesWithoutAdmin.map((entity) => (
                 <option key={entity.id} value={entity.id}>
-                  {entity.name} ({entity.code})
+                  {labels.fields.entity.format.replace('{name}', entity.name).replace('{code}', entity.code)}
                 </option>
               ))}
             </select>
@@ -111,29 +114,29 @@ const AddAdminModal = ({
           {/* Credenciales */}
           <div className="grid grid-cols-1 gap-3 sm:gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Usuario *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.username.label}</label>
               <input
                 type="text"
                 value={adminForm.username}
                 onChange={(e) => updateAdminForm('username', e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                placeholder="usuario_admin"
+                placeholder={labels.fields.username.placeholder}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.password.label}</label>
               <input
                 type="text"
                 value={adminForm.password}
                 onChange={(e) => updateAdminForm('password', e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                placeholder="Contraseña segura"
+                placeholder={labels.fields.password.placeholder}
               />
               <p className="text-xs text-gray-500 mt-1">
-                La contraseña se mostrará al crear el administrador
+                {labels.fields.password.hint}
               </p>
             </div>
           </div>
@@ -141,7 +144,7 @@ const AddAdminModal = ({
           {/* Información personal */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Nombre Completo *
+              {labels.fields.name.label}
             </label>
             <input
               type="text"
@@ -149,31 +152,31 @@ const AddAdminModal = ({
               onChange={(e) => updateAdminForm('name', e.target.value)}
               disabled={isLoading}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-              placeholder="Nombre del administrador"
+              placeholder={labels.fields.name.placeholder}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.email.label}</label>
             <input
               type="email"
               value={adminForm.email}
               onChange={(e) => updateAdminForm('email', e.target.value)}
               disabled={isLoading}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-              placeholder="admin@entidad.com"
+              placeholder={labels.fields.email.placeholder}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.phone.label}</label>
             <input
               type="tel"
               value={adminForm.phone}
               onChange={(e) => updateAdminForm('phone', e.target.value)}
               disabled={isLoading}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-              placeholder="999-999-999"
+              placeholder={labels.fields.phone.placeholder}
             />
           </div>
 
@@ -182,12 +185,11 @@ const AddAdminModal = ({
             <div className="flex items-start space-x-2">
               <i className="fas fa-info-circle text-yellow-600 mt-1 flex-shrink-0"></i>
               <div className="text-sm text-yellow-800">
-                <p className="font-medium mb-1">Privilegios del administrador externo:</p>
+                <p className="font-medium mb-1">{labels.privileges.title}</p>
                 <ul className="list-disc list-inside space-y-1">
-                  <li>Gestionar usuarios de su entidad</li>
-                  <li>Ver reportes de su organización</li>
-                  <li>Configurar límites y restricciones</li>
-                  <li>No puede modificar configuración del sistema</li>
+                  {labels.privileges.items.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -201,7 +203,7 @@ const AddAdminModal = ({
             disabled={isLoading}
             className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            Cancelar
+            {labels.buttons.cancel}
           </button>
           <button
             onClick={onSubmit}
@@ -211,12 +213,12 @@ const AddAdminModal = ({
             {isLoading ? (
               <>
                 <i className="fas fa-spinner fa-spin"></i>
-                <span>Creando...</span>
+                <span>{labels.buttons.submitting}</span>
               </>
             ) : (
               <>
                 <i className="fas fa-user-shield"></i>
-                <span>Crear Administrador</span>
+                <span>{labels.buttons.submit}</span>
               </>
             )}
           </button>

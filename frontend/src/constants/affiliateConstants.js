@@ -1,44 +1,37 @@
 /**
  * Constantes para la gestión de afiliados
- * Centraliza valores hardcodeados y configuraciones
+ * Importa valores desde la configuración centralizada
  */
 
-// Estados de afiliados
-export const AFFILIATE_STATUSES = {
-  ACTIVE: 'active',
-  INACTIVE: 'inactive'
-}
+import { RELATIONSHIP_TYPES, AFFILIATE_STATUS, AFFILIATE_LIMITS } from '../config/constants'
+import { LABELS } from '../config/labels'
+
+// Re-exportar desde configuración centralizada
+export { RELATIONSHIP_TYPES, AFFILIATE_STATUS, AFFILIATE_LIMITS }
+
+// Estados de afiliados (alias para compatibilidad)
+export const AFFILIATE_STATUSES = AFFILIATE_STATUS
 
 // Labels para estados de afiliados
 export const AFFILIATE_STATUS_LABELS = {
-  [AFFILIATE_STATUSES.ACTIVE]: 'ACTIVO',
-  [AFFILIATE_STATUSES.INACTIVE]: 'INACTIVO'
+  [AFFILIATE_STATUS.ACTIVE]: LABELS.admin.affiliates.status.active,
+  [AFFILIATE_STATUS.INACTIVE]: LABELS.admin.affiliates.status.inactive
 }
 
 // Clases CSS para badges de estado de afiliados
 export const AFFILIATE_STATUS_CLASSES = {
-  [AFFILIATE_STATUSES.ACTIVE]: 'bg-green-100 text-green-800 border-green-200',
-  [AFFILIATE_STATUSES.INACTIVE]: 'bg-red-100 text-red-800 border-red-200'
-}
-
-// Tipos de relación familiar
-export const RELATIONSHIP_TYPES = {
-  SPOUSE: 'conyuge',
-  CHILD: 'hijo',
-  FATHER: 'padre',
-  MOTHER: 'madre',
-  SIBLING: 'hermano',
-  OTHER: 'otro'
+  [AFFILIATE_STATUS.ACTIVE]: 'bg-green-100 text-green-800 border-green-200',
+  [AFFILIATE_STATUS.INACTIVE]: 'bg-red-100 text-red-800 border-red-200'
 }
 
 // Labels para tipos de relación
 export const RELATIONSHIP_LABELS = {
-  [RELATIONSHIP_TYPES.SPOUSE]: 'Cónyuge',
-  [RELATIONSHIP_TYPES.CHILD]: 'Hijo/a',
-  [RELATIONSHIP_TYPES.FATHER]: 'Padre',
-  [RELATIONSHIP_TYPES.MOTHER]: 'Madre',
-  [RELATIONSHIP_TYPES.SIBLING]: 'Hermano/a',
-  [RELATIONSHIP_TYPES.OTHER]: 'Otro'
+  [RELATIONSHIP_TYPES.SPOUSE]: LABELS.admin.affiliates.relationships.spouse,
+  [RELATIONSHIP_TYPES.CHILD]: LABELS.admin.affiliates.relationships.child,
+  [RELATIONSHIP_TYPES.FATHER]: LABELS.admin.affiliates.relationships.father,
+  [RELATIONSHIP_TYPES.MOTHER]: LABELS.admin.affiliates.relationships.mother,
+  [RELATIONSHIP_TYPES.SIBLING]: LABELS.admin.affiliates.relationships.sibling,
+  [RELATIONSHIP_TYPES.OTHER]: LABELS.admin.affiliates.relationships.other
 }
 
 // Opciones para selectores de relación
@@ -51,31 +44,23 @@ export const RELATIONSHIP_OPTIONS = [
   { value: RELATIONSHIP_TYPES.OTHER, label: RELATIONSHIP_LABELS[RELATIONSHIP_TYPES.OTHER] }
 ]
 
-// Límites de afiliados por plan
-export const AFFILIATE_LIMITS = {
-  BASIC: 3,
-  PREMIUM: 8,
-  CORPORATE: 50,
-  UNLIMITED: -1 // Sin límite
-}
-
 // Mensajes de error específicos para afiliados
 export const ERROR_MESSAGES = {
-  GENERIC: 'Ha ocurrido un error inesperado',
-  AFFILIATE_NOT_FOUND: 'Afiliado no encontrado',
-  DUPLICATE_DNI: 'Ya existe un afiliado con este DNI',
-  LIMIT_REACHED: 'Se ha alcanzado el límite máximo de afiliados para este plan',
-  INVALID_DATA: 'Los datos del afiliado son inválidos',
-  REQUIRED_FIELDS: 'Nombre y DNI son campos obligatorios'
+  GENERIC: LABELS.messages.error,
+  AFFILIATE_NOT_FOUND: LABELS.admin.affiliates.messages.notFound,
+  DUPLICATE_DNI: LABELS.admin.affiliates.messages.duplicateDni,
+  LIMIT_REACHED: LABELS.admin.affiliates.messages.limitReached,
+  INVALID_DATA: LABELS.forms.validation.required,
+  REQUIRED_FIELDS: LABELS.messages.requiredFields
 }
 
 // Mensajes de éxito para afiliados
 export const SUCCESS_MESSAGES = {
-  AFFILIATE_ADDED: 'Afiliado agregado correctamente',
-  AFFILIATE_UPDATED: 'Afiliado actualizado correctamente',
-  AFFILIATE_DELETED: 'Afiliado eliminado correctamente',
-  STATUS_CHANGED: 'Estado del afiliado cambiado correctamente',
-  CHANGES_SAVED: 'Los cambios han sido guardados correctamente'
+  AFFILIATE_ADDED: LABELS.admin.affiliates.messages.addSuccess,
+  AFFILIATE_UPDATED: LABELS.admin.affiliates.messages.updateSuccess,
+  AFFILIATE_DELETED: LABELS.admin.affiliates.messages.deleteSuccess,
+  STATUS_CHANGED: LABELS.admin.affiliates.messages.statusChanged,
+  CHANGES_SAVED: LABELS.messages.success
 }
 
 // Validaciones

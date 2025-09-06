@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from 'react'
 import { affiliateFormSchema } from '../schemas/affiliateSchema'
 import { ERROR_MESSAGES, FORM_CONFIG, RELATIONSHIP_OPTIONS } from '../constants/affiliateConstants'
+import { LABELS } from '../config/labels'
 
 /**
  * Hook que maneja TODA la lógica del modal de agregar afiliado
@@ -259,40 +260,40 @@ export const useAddAffiliateModal = (onSave, onClose, externalLoading = false) =
   const fields = useMemo(
     () => ({
       name: {
-        label: 'Nombre Completo',
+        label: LABELS.admin.affiliates.add.fields.name.label,
         type: 'text',
         name: 'name',
         value: formData.name,
         onChange: handleNameChange,
         error: errors.name,
         disabled: isDisabled,
-        placeholder: 'Ingresa el nombre completo',
+        placeholder: LABELS.admin.affiliates.add.fields.name.placeholder,
         required: true
       },
       dni: {
-        label: 'DNI',
+        label: LABELS.admin.affiliates.add.fields.dni.label,
         type: 'text',
         name: 'dni',
         value: formData.dni,
         onChange: handleDniChange,
         error: errors.dni,
         disabled: isDisabled,
-        placeholder: 'Ingresa el DNI',
+        placeholder: LABELS.admin.affiliates.add.fields.dni.placeholder,
         required: true
       },
       phone: {
-        label: 'Teléfono',
+        label: LABELS.admin.affiliates.add.fields.phone.label,
         type: 'tel',
         name: 'phone',
         value: formData.phone,
         onChange: handlePhoneChange,
         error: errors.phone,
         disabled: isDisabled,
-        placeholder: 'Ingresa el número de teléfono',
+        placeholder: LABELS.admin.affiliates.add.fields.phone.placeholder,
         required: false
       },
       relationship: {
-        label: 'Relación Familiar',
+        label: LABELS.admin.affiliates.add.fields.relationship.label,
         name: 'relationship',
         value: formData.relationship,
         onChange: handleRelationshipChange,
@@ -302,7 +303,7 @@ export const useAddAffiliateModal = (onSave, onClose, externalLoading = false) =
         required: true
       },
       birthDate: {
-        label: 'Fecha de Nacimiento',
+        label: LABELS.admin.affiliates.add.fields.birthDate.label,
         type: 'date',
         name: 'birthDate',
         value: formData.birthDate,
@@ -348,7 +349,7 @@ export const useAddAffiliateModal = (onSave, onClose, externalLoading = false) =
 
     // Configuración del modal
     modalConfig: {
-      title: 'Agregar Afiliado',
+      title: LABELS.admin.affiliates.add.title,
       closeButtonAriaLabel: 'Cerrar modal'
     }
   }

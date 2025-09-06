@@ -1,9 +1,10 @@
 import React from 'react'
 import { MUTE_BUTTONS, NOTIFICATION_MODES } from '../../../mocks/notificationData'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Vista de alertas activas y notificaciones
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.notifications.alertsView.comments.title}
+ * ${LABELS.admin.notifications.alertsView.comments.approach}
  *
  * @param {Array} filteredNotifications - Lista filtrada de notificaciones
  * @param {Object} mutedAlerts - Estado de silenciado de alertas
@@ -21,36 +22,38 @@ const AlertsView = ({
   onAlertClick,
   onRemoveNotification
 }) => {
+  const labels = LABELS.admin.notifications.alertsView
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(filteredNotifications)) {
-    console.error('AlertsView: filteredNotifications debe ser un array')
+    console.error(labels.errors.filteredNotificationsArray)
     return null
   }
 
   if (!mutedAlerts || typeof mutedAlerts !== 'object') {
-    console.error('AlertsView: mutedAlerts es requerido y debe ser un objeto')
+    console.error(labels.errors.mutedAlertsObject)
     return null
   }
 
   if (!notificationConfig || typeof notificationConfig !== 'object') {
-    console.error('AlertsView: notificationConfig es requerido y debe ser un objeto')
+    console.error(labels.errors.notificationConfigObject)
     return null
   }
 
   if (typeof onToggleMute !== 'function') {
-    console.error('AlertsView: onToggleMute debe ser una función')
+    console.error(labels.errors.onToggleMuteFunction)
     return null
   }
 
   if (typeof onAlertClick !== 'function') {
-    console.error('AlertsView: onAlertClick debe ser una función')
+    console.error(labels.errors.onAlertClickFunction)
     return null
   }
 
   if (typeof onRemoveNotification !== 'function') {
-    console.error('AlertsView: onRemoveNotification debe ser una función')
+    console.error(labels.errors.onRemoveNotificationFunction)
     return null
   }
 
@@ -104,7 +107,7 @@ const AlertsView = ({
             >
               <i className={`${button.icon} mr-1`}></i>
               <span className="hidden sm:inline">
-                {button.label} {mutedAlerts[button.id] ? '(Silenciado)' : ''}
+                {button.label} {mutedAlerts[button.id] ? labels.muteButtons.muted : ''}
               </span>
               <span className="sm:hidden">{button.labelShort}</span>
             </button>
@@ -114,7 +117,7 @@ const AlertsView = ({
             <span
               className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-medium ${getCurrentModeConfig()?.color}`}
             >
-              <span className="hidden sm:inline">Modo: </span>
+              <span className="hidden sm:inline">{labels.muteButtons.mode}</span>
               {getCurrentModeConfig()?.title}
             </span>
           </div>
@@ -124,7 +127,7 @@ const AlertsView = ({
       {/* Lista de alertas y notificaciones - Responsive */}
       <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
         <h2 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">
-          Actividad Reciente
+          {labels.title}
         </h2>
 
         {filteredNotifications.length > 0 ? (
@@ -179,8 +182,8 @@ const AlertsView = ({
         ) : (
           <div className="text-center py-12 text-gray-500">
             <i className="fas fa-check-circle text-5xl text-green-400 mb-4"></i>
-            <p className="text-lg">Todo está en orden</p>
-            <p className="text-sm mt-2">No hay alertas ni notificaciones pendientes</p>
+            <p className="text-lg">{labels.emptyState.title}</p>
+            <p className="text-sm mt-2">{labels.emptyState.subtitle}</p>
           </div>
         )}
       </div>

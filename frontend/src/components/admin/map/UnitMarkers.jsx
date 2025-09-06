@@ -1,9 +1,10 @@
 import React from 'react'
 import { Marker, Popup } from 'react-leaflet'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente de marcadores de unidades médicas
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.map.unitMarkers.comments.title}
+ * ${LABELS.admin.map.unitMarkers.comments.approach}
  *
  * @param {Array} availableUnits - Unidades disponibles
  * @param {Array} busyUnits - Unidades ocupadas
@@ -18,26 +19,28 @@ const UnitMarkers = ({
   handleUnitClick,
   getUnitStatusClass
 }) => {
+  const labels = LABELS.admin.map.unitMarkers
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(availableUnits)) {
-    console.error('UnitMarkers: availableUnits debe ser un array')
+    console.error(labels.errors.availableUnitsArray)
     return null
   }
 
   if (!Array.isArray(busyUnits)) {
-    console.error('UnitMarkers: busyUnits debe ser un array')
+    console.error(labels.errors.busyUnitsArray)
     return null
   }
 
   if (typeof getUnitIcon !== 'function') {
-    console.error('UnitMarkers: getUnitIcon debe ser una función')
+    console.error(labels.errors.getUnitIconFunction)
     return null
   }
 
   if (typeof getUnitStatusClass !== 'function') {
-    console.error('UnitMarkers: getUnitStatusClass debe ser una función')
+    console.error(labels.errors.getUnitStatusClassFunction)
     return null
   }
 
@@ -59,28 +62,28 @@ const UnitMarkers = ({
                 <i className="fas fa-ambulance text-green-600"></i>
                 <h4 className="font-exo font-semibold">{unit.ambulance?.unit_id}</h4>
                 <span className="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">
-                  DISPONIBLE
+                  {labels.popup.status.available}
                 </span>
               </div>
               <div className="space-y-1 text-sm">
                 <p>
-                  <strong>Conductor:</strong> {unit.profile?.name}
+                  <strong>{labels.popup.labels.driver}</strong> {unit.profile?.name}
                 </p>
                 <p>
-                  <strong>Tipo:</strong> {unit.ambulance?.type}
+                  <strong>{labels.popup.labels.type}</strong> {unit.ambulance?.type}
                 </p>
                 <p>
-                  <strong>Placa:</strong> {unit.ambulance?.plate}
+                  <strong>{labels.popup.labels.plate}</strong> {unit.ambulance?.plate}
                 </p>
                 <p>
-                  <strong>Servicios:</strong> {unit.stats?.completedServices || 0} completados
+                  <strong>{labels.popup.labels.services}</strong> {unit.stats?.completedServices || 0}{labels.popup.labels.completed}
                 </p>
               </div>
               <button
                 onClick={() => handleUnitClick && handleUnitClick(unit)}
                 className="w-full mt-2 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
               >
-                Seleccionar para Asignación
+                {labels.popup.button.selectForAssignment}
               </button>
             </div>
           </Popup>
@@ -100,19 +103,19 @@ const UnitMarkers = ({
                 <i className="fas fa-ambulance text-blue-600"></i>
                 <h4 className="font-exo font-semibold">{unit.ambulance?.unit_id}</h4>
                 <span className={getUnitStatusClass(unit.currentStatus)}>
-                  {unit.currentStatus === 'en_route' ? 'EN CAMINO' : 'EN SITIO'}
+                  {unit.currentStatus === 'en_route' ? labels.popup.status.enRoute : labels.popup.status.onSite}
                 </span>
               </div>
               <div className="space-y-1 text-sm">
                 <p>
-                  <strong>Conductor:</strong> {unit.profile?.name}
+                  <strong>{labels.popup.labels.driver}</strong> {unit.profile?.name}
                 </p>
                 <p>
-                  <strong>Estado:</strong>{' '}
-                  {unit.currentStatus === 'en_route' ? 'En camino' : 'En sitio'}
+                  <strong>{labels.popup.labels.status}</strong>{' '}
+                  {unit.currentStatus === 'en_route' ? labels.popup.status.enRouteText : labels.popup.status.onSiteText}
                 </p>
                 <p>
-                  <strong>Servicios:</strong> {unit.stats?.completedServices || 0} completados
+                  <strong>{labels.popup.labels.services}</strong> {unit.stats?.completedServices || 0}{labels.popup.labels.completed}
                 </p>
               </div>
             </div>

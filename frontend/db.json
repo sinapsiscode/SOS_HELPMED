@@ -1,0 +1,271 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin",
+      "email": "admin@helpmed.com",
+      "role": "admin",
+      "profile": {
+        "name": "Administrador Principal",
+        "phone": "+51 999888777",
+        "address": "Lima, Perú"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Carlos Mendoza",
+      "email": "conductor@helpmed.com",
+      "role": "ambulance",
+      "ambulance_unit": "AMB-001",
+      "profile": {
+        "name": "Carlos Mendoza",
+        "phone": "+51 987654321",
+        "license": "A-III"
+      }
+    },
+    {
+      "id": 3,
+      "name": "María García",
+      "email": "familiar@helpmed.com",
+      "role": "familiar",
+      "profile": {
+        "name": "María García",
+        "phone": "+51 912345678",
+        "address": "Miraflores, Lima"
+      }
+    }
+  ],
+  "emergencies": [
+    {
+      "id": "EMG-3796",
+      "code": "EMG-3796",
+      "status": "pending",
+      "priority": "high",
+      "service": "medical",
+      "patient": {
+        "name": "Juan Pérez",
+        "age": "45 años",
+        "phone": "+51 999888777"
+      },
+      "symptoms": "Dolor torácico intenso, dificultad respiratoria",
+      "location": {
+        "address": "Av. Arequipa 2450, Lince",
+        "coordinates": [-12.086158, -77.035936],
+        "distance": "2.5 km"
+      },
+      "eta": "8 min",
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "EMG-3797",
+      "code": "EMG-3797",
+      "status": "in_progress",
+      "priority": "medium",
+      "service": "medical",
+      "patient": {
+        "name": "Ana López",
+        "age": "32 años",
+        "phone": "+51 987654321"
+      },
+      "symptoms": "Fractura de brazo",
+      "location": {
+        "address": "Av. Javier Prado 4200, San Borja",
+        "coordinates": [-12.091234, -77.001234],
+        "distance": "4.1 km"
+      },
+      "eta": "12 min",
+      "assignedAmbulance": "AMB-002",
+      "createdAt": "2024-01-15T11:00:00Z"
+    }
+  ],
+  "ambulances": [
+    {
+      "id": "AMB-001",
+      "driver": "Carlos Mendoza",
+      "driverId": 2,
+      "status": "available",
+      "type": "basic",
+      "location": {
+        "lat": -12.046374,
+        "lng": -77.042793
+      },
+      "plate": "ABC-123",
+      "model": "Mercedes Sprinter",
+      "year": 2020
+    },
+    {
+      "id": "AMB-002",
+      "driver": "Pedro Rodriguez",
+      "driverId": 4,
+      "status": "busy",
+      "type": "advanced",
+      "location": {
+        "lat": -12.056374,
+        "lng": -77.052793
+      },
+      "plate": "XYZ-456",
+      "model": "Ford Transit",
+      "year": 2021,
+      "currentEmergency": "EMG-3797"
+    },
+    {
+      "id": "AMB-003",
+      "driver": "Ana López",
+      "driverId": 5,
+      "status": "available",
+      "type": "basic",
+      "location": {
+        "lat": -12.036374,
+        "lng": -77.032793
+      },
+      "plate": "DEF-789",
+      "model": "Peugeot Boxer",
+      "year": 2019
+    }
+  ],
+  "affiliates": [
+    {
+      "id": 1,
+      "name": "Juan Pérez",
+      "dni": "12345678",
+      "email": "juan@email.com",
+      "phone": "+51 999888777",
+      "plan": "premium",
+      "status": "active",
+      "joinDate": "2024-01-01",
+      "address": "Miraflores, Lima"
+    },
+    {
+      "id": 2,
+      "name": "María García",
+      "dni": "87654321",
+      "email": "maria@email.com",
+      "phone": "+51 987654321",
+      "plan": "basic",
+      "status": "active",
+      "joinDate": "2024-01-10",
+      "address": "San Isidro, Lima"
+    }
+  ],
+  "contracts": [
+    {
+      "id": 1,
+      "company": "Tech Solutions SAC",
+      "ruc": "20123456789",
+      "contactName": "Roberto Silva",
+      "contactEmail": "roberto@techsolutions.com",
+      "contactPhone": "+51 998877665",
+      "plan": "corporate",
+      "employees": 150,
+      "status": "active",
+      "startDate": "2024-01-01",
+      "endDate": "2024-12-31",
+      "monthlyFee": 5000
+    },
+    {
+      "id": 2,
+      "company": "Consulting Group Peru",
+      "ruc": "20987654321",
+      "contactName": "Carmen Flores",
+      "contactEmail": "carmen@consultingperu.com",
+      "contactPhone": "+51 991122334",
+      "plan": "corporate",
+      "employees": 75,
+      "status": "active",
+      "startDate": "2024-02-01",
+      "endDate": "2025-01-31",
+      "monthlyFee": 3000
+    }
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "Nueva emergencia asignada",
+      "message": "Se le ha asignado la emergencia EMG-3796",
+      "type": "emergency",
+      "read": false,
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": 2,
+      "userId": 2,
+      "title": "Mantenimiento programado",
+      "message": "Su unidad AMB-001 tiene mantenimiento programado para mañana",
+      "type": "maintenance",
+      "read": false,
+      "createdAt": "2024-01-15T09:00:00Z"
+    }
+  ],
+  "plans": [
+    {
+      "id": "basic",
+      "name": "Plan Básico",
+      "price": 29.90,
+      "currency": "S/",
+      "features": [
+        "Atención médica básica",
+        "2 servicios al mes",
+        "Cobertura en Lima"
+      ],
+      "maxServices": 2,
+      "coverage": ["Lima"]
+    },
+    {
+      "id": "premium",
+      "name": "Plan Premium",
+      "price": 59.90,
+      "currency": "S/",
+      "features": [
+        "Atención médica completa",
+        "Servicios ilimitados",
+        "Cobertura nacional",
+        "Asistencia mecánica"
+      ],
+      "maxServices": -1,
+      "coverage": ["Nacional"]
+    },
+    {
+      "id": "corporate",
+      "name": "Plan Corporativo",
+      "price": null,
+      "currency": "",
+      "features": [
+        "Planes personalizados",
+        "Gestión de flotas",
+        "Reportes detallados",
+        "Soporte 24/7"
+      ],
+      "maxServices": -1,
+      "coverage": ["Personalizado"]
+    }
+  ],
+  "districts": [
+    {"id": 1, "name": "Miraflores", "zone": "Lima Sur"},
+    {"id": 2, "name": "San Isidro", "zone": "Lima Moderna"},
+    {"id": 3, "name": "Barranco", "zone": "Lima Sur"},
+    {"id": 4, "name": "Surco", "zone": "Lima Sur"},
+    {"id": 5, "name": "La Molina", "zone": "Lima Este"},
+    {"id": 6, "name": "San Borja", "zone": "Lima Moderna"},
+    {"id": 7, "name": "Jesús María", "zone": "Lima Centro"},
+    {"id": 8, "name": "Lince", "zone": "Lima Centro"},
+    {"id": 9, "name": "Magdalena", "zone": "Lima Oeste"},
+    {"id": 10, "name": "Pueblo Libre", "zone": "Lima Oeste"},
+    {"id": 11, "name": "San Miguel", "zone": "Lima Oeste"},
+    {"id": 12, "name": "Cercado de Lima", "zone": "Lima Centro"}
+  ],
+  "stats": {
+    "dashboard": {
+      "totalEmergencies": 156,
+      "activeEmergencies": 3,
+      "availableAmbulances": 8,
+      "totalAmbulances": 12,
+      "monthlyRevenue": 45230,
+      "totalUsers": 1234,
+      "averageResponseTime": "8.5 min",
+      "satisfactionRate": 94.5,
+      "totalAffiliates": 342,
+      "activeContracts": 15
+    }
+  }
+}

@@ -1,7 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 const ContractDetailsModal = ({ isOpen, onClose, request, onEditContract }) => {
   if (!isOpen || !request) return null
+  
+  const labels = LABELS.admin.dashboard.contractDetailsModal
 
   const formatDate = (date) => {
     const d = new Date(date)
@@ -28,7 +31,7 @@ const ContractDetailsModal = ({ isOpen, onClose, request, onEditContract }) => {
         {/* Header */}
         <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-800">
-            Contrato: {request.userName || 'Empresa ABC Ltda.'}
+            {labels.title}: {request.userName || labels.demo.companyName}
           </h2>
           <button 
             onClick={onClose}
@@ -42,73 +45,73 @@ const ContractDetailsModal = ({ isOpen, onClose, request, onEditContract }) => {
         <div className="px-6 py-4 space-y-6">
           {/* Información del Contrato */}
           <div>
-            <h3 className="font-semibold text-gray-800 mb-3">Información del Contrato</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">{labels.sections.contractInfo}</h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <span className="font-medium text-gray-700">ID Contrato:</span>
-                <span className="ml-2 text-gray-600">CORP-ABC-2024-001</span>
+                <span className="font-medium text-gray-700">{labels.fields.contractId}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.contractId}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Plan:</span>
-                <span className="ml-2 text-gray-600">Área Protegida - Empresa ABC</span>
+                <span className="font-medium text-gray-700">{labels.fields.plan}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.planName}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Servicios:</span>
-                <span className="ml-2 text-gray-600">{request.servicesTotal || '50'}</span>
+                <span className="font-medium text-gray-700">{labels.fields.services}:</span>
+                <span className="ml-2 text-gray-600">{request.servicesTotal || labels.demo.defaultServices}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Inicio:</span>
-                <span className="ml-2 text-gray-600">31-12-2023</span>
+                <span className="font-medium text-gray-700">{labels.fields.startDate}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.startDate}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Renovación:</span>
-                <span className="ml-2 text-gray-600">31-12-2024</span>
+                <span className="font-medium text-gray-700">{labels.fields.renewalDate}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.renewalDate}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Costo Mensual:</span>
-                <span className="ml-2 text-gray-600">S/ 1075</span>
+                <span className="font-medium text-gray-700">{labels.fields.monthlyCost}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.monthlyCost}</span>
               </div>
             </div>
           </div>
 
           {/* Información de la Empresa */}
           <div className="bg-blue-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-800 mb-3">Información de la Empresa</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">{labels.sections.companyInfo}</h3>
             <div className="space-y-2 text-sm">
               <div>
-                <span className="font-medium text-gray-700">Empresa:</span>
-                <span className="ml-2 text-gray-600">Empresa ABC Ltda.</span>
+                <span className="font-medium text-gray-700">{labels.fields.company}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.companyName}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">RUC:</span>
-                <span className="ml-2 text-gray-600">96.123.456-7</span>
+                <span className="font-medium text-gray-700">{labels.fields.ruc}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.rucNumber}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Industria:</span>
-                <span className="ml-2 text-gray-600">Construcción</span>
+                <span className="font-medium text-gray-700">{labels.fields.industry}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.industry}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Contacto:</span>
-                <span className="ml-2 text-gray-600">Carlos Ramírez (Gerente de RRHH)</span>
+                <span className="font-medium text-gray-700">{labels.fields.contact}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.contactPerson}</span>
               </div>
             </div>
           </div>
 
           {/* Uso de Servicios */}
           <div className="bg-green-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-800 mb-3">Uso de Servicios</h3>
+            <h3 className="font-semibold text-gray-800 mb-3">{labels.sections.serviceUsage}</h3>
             <div className="space-y-2 text-sm">
               <div>
-                <span className="font-medium text-gray-700">Servicios Usados:</span>
-                <span className="ml-2 text-gray-600">{request.servicesUsed || '50'}</span>
+                <span className="font-medium text-gray-700">{labels.fields.servicesUsed}:</span>
+                <span className="ml-2 text-gray-600">{request.servicesUsed || labels.demo.defaultServices}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Servicios Restantes:</span>
+                <span className="font-medium text-gray-700">{labels.fields.servicesRemaining}:</span>
                 <span className="ml-2 text-gray-600">{(request.servicesTotal || 50) - (request.servicesUsed || 50)}</span>
               </div>
               <div>
-                <span className="font-medium text-gray-700">Porcentaje de Uso:</span>
-                <span className="ml-2 text-gray-600">100%</span>
+                <span className="font-medium text-gray-700">{labels.fields.usagePercentage}:</span>
+                <span className="ml-2 text-gray-600">{labels.demo.usagePercentage}</span>
               </div>
             </div>
           </div>
@@ -119,9 +122,9 @@ const ContractDetailsModal = ({ isOpen, onClose, request, onEditContract }) => {
               <div className="flex items-start">
                 <i className="fas fa-exclamation-triangle text-red-500 mt-0.5 mr-2"></i>
                 <div>
-                  <h4 className="font-medium text-red-800">Contrato por Vencer</h4>
+                  <h4 className="font-medium text-red-800">{labels.sections.expiringWarning}</h4>
                   <p className="text-sm text-red-700 mt-1">
-                    Este contrato vence el 31-12-2024. Contacte al cliente para renovación.
+                    {labels.messages.expiringMessage.replace('{date}', labels.demo.renewalDate)}
                   </p>
                 </div>
               </div>
@@ -135,13 +138,13 @@ const ContractDetailsModal = ({ isOpen, onClose, request, onEditContract }) => {
             onClick={handleEditContract}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Editar Contrato
+            {labels.buttons.editContract}
           </button>
           <button
             onClick={onClose}
             className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
           >
-            Cerrar
+            {labels.buttons.close}
           </button>
         </div>
       </div>

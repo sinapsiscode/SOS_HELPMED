@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
+import { LABELS } from '../../../config/labels'
+import { FILE_LIMITS } from '../../../config/constants'
 
 /**
  * Modal para subir contratos PDF corporativos
@@ -11,21 +13,23 @@ import Swal from 'sweetalert2'
  * @param {Array} corporateUsers - Lista de usuarios corporativos
  */
 const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corporateUsers }) => {
+  const labels = LABELS.admin.corporate.contracts.add
+  
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof onClose !== 'function') {
-    console.error('AddContractModal: onClose debe ser una función')
+    console.error(labels.errors.onCloseRequired)
     return null
   }
 
   if (typeof onSave !== 'function') {
-    console.error('AddContractModal: onSave debe ser una función')
+    console.error(labels.errors.onSaveRequired)
     return null
   }
 
   if (!Array.isArray(corporateUsers)) {
-    console.error('AddContractModal: corporateUsers debe ser un array')
+    console.error(labels.errors.corporateUsersRequired)
     return null
   }
 
@@ -54,31 +58,30 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
     const newErrors = {}
 
     if (!formData.clientId) {
-      newErrors.clientId = 'Debe seleccionar un cliente corporativo'
+      newErrors.clientId = labels.validation.clientRequired
     }
 
     if (!formData.contractFile) {
-      newErrors.contractFile = 'Debe subir un archivo PDF del contrato'
+      newErrors.contractFile = labels.validation.fileRequired
     } else {
-      if (formData.contractFile.type !== 'application/pdf') {
-        newErrors.contractFile = 'Solo se permiten archivos PDF'
-      } else if (formData.contractFile.size > 10 * 1024 * 1024) {
-        // 10MB
-        newErrors.contractFile = 'El archivo no puede exceder 10MB'
+      if (!FILE_LIMITS.CONTRACT_PDF.ALLOWED_TYPES.includes(formData.contractFile.type)) {
+        newErrors.contractFile = labels.validation.onlyPdf
+      } else if (formData.contractFile.size > FILE_LIMITS.CONTRACT_PDF.MAX_SIZE_BYTES) {
+        newErrors.contractFile = labels.validation.fileTooLarge.replace('{size}', FILE_LIMITS.CONTRACT_PDF.MAX_SIZE_MB)
       }
     }
 
     if (!formData.startDate) {
-      newErrors.startDate = 'Debe seleccionar una fecha de inicio'
+      newErrors.startDate = labels.validation.startDateRequired
     }
 
     if (!formData.endDate) {
-      newErrors.endDate = 'Debe seleccionar una fecha de fin'
+      newErrors.endDate = labels.validation.endDateRequired
     } else if (formData.startDate && formData.endDate) {
       const start = new Date(formData.startDate)
       const end = new Date(formData.endDate)
       if (end <= start) {
-        newErrors.endDate = 'La fecha de fin debe ser posterior a la fecha de inicio'
+        newErrors.endDate = labels.validation.endDateInvalid
       }
     }
 
@@ -119,10 +122,10 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
 
       onSave(contractData)
     } catch (error) {
-      console.error('Error al subir contrato:', error)
+      console.error(labels.errors.uploadError, error)
       Swal.fire({
-        title: 'Error',
-        text: 'Ocurrió un error al subir el contrato. Por favor, inténtelo nuevamente.',
+        title: labels.alerts.error.title,
+        text: labels.alerts.error.text,
         icon: 'error'
       })
     } finally {
@@ -148,7 +151,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
       <div className="bg-white rounded-xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="p-6 border-b border-gray-200">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-800">Subir Contrato PDF</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{labels.title}</h2>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -161,10 +164,10 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Seleccionar Cliente Corporativo */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Seleccionar Cliente</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.sections.client}</h3>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cliente Corporativo *
+                {labels.fields.client} {LABELS.forms.fields.requiredIndicator}
               </label>
               <select
                 value={formData.clientId}
@@ -173,7 +176,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
                   errors.clientId ? 'border-red-500' : 'border-gray-300'
                 }`}
               >
-                <option value="">Seleccionar cliente...</option>
+                <option value="">{labels.placeholders.selectClient}</option>
                 {corporateUsers.map((client) => (
                   <option key={client.id} value={client.id}>
                     {client.company?.name} - {client.company?.rut}
@@ -186,11 +189,11 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
 
           {/* Fechas del Contrato */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Vigencia del Contrato</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.sections.validity}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fecha de Inicio *
+                  {labels.fields.startDate} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <input
                   type="date"
@@ -204,7 +207,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Fecha de Fin *
+                  {labels.fields.endDate} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <input
                   type="date"
@@ -222,9 +225,9 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
 
           {/* Subir Contrato PDF */}
           <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Documento del Contrato</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.sections.document}</h3>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contrato PDF *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.contractPdf} {LABELS.forms.fields.requiredIndicator}</label>
               <div
                 className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
                   errors.contractFile
@@ -259,7 +262,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
                         }}
                         className="text-red-500 hover:text-red-700 text-sm underline"
                       >
-                        Cambiar archivo
+                        {labels.upload.changeFile}
                       </button>
                     </div>
                   ) : (
@@ -267,11 +270,11 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
                       <i className="fas fa-cloud-upload-alt text-gray-400 text-4xl"></i>
                       <div>
                         <p className="text-lg font-medium text-gray-700">
-                          Arrastra y suelta tu archivo PDF aquí
+                          {labels.upload.dragAndDrop}
                         </p>
-                        <p className="text-gray-500">o haz clic para seleccionar</p>
+                        <p className="text-gray-500">{labels.upload.orClick}</p>
                       </div>
-                      <p className="text-sm text-gray-400">Solo archivos PDF, máximo 10MB</p>
+                      <p className="text-sm text-gray-400">{labels.upload.fileLimit.replace('{size}', FILE_LIMITS.CONTRACT_PDF.MAX_SIZE_MB)}</p>
                     </div>
                   )}
                 </label>
@@ -285,22 +288,22 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
           {/* Información del Cliente Seleccionado */}
           {formData.clientId && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-800 mb-2">Cliente Seleccionado</h4>
+              <h4 className="font-medium text-blue-800 mb-2">{labels.sections.selectedClient}</h4>
               {(() => {
                 const client = corporateUsers.find((c) => c.id === formData.clientId)
                 return client ? (
                   <div className="text-sm text-blue-700 space-y-1">
                     <p>
-                      <strong>Empresa:</strong> {client.company?.name}
+                      <strong>{labels.fields.company}:</strong> {client.company?.name}
                     </p>
                     <p>
-                      <strong>RUC:</strong> {client.company?.rut}
+                      <strong>{labels.fields.ruc}:</strong> {client.company?.rut}
                     </p>
                     <p>
-                      <strong>Contacto:</strong> {client.company?.contact_person?.name}
+                      <strong>{labels.fields.contact}:</strong> {client.company?.contact_person?.name}
                     </p>
                     <p>
-                      <strong>Email:</strong> {client.company?.contact_person?.email}
+                      <strong>{labels.fields.email}:</strong> {client.company?.contact_person?.email}
                     </p>
                   </div>
                 ) : null
@@ -313,7 +316,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <div className="flex items-center mb-2">
                 <i className="fas fa-exclamation-triangle text-red-600 mr-2"></i>
-                <h4 className="text-red-800 font-semibold">Errores de Validación</h4>
+                <h4 className="text-red-800 font-semibold">{labels.sections.validationErrors}</h4>
               </div>
               <ul className="text-red-700 text-sm space-y-1">
                 {Object.entries(errors).map(([field, error]) => (
@@ -330,7 +333,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
               onClick={onClose}
               className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
             >
-              Cancelar
+              {labels.buttons.cancel}
             </button>
             <button
               type="submit"
@@ -363,7 +366,7 @@ const AddContractModal = ({ onClose, onSave, isLoading: parentIsLoading, corpora
                   ></path>
                 </svg>
               )}
-              <span>{isLoading ? 'Subiendo Contrato...' : 'Subir Contrato'}</span>
+              <span>{isLoading ? labels.buttons.submitting : labels.buttons.submit}</span>
             </button>
           </div>
         </form>

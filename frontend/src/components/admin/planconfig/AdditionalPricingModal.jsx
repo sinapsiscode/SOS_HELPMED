@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para configuración de precios adicionales
- * Incluye costos base por servicio
+ * ${LABELS.admin.planconfig.additionalPricingModal.comments.title}
+ * ${LABELS.admin.planconfig.additionalPricingModal.comments.description}
  */
 const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) => {
+  const labels = LABELS.admin.planconfig.additionalPricingModal
+
   // Estado inicial con valores por defecto
   const [formData, setFormData] = useState({
     costosBase: {
@@ -53,7 +56,7 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <h2 className="text-xl font-semibold text-gray-800">
-            Configuración de Precios Adicionales
+            {labels.title}
           </h2>
           <button
             onClick={onClose}
@@ -67,16 +70,16 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
           {/* Sección de Costos Base por Servicio */}
           <div>
             <h3 className="text-lg font-semibold text-gray-800 mb-4">
-              Costos Base por Servicio
+              {labels.sections.baseCosts.title}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* EMERGENCIA */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  EMERGENCIA
+                  {labels.sections.baseCosts.services.emergency.label}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">S/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{labels.sections.summary.currency}</span>
                   <input
                     type="number"
                     value={formData.costosBase.emergencia}
@@ -86,16 +89,16 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
                     className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Servicio de emergencia básico</p>
+                <p className="text-xs text-gray-500 mt-1">{labels.sections.baseCosts.services.emergency.description}</p>
               </div>
 
               {/* URGENCIA MÉDICA */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  URGENCIA MÉDICA
+                  {labels.sections.baseCosts.services.urgentMedical.label}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">S/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{labels.sections.summary.currency}</span>
                   <input
                     type="number"
                     value={formData.costosBase.urgenciaMedica}
@@ -105,16 +108,16 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
                     className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Atención médica de urgencia</p>
+                <p className="text-xs text-gray-500 mt-1">{labels.sections.baseCosts.services.urgentMedical.description}</p>
               </div>
 
               {/* MÉDICO DOMICILIO */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  MÉDICO DOMICILIO
+                  {labels.sections.baseCosts.services.homeDoctor.label}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">S/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{labels.sections.summary.currency}</span>
                   <input
                     type="number"
                     value={formData.costosBase.medicoDomicilio}
@@ -124,16 +127,16 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
                     className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Consulta médica domiciliaria</p>
+                <p className="text-xs text-gray-500 mt-1">{labels.sections.baseCosts.services.homeDoctor.description}</p>
               </div>
 
               {/* TRASLADO PROGRAMADO */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  TRASLADO PROGRAMADO
+                  {labels.sections.baseCosts.services.scheduledTransfer.label}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">S/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{labels.sections.summary.currency}</span>
                   <input
                     type="number"
                     value={formData.costosBase.trasladoProgramado}
@@ -143,16 +146,16 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
                     className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Traslado no urgente</p>
+                <p className="text-xs text-gray-500 mt-1">{labels.sections.baseCosts.services.scheduledTransfer.description}</p>
               </div>
 
               {/* ZONA PROTEGIDA */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  ZONA PROTEGIDA
+                  {labels.sections.baseCosts.services.protectedZone.label}
                 </label>
                 <div className="relative">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">S/</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">{labels.sections.summary.currency}</span>
                   <input
                     type="number"
                     value={formData.costosBase.zonaProtegida}
@@ -162,7 +165,7 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
                     className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
-                <p className="text-xs text-gray-500 mt-1">Servicio incluido en ubicación</p>
+                <p className="text-xs text-gray-500 mt-1">{labels.sections.baseCosts.services.protectedZone.description}</p>
               </div>
             </div>
           </div>
@@ -173,10 +176,10 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
               <i className="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
               <div>
                 <p className="text-sm text-blue-800 font-medium">
-                  Información sobre los costos base
+                  {labels.sections.info.title}
                 </p>
                 <p className="text-xs text-blue-700 mt-1">
-                  Estos son los precios base para cada tipo de servicio. Los costos finales pueden variar según las condiciones específicas del servicio.
+                  {labels.sections.info.description}
                 </p>
               </div>
             </div>
@@ -184,18 +187,18 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
 
           {/* Resumen de configuración actual */}
           <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3">Resumen de Configuración</h4>
+            <h4 className="text-sm font-semibold text-gray-700 mb-3">{labels.sections.summary.title}</h4>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-gray-600">Total de servicios configurados:</p>
+                <p className="text-gray-600">{labels.sections.summary.totalServices}</p>
                 <p className="font-semibold text-gray-900">
-                  {Object.keys(formData.costosBase).length} servicios
+                  {labels.sections.summary.servicesCount.replace('{count}', Object.keys(formData.costosBase).length)}
                 </p>
               </div>
               <div>
-                <p className="text-gray-600">Servicio más costoso:</p>
+                <p className="text-gray-600">{labels.sections.summary.mostExpensive}</p>
                 <p className="font-semibold text-gray-900">
-                  S/ {Math.max(...Object.values(formData.costosBase)).toFixed(2)}
+                  {labels.sections.summary.currency} {Math.max(...Object.values(formData.costosBase)).toFixed(2)}
                 </p>
               </div>
             </div>
@@ -208,13 +211,13 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
             onClick={handleCancel}
             className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors"
           >
-            Cancelar
+            {labels.buttons.cancel}
           </button>
           <button
             onClick={handleSave}
             className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
           >
-            Guardar Configuración
+            {labels.buttons.save}
           </button>
         </div>
       </div>

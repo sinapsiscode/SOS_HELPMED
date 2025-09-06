@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Tarjeta de emergencia individual para vista grid
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.emergency.emergencyCard.comments.title}
+ * ${LABELS.admin.emergency.emergencyCard.comments.approach}
  *
  * @param {Object} emergency - Datos de la emergencia
  * @param {Function} onSelect - Función para seleccionar emergencia
@@ -30,28 +31,30 @@ const EmergencyCard = ({
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
+  const labels = LABELS.admin.emergency.emergencyCard
+
   if (!emergency) {
-    console.error('EmergencyCard: emergency es requerido')
+    console.error(labels.errors.emergencyRequired)
     return null
   }
 
   if (typeof onSelect !== 'function') {
-    console.error('EmergencyCard: onSelect debe ser una función')
+    console.error(labels.errors.onSelectRequired)
     return null
   }
 
   if (typeof getPriorityCardColor !== 'function') {
-    console.error('EmergencyCard: getPriorityCardColor debe ser una función')
+    console.error(labels.errors.getPriorityRequired)
     return null
   }
 
   if (typeof getStatusColor !== 'function') {
-    console.error('EmergencyCard: getStatusColor debe ser una función')
+    console.error(labels.errors.getStatusRequired)
     return null
   }
 
   if (typeof getElapsedTime !== 'function') {
-    console.error('EmergencyCard: getElapsedTime debe ser una función')
+    console.error(labels.errors.getElapsedRequired)
     return null
   }
 
@@ -85,7 +88,7 @@ const EmergencyCard = ({
         <div className="flex items-center">
           <i className="fas fa-user w-4 mr-2"></i>
           <span>
-            {emergency.patient?.name}, {emergency.patient?.age} años
+            {emergency.patient?.name}, {emergency.patient?.age}{labels.patient.years}
           </span>
         </div>
         <div className="flex items-center">
@@ -94,7 +97,7 @@ const EmergencyCard = ({
         </div>
         <div className="flex items-center">
           <i className="fas fa-clock w-4 mr-2"></i>
-          <span>Hace {getElapsedTime(emergency.startTime)} min</span>
+          <span>{labels.time.elapsed.replace('{time}', getElapsedTime(emergency.startTime))}</span>
         </div>
         {emergency.assignedUnit && (
           <div className="flex items-center">
@@ -105,41 +108,41 @@ const EmergencyCard = ({
         {emergency.estimatedArrivalTime && (
           <div className="flex items-center">
             <i className="fas fa-route w-4 mr-2 text-green-600"></i>
-            <span className="text-green-700">Llegada: {emergency.estimatedArrivalTime} min</span>
+            <span className="text-green-700">{labels.time.arrival.replace('{time}', emergency.estimatedArrivalTime)}</span>
           </div>
         )}
         {emergency.waitTime && (
           <div className="flex items-center">
             <i className="fas fa-hourglass-half w-4 mr-2 text-red-600"></i>
-            <span className="text-red-700">Esperando {emergency.waitTime} min</span>
+            <span className="text-red-700">{labels.time.waiting.replace('{time}', emergency.waitTime)}</span>
           </div>
         )}
       </div>
 
       {/* Botones de acción */}
       <div className="flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
-        {!emergency.assignedUnit && emergency.status === 'PENDIENTE' && onAssignUnit && (
+        {!emergency.assignedUnit && emergency.status === labels.status.pending && onAssignUnit && (
           <button
             onClick={() => onAssignUnit(emergency)}
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 rounded text-xs"
           >
-            <i className="fas fa-ambulance mr-1"></i>Asignar
+            <i className="fas fa-ambulance mr-1"></i>{labels.buttons.assign}
           </button>
         )}
-        {emergency.assignedUnit && emergency.status !== 'COMPLETADA' && onSetArrivalTime && (
+        {emergency.assignedUnit && emergency.status !== labels.status.completed && onSetArrivalTime && (
           <button
             onClick={() => onSetArrivalTime(emergency)}
             className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-1 px-2 rounded text-xs"
           >
-            <i className="fas fa-clock mr-1"></i>Tiempo Llegada
+            <i className="fas fa-clock mr-1"></i>{labels.buttons.arrivalTime}
           </button>
         )}
-        {emergency.status !== 'COMPLETADA' && onUpdateStatus && (
+        {emergency.status !== labels.status.completed && onUpdateStatus && (
           <button
-            onClick={() => onUpdateStatus(emergency, 'COMPLETADA')}
+            onClick={() => onUpdateStatus(emergency, labels.status.completed)}
             className="flex-1 bg-green-600 hover:bg-green-700 text-white py-1 px-2 rounded text-xs"
           >
-            <i className="fas fa-check mr-1"></i>Completar
+            <i className="fas fa-check mr-1"></i>{labels.buttons.complete}
           </button>
         )}
         {onAddNote && (
@@ -147,7 +150,7 @@ const EmergencyCard = ({
             onClick={() => onAddNote(emergency)}
             className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-1 px-2 rounded text-xs"
           >
-            <i className="fas fa-note-sticky mr-1"></i>Nota
+            <i className="fas fa-note-sticky mr-1"></i>{labels.buttons.note}
           </button>
         )}
       </div>

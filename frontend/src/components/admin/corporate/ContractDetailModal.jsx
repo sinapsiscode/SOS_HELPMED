@@ -1,4 +1,6 @@
 import Swal from 'sweetalert2'
+import { LABELS } from '../../../config/labels'
+import { DATE_FORMATS } from '../../../config/constants'
 
 /**
  * Utility para mostrar detalles de contrato en modal
@@ -7,33 +9,34 @@ import Swal from 'sweetalert2'
 export const showContractDetail = (contract, onEdit) => {
   if (!contract) return
 
+  const labels = LABELS.admin.corporate.contracts.detail
   const renewalDate = new Date(contract.plan?.renewal_date)
   const startDate = new Date(contract.plan?.start_date)
   const isExpiring = renewalDate <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
 
   Swal.fire({
-    title: `Contrato: ${contract.company?.name}`,
+    title: `${labels.title}: ${contract.company?.name}`,
     html: `
       <div class="text-left space-y-4">
         <div class="bg-gray-50 p-4 rounded-lg">
-          <h4 class="font-bold text-gray-800 mb-2">Información del Contrato</h4>
+          <h4 class="font-bold text-gray-800 mb-2">${labels.sections.contractInfo}</h4>
           <div class="grid grid-cols-2 gap-2 text-sm">
-            <div><strong>ID Contrato:</strong> ${contract.plan?.contract_id || 'N/A'}</div>
-            <div><strong>Plan:</strong> ${contract.plan?.name || 'N/A'}</div>
-            <div><strong>Servicios:</strong> ${contract.plan?.contract_services || 0}</div>
-            <div><strong>Inicio:</strong> ${startDate.toLocaleDateString('es-CL')}</div>
-            <div><strong>Renovación:</strong> ${renewalDate.toLocaleDateString('es-CL')}</div>
-            <div><strong>Costo Mensual:</strong> S/ ${contract.billing?.monthly_cost?.toLocaleString() || 0}</div>
+            <div><strong>${labels.fields.contractId}:</strong> ${contract.plan?.contract_id || labels.defaults.notAvailable}</div>
+            <div><strong>${labels.fields.plan}:</strong> ${contract.plan?.name || labels.defaults.notAvailable}</div>
+            <div><strong>${labels.fields.services}:</strong> ${contract.plan?.contract_services || 0}</div>
+            <div><strong>${labels.fields.startDate}:</strong> ${startDate.toLocaleDateString(DATE_FORMATS.locale)}</div>
+            <div><strong>${labels.fields.renewalDate}:</strong> ${renewalDate.toLocaleDateString(DATE_FORMATS.locale)}</div>
+            <div><strong>${labels.fields.monthlyCost}:</strong> ${labels.defaults.currencySymbol} ${contract.billing?.monthly_cost?.toLocaleString() || 0}</div>
           </div>
         </div>
         
         <div class="bg-blue-50 p-4 rounded-lg">
-          <h4 class="font-bold text-gray-800 mb-2">Información de la Empresa</h4>
+          <h4 class="font-bold text-gray-800 mb-2">${labels.sections.companyInfo}</h4>
           <div class="text-sm space-y-1">
-            <div><strong>Empresa:</strong> ${contract.company?.name || 'N/A'}</div>
-            <div><strong>RUC:</strong> ${contract.company?.rut || 'N/A'}</div>
-            <div><strong>Industria:</strong> ${contract.company?.industry || 'N/A'}</div>
-            <div><strong>Contacto:</strong> ${contract.company?.contact_person?.name || 'N/A'}</div>
+            <div><strong>${labels.fields.company}:</strong> ${contract.company?.name || labels.defaults.notAvailable}</div>
+            <div><strong>${labels.fields.ruc}:</strong> ${contract.company?.rut || labels.defaults.notAvailable}</div>
+            <div><strong>${labels.fields.industry}:</strong> ${contract.company?.industry || labels.defaults.notAvailable}</div>
+            <div><strong>${labels.fields.contact}:</strong> ${contract.company?.contact_person?.name || labels.defaults.notAvailable}</div>
           </div>
         </div>
 
@@ -41,8 +44,8 @@ export const showContractDetail = (contract, onEdit) => {
           isExpiring
             ? `
           <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
-            <h4 class="font-bold text-red-800 mb-2">⚠️ Contrato por Vencer</h4>
-            <p class="text-red-700 text-sm">Este contrato vence el ${renewalDate.toLocaleDateString('es-CL')}. Contacte al cliente para renovación.</p>
+            <h4 class="font-bold text-red-800 mb-2">${labels.sections.expiringWarning}</h4>
+            <p class="text-red-700 text-sm">${labels.messages.contractExpiring.replace('{date}', renewalDate.toLocaleDateString(DATE_FORMATS.locale))}</p>
           </div>
         `
             : ''
@@ -52,8 +55,8 @@ export const showContractDetail = (contract, onEdit) => {
     width: 600,
     showCloseButton: true,
     showCancelButton: true,
-    confirmButtonText: 'Editar Contrato',
-    cancelButtonText: 'Cerrar',
+    confirmButtonText: labels.buttons.edit,
+    cancelButtonText: labels.buttons.close,
     confirmButtonColor: '#3B82F6'
   }).then((result) => {
     if (result.isConfirmed && onEdit) {

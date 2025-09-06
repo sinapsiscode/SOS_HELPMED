@@ -6,6 +6,7 @@ import ErrorMessage from '../../shared/ErrorMessage'
 import QuickMetrics from './QuickMetrics'
 import SystemAlerts from './SystemAlerts'
 import QuickActions from './QuickActions'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Tab de vista general con estadísticas principales del sistema
@@ -13,6 +14,7 @@ import QuickActions from './QuickActions'
  * @param {Function} onTabChange - Función para cambiar de tab (opcional)
  */
 const OverviewTab = ({ onTabChange }) => {
+  const labels = LABELS.admin.dashboard.overviewTab
   const { stats, loading, error, refreshStats } = useAdminStats()
 
   if (loading) return <LoadingSkeleton />
@@ -20,31 +22,31 @@ const OverviewTab = ({ onTabChange }) => {
 
   const statsConfig = [
     {
-      title: 'Usuarios Totales',
+      title: labels.stats.totalUsers.title,
       value: stats.totalUsers,
-      subtitle: `${stats.activeUsers} activos`,
-      icon: '👥',
+      subtitle: labels.stats.totalUsers.subtitle.replace('{count}', stats.activeUsers),
+      icon: labels.stats.totalUsers.icon,
       color: 'blue'
     },
     {
-      title: 'Emergencias',
+      title: labels.stats.emergencies.title,
       value: stats.totalEmergencies,
-      subtitle: `${stats.pendingEmergencies} pendientes`,
-      icon: '⚠️',
+      subtitle: labels.stats.emergencies.subtitle.replace('{count}', stats.pendingEmergencies),
+      icon: labels.stats.emergencies.icon,
       color: 'red'
     },
     {
-      title: 'Contratos',
+      title: labels.stats.contracts.title,
       value: stats.totalContracts,
-      subtitle: `${stats.activeContracts} activos`,
-      icon: '🏢',
+      subtitle: labels.stats.contracts.subtitle.replace('{count}', stats.activeContracts),
+      icon: labels.stats.contracts.icon,
       color: 'green'
     },
     {
-      title: 'Unidades',
+      title: labels.stats.units.title,
       value: stats.totalUnits,
-      subtitle: `${stats.availableUnits} disponibles`,
-      icon: '🚛',
+      subtitle: labels.stats.units.subtitle.replace('{count}', stats.availableUnits),
+      icon: labels.stats.units.icon,
       color: 'purple'
     }
   ]
@@ -52,12 +54,12 @@ const OverviewTab = ({ onTabChange }) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Vista General</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{labels.title}</h2>
         <button
           onClick={refreshStats}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Actualizar
+          {labels.buttons.refresh}
         </button>
       </div>
 
@@ -66,29 +68,17 @@ const OverviewTab = ({ onTabChange }) => {
       {/* Métricas y Actividad Reciente */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold mb-4">Actividad Reciente</h3>
+          <h3 className="text-lg font-semibold mb-4">{labels.recentActivity.title}</h3>
           <div className="space-y-3">
-            <div className="flex items-center p-3 bg-gray-50 rounded">
-              <span className="mr-3">🚨</span>
-              <div>
-                <p className="text-sm font-medium">Nueva emergencia registrada</p>
-                <p className="text-xs text-gray-500">Hace 5 minutos</p>
+            {labels.recentActivity.items.map((item, index) => (
+              <div key={index} className="flex items-center p-3 bg-gray-50 rounded">
+                <span className="mr-3">{item.icon}</span>
+                <div>
+                  <p className="text-sm font-medium">{item.title}</p>
+                  <p className="text-xs text-gray-500">{item.time}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center p-3 bg-gray-50 rounded">
-              <span className="mr-3">👤</span>
-              <div>
-                <p className="text-sm font-medium">Usuario registrado</p>
-                <p className="text-xs text-gray-500">Hace 12 minutos</p>
-              </div>
-            </div>
-            <div className="flex items-center p-3 bg-gray-50 rounded">
-              <span className="mr-3">📝</span>
-              <div>
-                <p className="text-sm font-medium">Contrato actualizado</p>
-                <p className="text-xs text-gray-500">Hace 1 hora</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
 

@@ -9,6 +9,7 @@ import {
   AFFILIATE_STATUSES,
   RELATIONSHIP_LABELS
 } from '../constants/affiliateConstants'
+import { LABELS } from '../config/labels'
 
 /**
  * Calcula la edad basada en la fecha de nacimiento
@@ -53,10 +54,10 @@ export const formatAge = (birthDate) => {
   const age = calculateAge(birthDate)
 
   if (age === null) {
-    return 'No especificada'
+    return LABELS.admin.affiliates.card.notSpecifiedFemale
   }
 
-  return `${age} años`
+  return `${age} ${LABELS.admin.affiliates.card.years}`
 }
 
 /**
@@ -66,7 +67,7 @@ export const formatAge = (birthDate) => {
  * @returns {string} Texto formateado de la relación
  */
 export const getRelationshipText = (relationship) => {
-  return RELATIONSHIP_LABELS[relationship] || 'No especificado'
+  return RELATIONSHIP_LABELS[relationship] || LABELS.admin.affiliates.card.notSpecified
 }
 
 /**
@@ -97,13 +98,13 @@ export const getStatusText = (status) => {
  * @returns {string} Fecha formateada
  */
 export const formatDate = (date, options = {}) => {
-  if (!date) return 'No especificada'
+  if (!date) return LABELS.admin.affiliates.card.notSpecifiedFemale
 
   try {
     const dateObj = date instanceof Date ? date : new Date(date)
 
     if (isNaN(dateObj.getTime())) {
-      return 'Fecha inválida'
+      return LABELS.admin.affiliates.card.invalidDate
     }
 
     return dateObj.toLocaleDateString('es-CL', {
@@ -113,7 +114,7 @@ export const formatDate = (date, options = {}) => {
       ...options
     })
   } catch (error) {
-    return 'Fecha inválida'
+    return LABELS.admin.affiliates.card.invalidDate
   }
 }
 
@@ -130,7 +131,7 @@ export const validateAffiliateActivation = (affiliate, maxAffiliates, currentAct
   if (affiliate.status === AFFILIATE_STATUSES.ACTIVE) {
     return {
       canActivate: false,
-      reason: 'El afiliado ya está activo'
+      reason: LABELS.admin.affiliates.messages.alreadyActive
     }
   }
 
@@ -138,7 +139,7 @@ export const validateAffiliateActivation = (affiliate, maxAffiliates, currentAct
   if (currentActiveCount >= maxAffiliates) {
     return {
       canActivate: false,
-      reason: `Has alcanzado el límite de ${maxAffiliates} afiliados activos`
+      reason: LABELS.admin.affiliates.messages.limitReached
     }
   }
 
@@ -146,7 +147,7 @@ export const validateAffiliateActivation = (affiliate, maxAffiliates, currentAct
   if (!affiliate.dni || !affiliate.name) {
     return {
       canActivate: false,
-      reason: 'El afiliado debe tener datos completos (nombre y DNI)'
+      reason: LABELS.admin.affiliates.messages.incompleteData
     }
   }
 

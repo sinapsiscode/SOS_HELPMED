@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para mostrar estadísticas de solicitudes de registro
- * Siguiendo Regla #3: Componente pequeño y enfocado (<50 líneas)
- * Siguiendo Regla #2: Solo presentación, sin lógica compleja
+ * ${LABELS.admin.registration.requestStats.comments.title}
+ * ${LABELS.admin.registration.requestStats.comments.rules.rule3}
+ * ${LABELS.admin.registration.requestStats.comments.rules.rule2}
  *
  * @param {Object} props - Propiedades del componente
  * @param {Object} props.requestStats - Estadísticas calculadas de solicitudes
@@ -14,6 +15,7 @@ import React from 'react'
  * @returns {JSX.Element} Grid de estadísticas
  */
 const RequestStats = ({ requestStats }) => {
+  const labels = LABELS.admin.registration.requestStats
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
       {/* Pendientes */}
@@ -21,7 +23,7 @@ const RequestStats = ({ requestStats }) => {
         <div className="text-xl sm:text-2xl font-bold text-yellow-600 font-exo">
           {requestStats.pending}
         </div>
-        <div className="text-xs sm:text-sm text-yellow-700 font-roboto">Pendientes</div>
+        <div className="text-xs sm:text-sm text-yellow-700 font-roboto">{labels.stats.pending}</div>
       </div>
 
       {/* Aprobadas */}
@@ -29,7 +31,7 @@ const RequestStats = ({ requestStats }) => {
         <div className="text-xl sm:text-2xl font-bold text-green-600 font-exo">
           {requestStats.approved}
         </div>
-        <div className="text-xs sm:text-sm text-green-700 font-roboto">Aprobadas</div>
+        <div className="text-xs sm:text-sm text-green-700 font-roboto">{labels.stats.approved}</div>
       </div>
 
       {/* Rechazadas */}
@@ -37,7 +39,7 @@ const RequestStats = ({ requestStats }) => {
         <div className="text-xl sm:text-2xl font-bold text-red-600 font-exo">
           {requestStats.rejected}
         </div>
-        <div className="text-xs sm:text-sm text-red-700 font-roboto">Rechazadas</div>
+        <div className="text-xs sm:text-sm text-red-700 font-roboto">{labels.stats.rejected}</div>
       </div>
 
       {/* Total */}
@@ -45,7 +47,7 @@ const RequestStats = ({ requestStats }) => {
         <div className="text-xl sm:text-2xl font-bold text-blue-600 font-exo">
           {requestStats.total}
         </div>
-        <div className="text-xs sm:text-sm text-blue-700 font-roboto">Total</div>
+        <div className="text-xs sm:text-sm text-blue-700 font-roboto">{labels.stats.total}</div>
       </div>
     </div>
   )

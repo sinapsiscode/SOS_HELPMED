@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para mostrar solicitudes de registro pendientes
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, datos del hook
+ * ${LABELS.admin.user.registrationRequestCard.comments.title}
+ * ${LABELS.admin.user.registrationRequestCard.comments.rule3}
+ * ${LABELS.admin.user.registrationRequestCard.comments.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object} props.request - Solicitud de registro
@@ -12,23 +13,25 @@ import React from 'react'
  * @returns {JSX.Element} Tarjeta de solicitud de registro
  */
 const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
+  const labels = LABELS.admin.user.registrationRequestCard
+  
   const getStatusBadge = (status) => {
     switch (status) {
       case 'pending':
         return (
           <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">
-            Pendiente
+            {labels.status.pending}
           </span>
         )
       case 'approved':
         return (
           <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-            Aprobada
+            {labels.status.approved}
           </span>
         )
       case 'rejected':
         return (
-          <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Rechazada</span>
+          <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">{labels.status.rejected}</span>
         )
       default:
         return null
@@ -56,7 +59,7 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
             {getStatusBadge(request.status)}
             {request.planType === 'externo' && (
               <span className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">
-                Cliente Externo
+                {labels.badges.externalClient}
               </span>
             )}
           </div>
@@ -73,7 +76,7 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
               </p>
               <p className="text-sm text-gray-600">
                 <i className="fas fa-id-card mr-2"></i>
-                DNI: {request.dni}
+                {labels.fields.dni.replace('{dni}', request.dni)}
               </p>
             </div>
 
@@ -84,13 +87,13 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
               </p>
               <p className="text-sm text-gray-600">
                 <i className="fas fa-calendar-alt mr-2"></i>
-                Solicitud: {formatDate(request.requestDate)}
+                {labels.fields.request.replace('{date}', formatDate(request.requestDate))}
               </p>
               {request.planType === 'externo' && (
                 <>
                   <p className="text-sm text-gray-600">
                     <i className="fas fa-building mr-2"></i>
-                    Entidad:{' '}
+                    {labels.fields.entity}{' '}
                     <strong>
                       {request.externalEntity === 'other'
                         ? request.externalEntityOther
@@ -100,7 +103,7 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
                   {request.employeeId && (
                     <p className="text-sm text-gray-600">
                       <i className="fas fa-badge-check mr-2"></i>
-                      Código: {request.employeeId}
+                      {labels.fields.code.replace('{code}', request.employeeId)}
                     </p>
                   )}
                 </>
@@ -109,31 +112,31 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
           </div>
 
           <div className="bg-gray-50 rounded-lg p-3 mb-4">
-            <p className="text-sm font-medium text-gray-700 mb-1">Plan Solicitado:</p>
+            <p className="text-sm font-medium text-gray-700 mb-1">{labels.sections.requestedPlan}</p>
             <p className="text-sm text-gray-600">
               {request.planType === 'externo'
-                ? `Cliente Externo - ${request.planSubtype === 'caso1' ? 'Sin límites' : 'Con límites'}`
-                : `${request.planType} - ${request.planSubtype}`}
+                ? (request.planSubtype === 'caso1' ? labels.plans.externalNoLimits : labels.plans.externalWithLimits)
+                : labels.plans.format.replace('{planType}', request.planType).replace('{planSubtype}', request.planSubtype)}
             </p>
           </div>
 
           {request.medicalConditions && (
             <div className="bg-blue-50 rounded-lg p-3 mb-4">
-              <p className="text-sm font-medium text-blue-700 mb-1">Condiciones Médicas:</p>
+              <p className="text-sm font-medium text-blue-700 mb-1">{labels.sections.medicalConditions}</p>
               <p className="text-sm text-blue-600">{request.medicalConditions}</p>
             </div>
           )}
 
           {request.comments && (
             <div className="bg-gray-50 rounded-lg p-3 mb-4">
-              <p className="text-sm font-medium text-gray-700 mb-1">Comentarios:</p>
+              <p className="text-sm font-medium text-gray-700 mb-1">{labels.sections.comments}</p>
               <p className="text-sm text-gray-600">{request.comments}</p>
             </div>
           )}
 
           {request.status === 'rejected' && request.rejectionReason && (
             <div className="bg-red-50 rounded-lg p-3">
-              <p className="text-sm font-medium text-red-700 mb-1">Motivo de rechazo:</p>
+              <p className="text-sm font-medium text-red-700 mb-1">{labels.sections.rejectionReason}</p>
               <p className="text-sm text-red-600">{request.rejectionReason}</p>
             </div>
           )}
@@ -146,14 +149,14 @@ const RegistrationRequestCard = ({ request, onApprove, onReject }) => {
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
             >
               <i className="fas fa-check mr-2"></i>
-              Aprobar
+              {labels.buttons.approve}
             </button>
             <button
               onClick={onReject}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
             >
               <i className="fas fa-times mr-2"></i>
-              Rechazar
+              {labels.buttons.reject}
             </button>
           </div>
         )}

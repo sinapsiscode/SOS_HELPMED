@@ -6,6 +6,7 @@ import { MapController, MapLegend, MapStats, MapInstructions, AssignmentControls
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
 import { MOCK_PENDING_EMERGENCIES } from '../../mocks/emergencyData'
+import { LABELS } from '../../config/labels'
 import 'leaflet/dist/leaflet.css'
 
 // Fix for default markers in react-leaflet
@@ -17,50 +18,52 @@ L.Icon.Default.mergeOptions({
 })
 
 /**
- * Componente principal del mapa de asignaciones de emergencias médicas
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.assignmentMap.comments.title}
+ * ${LABELS.admin.assignmentMap.comments.approach}
  *
- * Funcionalidades:
- * - Visualización de emergencias pendientes en mapa interactivo
- * - Gestión de unidades médicas disponibles y ocupadas
- * - Asignación de unidades a emergencias mediante interfaz visual
- * - Establecimiento de tiempos estimados de llegada
- * - Estadísticas en tiempo real y controles de selección
+ * ${LABELS.admin.assignmentMap.comments.features.title}
+ * ${LABELS.admin.assignmentMap.comments.features.visualization}
+ * ${LABELS.admin.assignmentMap.comments.features.management}
+ * ${LABELS.admin.assignmentMap.comments.features.assignment}
+ * ${LABELS.admin.assignmentMap.comments.features.eta}
+ * ${LABELS.admin.assignmentMap.comments.features.stats}
  *
- * Arquitectura modular:
- * - AssignmentControls: Panel de control de asignaciones
- * - EmergencyMarkers: Marcadores de emergencias en el mapa
- * - UnitMarkers: Marcadores de unidades médicas
- * - MapLegend/Stats/Instructions: Componentes informativos del sidebar
+ * ${LABELS.admin.assignmentMap.comments.architecture.title}
+ * ${LABELS.admin.assignmentMap.comments.architecture.controls}
+ * ${LABELS.admin.assignmentMap.comments.architecture.emergencyMarkers}
+ * ${LABELS.admin.assignmentMap.comments.architecture.unitMarkers}
+ * ${LABELS.admin.assignmentMap.comments.architecture.sidebar}
  *
  * @returns {JSX.Element} Componente de mapa de asignaciones
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <AssignmentMap />
+ * ${LABELS.admin.assignmentMap.comments.example.title}
+ * ${LABELS.admin.assignmentMap.comments.example.usage}
+ * ${LABELS.admin.assignmentMap.comments.example.component}
  *
- * @see {@link useAssignmentMap} Hook que maneja toda la lógica de negocio
- * @see {@link MOCK_PENDING_EMERGENCIES} Datos mock de emergencias
+ * ${LABELS.admin.assignmentMap.comments.see.hook}
+ * ${LABELS.admin.assignmentMap.comments.see.mockData}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (146 líneas)
- * - Regla #4: Validación de props y datos
- * - Regla #5: Lógica compleja en hook personalizado
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.assignmentMap.comments.rules.title}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule3}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule4}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule5}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule6}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule8}
+ * ${LABELS.admin.assignmentMap.comments.rules.rule12}
  */
 const AssignmentMap = () => {
+  const labels = LABELS.admin.assignmentMap
+  
   // ============================================
-  // VALIDACIÓN INICIAL (Regla #4)
+  // ${LABELS.admin.assignmentMap.comments.validation}
   // ============================================
   if (!MOCK_PENDING_EMERGENCIES) {
-    console.error('AssignmentMap: MOCK_PENDING_EMERGENCIES requerido')
-    return <ErrorMessage message="Error: Datos de emergencias no disponibles" />
+    console.error(labels.errors.dataRequired)
+    return <ErrorMessage message={labels.errors.dataNotAvailable} />
   }
 
   // ============================================
-  // HOOK - Toda la lógica compleja
+  // ${LABELS.admin.assignmentMap.comments.businessLogic}
   // ============================================
   const {
     selectedEmergency,
@@ -83,12 +86,12 @@ const AssignmentMap = () => {
   } = useAssignmentMap()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.assignmentMap.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en mapa de asignaciones: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.mapError.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -120,7 +123,7 @@ const AssignmentMap = () => {
                 zoomControl={true}
               >
                 <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  attribution={labels.map.attribution}
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
 

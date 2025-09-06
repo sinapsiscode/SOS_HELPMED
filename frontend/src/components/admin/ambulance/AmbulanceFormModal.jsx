@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { LABELS } from '../../../config/labels'
+import { AMBULANCE_TYPES, MEDICAL_TEAM_TYPES, AMBULANCE_DEFAULTS } from '../../../config/constants'
+import { MODAL_STYLES, FORM_STYLES } from '../../../config/styles'
 
 /**
  * Modal de formulario para crear/editar ambulancia
@@ -21,20 +24,23 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
     console.error('AmbulanceFormModal: onSave debe ser una función')
     return null
   }
+  
+  const labels = LABELS.admin.ambulance.form
+  
   const [formData, setFormData] = useState({
     // Credenciales de acceso
     username: ambulance?.username || '',
-    password: ambulance ? '' : 'temp123',
+    password: ambulance ? '' : AMBULANCE_DEFAULTS.PASSWORD,
 
     // Datos de la ambulancia
     unit_id: ambulance?.ambulance?.unit_id || '',
-    type: ambulance?.ambulance?.type || 'Ambulancia',
+    type: ambulance?.ambulance?.type || AMBULANCE_DEFAULTS.TYPE,
     plate: ambulance?.ambulance?.plate || '',
-    capacity: ambulance?.ambulance?.capacity || 2,
-    medical_team: ambulance?.ambulance?.medical_team || 'tecnico_enfermeria',
+    capacity: ambulance?.ambulance?.capacity || AMBULANCE_DEFAULTS.CAPACITY,
+    medical_team: ambulance?.ambulance?.medical_team || AMBULANCE_DEFAULTS.MEDICAL_TEAM,
 
     // Estado
-    status: ambulance?.status || 'active'
+    status: ambulance?.status || AMBULANCE_DEFAULTS.STATUS
   })
   
   // Estado para mostrar/ocultar contraseña
@@ -53,22 +59,22 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
 
     // Validación básica de campos requeridos (Regla #4)
     if (!formData.username.trim()) {
-      alert('El usuario es requerido')
+      alert(labels.validation.userRequired)
       return
     }
 
     if (!formData.unit_id.trim()) {
-      alert('El ID de unidad es requerido')
+      alert(labels.validation.unitIdRequired)
       return
     }
 
     if (!formData.plate.trim()) {
-      alert('La placa es requerida')
+      alert(labels.validation.plateRequired)
       return
     }
 
     if (!ambulance && !formData.password.trim()) {
-      alert('La contraseña es requerida para nuevas unidades')
+      alert(labels.validation.passwordRequired)
       return
     }
 
@@ -76,21 +82,21 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
     try {
       const result = await onSave(formData)
       if (!result.success) {
-        alert(`Error: ${result.error}`)
+        alert(`${LABELS.messages.error}: ${result.error}`)
       }
     } catch (error) {
-      alert(`Error inesperado: ${error.message}`)
+      alert(`${labels.errors.unexpectedError}: ${error.message}`)
     }
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className={MODAL_STYLES.overlay}>
       <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-screen overflow-y-auto">
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h3 className="text-xl font-exo font-bold text-gray-800">
-            {ambulance ? 'Editar Unidad' : 'Nueva Unidad'}
+            {ambulance ? labels.title.edit : labels.title.new}
           </h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+          <button onClick={onClose} className={MODAL_STYLES.header.closeButton}>
             <i className="fas fa-times text-xl"></i>
           </button>
         </div>
@@ -98,24 +104,24 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* Datos de Login */}
           <div className="bg-blue-50 rounded-lg p-4">
-            <h4 className="font-exo font-semibold text-gray-800 mb-4">Credenciales de Acceso</h4>
+            <h4 className="font-exo font-semibold text-gray-800 mb-4">{labels.sections.credentials}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Usuario *
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.username} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <input
                   type="text"
                   name="username"
                   value={formData.username}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  className={FORM_STYLES.input.base + ' ' + FORM_STYLES.input.normal}
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  {ambulance ? 'Nueva Contraseña (opcional)' : 'Contraseña *'}
+                <label className={FORM_STYLES.label.base}>
+                  {ambulance ? labels.fields.passwordOptional : `${labels.fields.password} ${LABELS.forms.fields.requiredIndicator}`}
                 </label>
                 <div className="relative">
                   <input
@@ -123,7 +129,7 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                    className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal} pr-10`}
                     required={!ambulance}
                   />
                   <button
@@ -141,54 +147,54 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
 
           {/* Datos de la Ambulancia */}
           <div className="bg-green-50 rounded-lg p-4">
-            <h4 className="font-exo font-semibold text-gray-800 mb-4">Datos de la Ambulancia</h4>
+            <h4 className="font-exo font-semibold text-gray-800 mb-4">{labels.sections.ambulanceData}</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  ID de Unidad *
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.unitId} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <input
                   type="text"
                   name="unit_id"
                   value={formData.unit_id}
                   onChange={handleInputChange}
-                  placeholder="AMB-001"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  placeholder={labels.placeholders.unitId}
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Placa *
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.plate} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <input
                   type="text"
                   name="plate"
                   value={formData.plate}
                   onChange={handleInputChange}
-                  placeholder="ABC-123"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  placeholder={labels.placeholders.plate}
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Tipo
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.type}
                 </label>
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                 >
-                  <option value="Ambulancia">Ambulancia</option>
-                  <option value="Médico motorizado">Médico motorizado</option>
-                  <option value="Médico en auto">Médico en auto</option>
+                  <option value={AMBULANCE_TYPES.AMBULANCE}>{labels.options.type.ambulance}</option>
+                  <option value={AMBULANCE_TYPES.MOTORIZED_DOCTOR}>{labels.options.type.motorizedDoctor}</option>
+                  <option value={AMBULANCE_TYPES.CAR_DOCTOR}>{labels.options.type.carDoctor}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Capacidad (personas)
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.capacity}
                 </label>
                 <input
                   type="number"
@@ -197,57 +203,57 @@ const AmbulanceFormModal = ({ ambulance, onClose, onSave }) => {
                   onChange={handleInputChange}
                   min="1"
                   max="10"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                 />
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Equipo Médico *
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.medicalTeam} {LABELS.forms.fields.requiredIndicator}
                 </label>
                 <select
                   name="medical_team"
                   value={formData.medical_team}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                   required
                 >
-                  <option value="tecnico_enfermeria">Técnico en Enfermería</option>
-                  <option value="licenciado_enfermeria">Licenciado en Enfermería</option>
-                  <option value="ambos">Técnico y Licenciado</option>
+                  <option value={MEDICAL_TEAM_TYPES.NURSING_TECH}>{labels.options.medicalTeam.nursingTech}</option>
+                  <option value={MEDICAL_TEAM_TYPES.NURSING_LICENSE}>{labels.options.medicalTeam.nursingLicense}</option>
+                  <option value={MEDICAL_TEAM_TYPES.BOTH}>{labels.options.medicalTeam.both}</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-exo font-medium text-gray-700 mb-2">
-                  Estado
+                <label className={FORM_STYLES.label.base}>
+                  {labels.fields.status}
                 </label>
                 <select
                   name="status"
                   value={formData.status}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
+                  className={`${FORM_STYLES.input.base} ${FORM_STYLES.input.normal}`}
                 >
-                  <option value="active">Activa</option>
-                  <option value="inactive">Inactiva</option>
-                  <option value="maintenance">Mantenimiento</option>
+                  <option value="active">{labels.options.status.active}</option>
+                  <option value="inactive">{labels.options.status.inactive}</option>
+                  <option value="maintenance">{labels.options.status.maintenance}</option>
                 </select>
               </div>
             </div>
           </div>
 
           {/* Botones */}
-          <div className="flex space-x-4 pt-4 border-t border-gray-200">
+          <div className={FORM_STYLES.container.formButtons}>
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-exo font-medium hover:bg-gray-50 transition-colors"
+              className={FORM_STYLES.button.secondary}
             >
-              Cancelar
+              {LABELS.buttons.cancel}
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-2 bg-helpmed-blue hover:bg-primary-blue text-white rounded-lg font-exo font-medium transition-colors"
+              className={FORM_STYLES.button.primary}
             >
-              {ambulance ? 'Actualizar' : 'Crear'} Unidad
+              {ambulance ? labels.buttons.update : labels.buttons.create} {labels.buttons.unit}
             </button>
           </div>
         </form>

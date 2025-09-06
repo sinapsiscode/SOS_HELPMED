@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para mostrar estadísticas rápidas de planes
- * Siguiendo Regla #3: Componente pequeño y enfocado (<50 líneas)
- * Siguiendo Regla #2: Solo presentación, sin lógica compleja
+ * ${LABELS.admin.planconfig.planStatCard.comments.title}
+ * ${LABELS.admin.planconfig.planStatCard.comments.rules.rule3}
+ * ${LABELS.admin.planconfig.planStatCard.comments.rules.rule2}
  *
  * @param {Object} props - Propiedades del componente
  * @param {string} props.title - Título de la estadística

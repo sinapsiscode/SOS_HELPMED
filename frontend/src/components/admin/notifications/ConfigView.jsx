@@ -4,10 +4,11 @@ import {
   ALERT_SETTINGS,
   CONFIG_VALIDATION
 } from '../../../mocks/notificationData'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Vista de configuración del sistema de notificaciones
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.notifications.configView.comments.title}
+ * ${LABELS.admin.notifications.configView.comments.approach}
  *
  * @param {Object} notificationConfig - Configuración actual de notificaciones
  * @param {Function} onUpdateConfig - Función para actualizar configuración
@@ -23,31 +24,33 @@ const ConfigView = ({
   onResetConfig,
   isLoading
 }) => {
+  const labels = LABELS.admin.notifications.configView
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!notificationConfig || typeof notificationConfig !== 'object') {
-    console.error('ConfigView: notificationConfig es requerido y debe ser un objeto')
+    console.error(labels.errors.notificationConfigObject)
     return null
   }
 
   if (typeof onUpdateConfig !== 'function') {
-    console.error('ConfigView: onUpdateConfig debe ser una función')
+    console.error(labels.errors.onUpdateConfigFunction)
     return null
   }
 
   if (typeof onSaveConfig !== 'function') {
-    console.error('ConfigView: onSaveConfig debe ser una función')
+    console.error(labels.errors.onSaveConfigFunction)
     return null
   }
 
   if (typeof onResetConfig !== 'function') {
-    console.error('ConfigView: onResetConfig debe ser una función')
+    console.error(labels.errors.onResetConfigFunction)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('ConfigView: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingBoolean)
     return null
   }
 
@@ -59,11 +62,10 @@ const ConfigView = ({
           <div className="flex items-start">
             <i className="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
             <div>
-              <p className="text-sm text-blue-800 font-medium">Configuración de Umbrales</p>
+              <p className="text-sm text-blue-800 font-medium">{labels.info.title}</p>
               <p className="text-xs text-blue-700 mt-1">
-                Los umbrales de alertas (servicios bajos, vencimiento de contratos, etc.) se
-                configuran en la sección
-                <span className="font-semibold"> Administrador → Configuración</span>
+                {labels.info.description}
+                <span className="font-semibold">{labels.info.section}</span>
               </p>
             </div>
           </div>
@@ -72,12 +74,12 @@ const ConfigView = ({
         {/* Comportamiento de Popups - Responsive */}
         <div>
           <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">
-            Comportamiento de Popups de Emergencia
+            {labels.popupBehavior.title}
           </h3>
           <div className="space-y-3">
             <label className="flex items-start sm:items-center justify-between gap-2">
               <span className="text-xs sm:text-sm text-gray-700 flex-1">
-                Mostrar popup automático para nuevas emergencias
+                {labels.popupBehavior.autoShow}
               </span>
               <input
                 type="checkbox"
@@ -90,7 +92,7 @@ const ConfigView = ({
 
             <div className="flex items-center justify-between gap-2">
               <span className="text-xs sm:text-sm text-gray-700 flex-1">
-                Duración del popup (segundos)
+                {labels.popupBehavior.duration}
               </span>
               <input
                 type="number"
@@ -105,7 +107,7 @@ const ConfigView = ({
 
             <label className="flex items-center justify-between">
               <span className="text-sm text-gray-700">
-                Nunca cerrar automáticamente emergencias SOS
+                {labels.popupBehavior.sosNeverClose}
               </span>
               <input
                 type="checkbox"
@@ -117,7 +119,7 @@ const ConfigView = ({
             </label>
 
             <label className="flex items-center justify-between">
-              <span className="text-sm text-gray-700">Reproducir sonido al recibir emergencia</span>
+              <span className="text-sm text-gray-700">{labels.popupBehavior.playSound}</span>
               <input
                 type="checkbox"
                 checked={notificationConfig.playSound}
@@ -131,7 +133,7 @@ const ConfigView = ({
 
         {/* Tipos de Alertas */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Tipos de Alertas Activas</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.alertTypes.title}</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {ALERT_SETTINGS.map((setting) => (
               <label key={setting.key} className="flex items-center justify-between">
@@ -150,7 +152,7 @@ const ConfigView = ({
 
         {/* Modo de Notificación */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">Modo de Notificación</h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.notificationMode.title}</h3>
           <div className="space-y-2">
             {NOTIFICATION_MODES.map((mode) => (
               <label
@@ -183,7 +185,7 @@ const ConfigView = ({
             className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50"
           >
             <i className="fas fa-undo mr-2"></i>
-            Restablecer valores por defecto
+            {labels.buttons.reset}
           </button>
           <button
             onClick={onSaveConfig}
@@ -193,12 +195,12 @@ const ConfigView = ({
             {isLoading ? (
               <>
                 <i className="fas fa-spinner fa-spin"></i>
-                <span>Guardando...</span>
+                <span>{labels.buttons.saving}</span>
               </>
             ) : (
               <>
                 <i className="fas fa-save"></i>
-                <span>Guardar Configuración</span>
+                <span>{labels.buttons.save}</span>
               </>
             )}
           </button>

@@ -1,17 +1,20 @@
 import { useMapEvents } from 'react-leaflet'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Controlador para eventos del mapa
- * ENFOQUE BALANCEADO: Solo manejo de eventos simples
+ * ${LABELS.admin.map.mapController.comments.title}
+ * ${LABELS.admin.map.mapController.comments.approach}
  *
  * @param {Function} onMapClick - Callback para clicks en el mapa
  */
 const MapController = ({ onMapClick }) => {
+  const labels = LABELS.admin.map.mapController
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof onMapClick !== 'function') {
-    console.error('MapController: onMapClick debe ser una función')
+    console.error(labels.errors.onMapClickFunction)
     return null
   }
 

@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Header de la gestión de entidades externas
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.external.entityHeader.comments.title}
+ * ${LABELS.admin.external.entityHeader.comments.approach}
  *
  * @param {Object} stats - Estadísticas de entidades
  * @param {Function} onOpenAddEntity - Función para abrir modal de nueva entidad
@@ -10,21 +11,23 @@ import React from 'react'
  * @returns {JSX.Element} Header con estadísticas y botones de acción
  */
 const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
+  const labels = LABELS.admin.external.entityHeader
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!stats || typeof stats !== 'object') {
-    console.error('EntityHeader: stats es requerido y debe ser un objeto')
+    console.error(labels.errors.statsRequired)
     return null
   }
 
   if (typeof onOpenAddEntity !== 'function') {
-    console.error('EntityHeader: onOpenAddEntity debe ser una función')
+    console.error(labels.errors.onOpenAddEntityRequired)
     return null
   }
 
   if (typeof onOpenAddAdmin !== 'function') {
-    console.error('EntityHeader: onOpenAddAdmin debe ser una función')
+    console.error(labels.errors.onOpenAddAdminRequired)
     return null
   }
 
@@ -34,10 +37,10 @@ const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
       <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 mb-4 sm:mb-6">
         <div className="min-w-0">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-            Gestión de Entidades Externas
+            {labels.title}
           </h2>
           <p className="text-sm sm:text-base text-gray-600 mt-1">
-            Configura las entidades de donde pueden venir los afiliados externos
+            {labels.subtitle}
           </p>
         </div>
 
@@ -48,16 +51,16 @@ const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 sm:py-2.5 rounded-lg transition-colors flex items-center justify-center space-x-2 text-sm font-medium"
           >
             <i className="fas fa-plus"></i>
-            <span className="hidden sm:inline">Nueva Entidad</span>
-            <span className="sm:hidden">Agregar Entidad</span>
+            <span className="hidden sm:inline">{labels.buttons.newEntity.full}</span>
+            <span className="sm:hidden">{labels.buttons.newEntity.short}</span>
           </button>
           <button
             onClick={onOpenAddAdmin}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 sm:py-2.5 rounded-lg transition-colors flex items-center justify-center space-x-2 text-sm font-medium"
           >
             <i className="fas fa-user-shield"></i>
-            <span className="hidden sm:inline">Crear Admin Externo</span>
-            <span className="sm:hidden">Crear Admin</span>
+            <span className="hidden sm:inline">{labels.buttons.createAdmin.full}</span>
+            <span className="sm:hidden">{labels.buttons.createAdmin.short}</span>
           </button>
         </div>
       </div>
@@ -68,13 +71,13 @@ const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm text-blue-600 font-medium leading-tight">
-                Total Entidades
+                {labels.stats.totalEntities.label}
               </p>
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-800">
                 {stats.total}
               </p>
             </div>
-            <i className="fas fa-building text-blue-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2"></i>
+            <i className={`${labels.stats.totalEntities.icon} text-blue-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2`}></i>
           </div>
         </div>
 
@@ -82,13 +85,13 @@ const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm text-green-600 font-medium leading-tight">
-                Ent. Activas
+                {labels.stats.activeEntities.label}
               </p>
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-800">
                 {stats.active}
               </p>
             </div>
-            <i className="fas fa-check-circle text-green-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2"></i>
+            <i className={`${labels.stats.activeEntities.icon} text-green-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2`}></i>
           </div>
         </div>
 
@@ -96,25 +99,25 @@ const EntityHeader = ({ stats, onOpenAddEntity, onOpenAddAdmin }) => {
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
               <p className="text-xs sm:text-sm text-purple-600 font-medium leading-tight">
-                Usuarios
+                {labels.stats.users.label}
               </p>
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-800">
                 {stats.totalUsers}
               </p>
             </div>
-            <i className="fas fa-users text-purple-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2"></i>
+            <i className={`${labels.stats.users.icon} text-purple-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2`}></i>
           </div>
         </div>
 
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-3 sm:p-4">
           <div className="flex items-center justify-between">
             <div className="min-w-0 flex-1">
-              <p className="text-xs sm:text-sm text-orange-600 font-medium leading-tight">Admins</p>
+              <p className="text-xs sm:text-sm text-orange-600 font-medium leading-tight">{labels.stats.admins.label}</p>
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-orange-800">
                 {stats.totalAdmins}
               </p>
             </div>
-            <i className="fas fa-user-shield text-orange-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2"></i>
+            <i className={`${labels.stats.admins.icon} text-orange-500 text-lg sm:text-xl md:text-2xl flex-shrink-0 ml-2`}></i>
           </div>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para mostrar el detalle completo de una solicitud de registro
- * Siguiendo Regla #3: Componente enfocado y modular
- * Siguiendo Regla #2: Solo presentación, lógica delegada a props
+ * ${LABELS.admin.registration.requestDetailModal.comments.title}
+ * ${LABELS.admin.registration.requestDetailModal.comments.rules.rule3}
+ * ${LABELS.admin.registration.requestDetailModal.comments.rules.rule2}
  *
  * @param {Object} props - Propiedades del componente
  * @param {Object} props.request - Datos completos de la solicitud
@@ -22,6 +23,8 @@ const RequestDetailModal = ({
   onActivateServices,
   getPlanTypeName
 }) => {
+  const labels = LABELS.admin.registration.requestDetailModal
+
   // Funciones simples de manejo (lógica trivial permitida - Regla #2)
   const handleApprove = () => {
     onApprove(request.id)
@@ -44,7 +47,7 @@ const RequestDetailModal = ({
         {/* Header sticky */}
         <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
           <h3 className="text-xl font-exo font-bold text-gray-800">
-            Detalle de Solicitud - {request.name} {request.lastName}
+            {labels.title.replace('{name}', `${request.name} ${request.lastName}`)}
           </h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <i className="fas fa-times text-xl"></i>
@@ -58,42 +61,42 @@ const RequestDetailModal = ({
             {/* Datos personales */}
             <div className="space-y-4">
               <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-                Datos Personales
+                {labels.sections.personalData}
               </h4>
               <div className="text-sm font-roboto space-y-2">
                 <p>
-                  <strong>Nombre completo:</strong> {request.name} {request.lastName}
+                  <strong>{labels.fields.fullName}</strong> {request.name} {request.lastName}
                 </p>
                 <p>
-                  <strong>DNI:</strong> {request.dni}
+                  <strong>{labels.fields.dni}</strong> {request.dni}
                 </p>
                 <p>
-                  <strong>Fecha de nacimiento:</strong> {request.birthDate}
+                  <strong>{labels.fields.birthDate}</strong> {request.birthDate}
                 </p>
                 <p>
-                  <strong>Email:</strong> {request.email}
+                  <strong>{labels.fields.email}</strong> {request.email}
                 </p>
                 <p>
-                  <strong>Teléfono:</strong> {request.phone}
+                  <strong>{labels.fields.phone}</strong> {request.phone}
                 </p>
               </div>
             </div>
 
             {/* Ubicación */}
             <div className="space-y-4">
-              <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">Ubicación</h4>
+              <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">{labels.sections.location}</h4>
               <div className="text-sm font-roboto space-y-2">
                 <p>
-                  <strong>Dirección:</strong> {request.address}
+                  <strong>{labels.fields.address}</strong> {request.address}
                 </p>
                 <p>
-                  <strong>Distrito:</strong> {request.district}
+                  <strong>{labels.fields.district}</strong> {request.district}
                 </p>
                 <p>
-                  <strong>Ciudad:</strong> {request.city}
+                  <strong>{labels.fields.city}</strong> {request.city}
                 </p>
                 <p>
-                  <strong>Coordenadas:</strong> {request.latitude || 'N/A'},{' '}
+                  <strong>{labels.fields.coordinates}</strong> {request.latitude || 'N/A'},{' '}
                   {request.longitude || 'N/A'}
                 </p>
               </div>
@@ -103,23 +106,23 @@ const RequestDetailModal = ({
           {/* Información del plan */}
           <div className="space-y-4">
             <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-              Plan Seleccionado
+              {labels.sections.selectedPlan}
             </h4>
             <div className="bg-blue-50 rounded-lg p-4">
               <div className="text-sm font-roboto space-y-2">
                 <p>
-                  <strong>Tipo de plan:</strong>{' '}
+                  <strong>{labels.fields.planType}</strong>{' '}
                   {getPlanTypeName(request.planType, request.planSubtype)}
                 </p>
                 <p>
-                  <strong>Categoría:</strong> {request.planType}
+                  <strong>{labels.fields.category}</strong> {request.planType}
                 </p>
                 <p>
-                  <strong>Subtipo:</strong> {request.planSubtype}
+                  <strong>{labels.fields.subtype}</strong> {request.planSubtype}
                 </p>
                 {request.monthlyPayment && (
                   <p>
-                    <strong>Pago mensual:</strong> S/ {request.monthlyPayment}
+                    <strong>{labels.fields.monthlyPayment}</strong> S/ {request.monthlyPayment}
                   </p>
                 )}
               </div>
@@ -129,17 +132,17 @@ const RequestDetailModal = ({
           {/* Contacto de emergencia */}
           <div className="space-y-4">
             <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-              Contacto de Emergencia
+              {labels.sections.emergencyContact}
             </h4>
             <div className="text-sm font-roboto space-y-2">
               <p>
-                <strong>Nombre:</strong> {request.emergencyContactName}
+                <strong>{labels.fields.name}</strong> {request.emergencyContactName}
               </p>
               <p>
-                <strong>Relación:</strong> {request.emergencyContactRelation}
+                <strong>{labels.fields.relation}</strong> {request.emergencyContactRelation}
               </p>
               <p>
-                <strong>Teléfono:</strong> {request.emergencyContactPhone}
+                <strong>{labels.fields.phone}</strong> {request.emergencyContactPhone}
               </p>
             </div>
           </div>
@@ -148,7 +151,7 @@ const RequestDetailModal = ({
           {request.medicalConditions && (
             <div className="space-y-4">
               <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-                Condiciones Médicas
+                {labels.sections.medicalConditions}
               </h4>
               <div className="bg-yellow-50 rounded-lg p-4">
                 <p className="text-sm font-roboto text-gray-700">{request.medicalConditions}</p>
@@ -160,7 +163,7 @@ const RequestDetailModal = ({
           {request.comments && (
             <div className="space-y-4">
               <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-                Comentarios Adicionales
+                {labels.sections.additionalComments}
               </h4>
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-sm font-roboto text-gray-700">{request.comments}</p>
@@ -172,7 +175,7 @@ const RequestDetailModal = ({
           {request.status === 'rejected' && request.rejectionReason && (
             <div className="space-y-4">
               <h4 className="font-exo font-semibold text-red-800 border-b border-red-200 pb-2">
-                Motivo del Rechazo
+                {labels.sections.rejectionReason}
               </h4>
               <div className="bg-red-50 rounded-lg p-4">
                 <p className="text-sm font-roboto text-red-700">{request.rejectionReason}</p>
@@ -183,19 +186,19 @@ const RequestDetailModal = ({
           {/* Información de tracking */}
           <div className="space-y-4">
             <h4 className="font-exo font-semibold text-gray-800 border-b pb-2">
-              Información de Seguimiento
+              {labels.sections.trackingInfo}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="text-sm font-roboto space-y-2">
                 <p>
-                  <strong>ID de solicitud:</strong> {request.id}
+                  <strong>{labels.fields.requestId}</strong> {request.id}
                 </p>
                 <p>
-                  <strong>Fecha de solicitud:</strong>{' '}
+                  <strong>{labels.fields.requestDate}</strong>{' '}
                   {new Date(request.requestDate).toLocaleString('es-CL')}
                 </p>
                 <p>
-                  <strong>Estado actual:</strong>
+                  <strong>{labels.fields.currentStatus}</strong>
                   <span
                     className={`ml-2 px-2 py-1 rounded-full text-xs font-medium ${
                       request.status === 'pending'
@@ -206,28 +209,28 @@ const RequestDetailModal = ({
                     }`}
                   >
                     {request.status === 'pending'
-                      ? 'PENDIENTE'
+                      ? labels.status.pending
                       : request.status === 'approved'
-                        ? 'APROBADA'
-                        : 'RECHAZADA'}
+                        ? labels.status.approved
+                        : labels.status.rejected}
                   </span>
                 </p>
               </div>
               <div className="text-sm font-roboto space-y-2">
                 {request.processedAt && (
                   <p>
-                    <strong>Procesada el:</strong>{' '}
+                    <strong>{labels.fields.processedAt}</strong>{' '}
                     {new Date(request.processedAt).toLocaleString('es-CL')}
                   </p>
                 )}
                 {request.userId && (
                   <p>
-                    <strong>ID de usuario:</strong> {request.userId}
+                    <strong>{labels.fields.userId}</strong> {request.userId}
                   </p>
                 )}
                 {request.processedBy && (
                   <p>
-                    <strong>Procesada por:</strong> {request.processedBy}
+                    <strong>{labels.fields.processedBy}</strong> {request.processedBy}
                   </p>
                 )}
               </div>
@@ -242,7 +245,7 @@ const RequestDetailModal = ({
               onClick={onClose}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-exo font-medium hover:bg-gray-50 transition-colors"
             >
-              Cerrar
+              {labels.buttons.close}
             </button>
 
             {/* Botones para solicitudes pendientes */}
@@ -253,14 +256,14 @@ const RequestDetailModal = ({
                   className="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-exo font-medium transition-colors"
                 >
                   <i className="fas fa-check mr-2"></i>
-                  Aprobar Solicitud
+                  {labels.buttons.approveRequest}
                 </button>
                 <button
                   onClick={handleReject}
                   className="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-exo font-medium transition-colors"
                 >
                   <i className="fas fa-times mr-2"></i>
-                  Rechazar Solicitud
+                  {labels.buttons.rejectRequest}
                 </button>
               </>
             )}
@@ -272,7 +275,7 @@ const RequestDetailModal = ({
                 className="flex-1 px-4 py-2 bg-helpmed-blue hover:bg-primary-blue text-white rounded-lg font-exo font-medium transition-colors"
               >
                 <i className="fas fa-star mr-2"></i>
-                Activar Servicios
+                {labels.buttons.activateServices}
               </button>
             )}
           </div>

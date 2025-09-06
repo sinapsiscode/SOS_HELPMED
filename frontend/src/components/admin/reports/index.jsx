@@ -2,6 +2,7 @@
 import { useState, lazy, Suspense } from 'react'
 import useAppStore from '../../../stores/useAppStore'
 import Swal from 'sweetalert2'
+import { LABELS } from '../../../config/labels'
 
 // Lazy loading de reportes para mejor performance
 const OverviewReport = lazy(() => import('./OverviewReport'))
@@ -13,16 +14,20 @@ const FinancialReport = lazy(() => import('./FinancialReport')) // Reporte finan
 const SurveysReport = lazy(() => import('./SurveysReport'))
 
 // Loading Spinner Component
-const LoadingSpinner = () => (
-  <div className="flex items-center justify-center py-12">
-    <div className="text-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
-      <p className="text-gray-600">Cargando reporte...</p>
+const LoadingSpinner = () => {
+  const labels = LABELS.admin.reports.reportsAnalytics
+  return (
+    <div className="flex items-center justify-center py-12">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-red-600 mx-auto mb-4"></div>
+        <p className="text-gray-600">{labels.loading}</p>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 const ReportsAnalytics = () => {
+  const labels = LABELS.admin.reports.reportsAnalytics
   const { revenueSummary, transactions, allUsers, emergencyServices, surveys } = useAppStore()
   const [selectedReport, setSelectedReport] = useState('overview')
   const [startDate, setStartDate] = useState('')
@@ -38,7 +43,7 @@ const ReportsAnalytics = () => {
       <html>
         <head>
           <meta charset="utf-8">
-          <title>Reporte ${getReportTitle()} - HelpMED</title>
+          <title>${labels.pdfTemplate.title.replace('{reportTitle}', getReportTitle())}</title>
           <style>
             body { font-family: Arial, sans-serif; margin: 20px; }
             h1 { color: #d32f2f; text-align: center; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
@@ -68,26 +73,26 @@ const ReportsAnalytics = () => {
           </style>
         </head>
         <body>
-          <h1>Reporte ${getReportTitle()}</h1>
+          <h1>${labels.pdfTemplate.title.replace('{reportTitle}', getReportTitle())}</h1>
           
           <div class="header-info">
-            <strong>Período:</strong> ${getDateRangeText()}<br>
-            <strong>Fecha de generación:</strong> ${new Date().toLocaleDateString('es-PE')} - ${new Date().toLocaleTimeString('es-PE')}<br>
-            <strong>Sistema:</strong> HelpMED - Plataforma de Emergencias Médicas
+            <strong>${labels.pdfTemplate.period}</strong> ${getDateRangeText()}<br>
+            <strong>${labels.pdfTemplate.generationDate}</strong> ${new Date().toLocaleDateString('es-PE')} - ${new Date().toLocaleTimeString('es-PE')}<br>
+            <strong>${labels.pdfTemplate.system}</strong> ${labels.pdfTemplate.systemName}
           </div>
           
           <div class="no-print" style="text-align: center; margin: 20px 0;">
             <button onclick="window.print()" style="background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-              🖨️ Imprimir/Guardar como PDF
+              ${labels.export.printButton}
             </button>
             <button onclick="window.close()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
-              ❌ Cerrar
+              ${labels.export.closeButton}
             </button>
           </div>
           
           <div id="report-content">
             <!-- El contenido del reporte se insertaría aquí dinámicamente -->
-            <p>Contenido del reporte ${getReportTitle()}</p>
+            <p>${labels.pdfTemplate.contentLabel.replace('{reportTitle}', getReportTitle())}</p>
           </div>
         </body>
       </html>
@@ -97,8 +102,8 @@ const ReportsAnalytics = () => {
     printWindow.document.close()
 
     Swal.fire({
-      title: 'PDF Preparado',
-      text: 'Se ha abierto una nueva ventana. Presiona Ctrl+P para imprimir o guardar como PDF',
+      title: labels.export.pdfTitle,
+      text: labels.export.pdfMessage,
       icon: 'info',
       timer: 3000,
       showConfirmButton: false
@@ -121,15 +126,15 @@ const ReportsAnalytics = () => {
           </style>
         </head>
         <body>
-          <h1>Reporte ${getReportTitle()} - HelpMED</h1>
-          <p><strong>Período:</strong> ${getDateRangeText()}</p>
-          <p><strong>Fecha:</strong> ${new Date().toLocaleDateString('es-PE')} ${new Date().toLocaleTimeString('es-PE')}</p>
+          <h1>${labels.pdfTemplate.title.replace('{reportTitle}', getReportTitle())}</h1>
+          <p><strong>${labels.pdfTemplate.period}</strong> ${getDateRangeText()}</p>
+          <p><strong>${labels.pdfTemplate.generationDate}</strong> ${new Date().toLocaleDateString('es-PE')} ${new Date().toLocaleTimeString('es-PE')}</p>
           
           <table>
-            <tr><th>Métrica</th><th>Valor</th><th>Cambio</th></tr>
-            <tr><td>Total Usuarios</td><td>2,847</td><td>+12%</td></tr>
-            <tr><td>Servicios Completados</td><td>1,234</td><td>+8%</td></tr>
-            <tr><td>Ingresos Totales</td><td>S/ 45,680</td><td>+15%</td></tr>
+            <tr><th>${labels.excelTemplate.headers.metric}</th><th>${labels.excelTemplate.headers.value}</th><th>${labels.excelTemplate.headers.change}</th></tr>
+            <tr><td>${labels.excelTemplate.sampleData.totalUsers}</td><td>2,847</td><td>+12%</td></tr>
+            <tr><td>${labels.excelTemplate.sampleData.completedServices}</td><td>1,234</td><td>+8%</td></tr>
+            <tr><td>${labels.excelTemplate.sampleData.totalRevenue}</td><td>S/ 45,680</td><td>+15%</td></tr>
           </table>
         </body>
       </html>
@@ -145,8 +150,8 @@ const ReportsAnalytics = () => {
     URL.revokeObjectURL(url)
 
     Swal.fire({
-      title: 'Excel Generado',
-      text: 'El archivo Excel ha sido descargado exitosamente',
+      title: labels.export.excelTitle,
+      text: labels.export.excelMessage,
       icon: 'success',
       timer: 2000,
       showConfirmButton: false
@@ -163,22 +168,22 @@ const ReportsAnalytics = () => {
 
   const getReportTitle = () => {
     const titles = {
-      'overview': 'Resumen General',
-      'users': 'Usuarios',
-      'services': 'Servicios',
-      'performance': 'Performance',
-      'geography': 'Geografía',
-      'finanzas': 'Finanzas',
-      'surveys': 'Encuestas de Calidad'
+      'overview': labels.reportTitles.overview,
+      'users': labels.reportTitles.users,
+      'services': labels.reportTitles.services,
+      'performance': labels.reportTitles.performance,
+      'geography': labels.reportTitles.geography,
+      'finanzas': labels.reportTitles.finanzas,
+      'surveys': labels.reportTitles.surveys
     }
-    return titles[selectedReport] || 'Reporte'
+    return titles[selectedReport] || labels.reportTitles.default
   }
 
   const getDateRangeText = () => {
     if (startDate && endDate) {
       return `${new Date(startDate).toLocaleDateString('es-PE')} - ${new Date(endDate).toLocaleDateString('es-PE')}`
     }
-    return 'Seleccionar período'
+    return labels.dateRange.selectPeriod
   }
 
   const renderReportContent = () => {
@@ -225,11 +230,11 @@ const ReportsAnalytics = () => {
       {/* Header y Controles */}
       <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Reportes y Analytics</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">{labels.title}</h1>
           <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-3">
             <div className="flex flex-col sm:flex-row sm:items-end space-y-2 sm:space-y-0 sm:space-x-3">
               <div className="flex flex-col">
-                <label className="text-xs text-gray-600 mb-1">Fecha de inicio</label>
+                <label className="text-xs text-gray-600 mb-1">{labels.dateRange.startLabel}</label>
                 <input
                   type="date"
                   value={startDate}
@@ -238,7 +243,7 @@ const ReportsAnalytics = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-xs text-gray-600 mb-1">Fecha de fin</label>
+                <label className="text-xs text-gray-600 mb-1">{labels.dateRange.endLabel}</label>
                 <input
                   type="date"
                   value={endDate}
@@ -256,7 +261,7 @@ const ReportsAnalytics = () => {
                 }}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
               >
-                Últimos 30 días
+                {labels.dateRange.last30Days}
               </button>
             </div>
             
@@ -265,13 +270,13 @@ const ReportsAnalytics = () => {
                 onClick={() => handleExportReport('pdf')}
                 className="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm flex items-center justify-center flex-1 sm:flex-none"
               >
-                <i className="fas fa-file-pdf mr-1 sm:mr-2"></i>PDF
+                <i className="fas fa-file-pdf mr-1 sm:mr-2"></i>{labels.export.pdf}
               </button>
               <button
                 onClick={() => handleExportReport('excel')}
                 className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm flex items-center justify-center flex-1 sm:flex-none"
               >
-                <i className="fas fa-file-excel mr-1 sm:mr-2"></i>Excel
+                <i className="fas fa-file-excel mr-1 sm:mr-2"></i>{labels.export.excel}
               </button>
             </div>
           </div>
@@ -280,13 +285,13 @@ const ReportsAnalytics = () => {
         {/* Navigation Tabs */}
         <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 overflow-x-auto scrollbar-hide">
           {[
-            { id: 'overview', label: 'Resumen General', icon: 'fas fa-chart-pie', short: 'Resumen' },
-            { id: 'users', label: 'Usuarios', icon: 'fas fa-users', short: 'Usuarios' },
-            { id: 'services', label: 'Servicios', icon: 'fas fa-ambulance', short: 'Servicios' },
-            { id: 'performance', label: 'Performance', icon: 'fas fa-tachometer-alt', short: 'Performance' },
-            { id: 'geography', label: 'Geografía', icon: 'fas fa-map-marked-alt', short: 'Geografía' },
-            { id: 'finanzas', label: 'Finanzas', icon: 'fas fa-coins', short: 'Finanzas' },
-            { id: 'surveys', label: 'Encuestas de Calidad', icon: 'fas fa-poll', short: 'Encuestas' }
+            { id: 'overview', label: labels.tabs.overview.label, icon: labels.tabs.overview.icon, short: labels.tabs.overview.short },
+            { id: 'users', label: labels.tabs.users.label, icon: labels.tabs.users.icon, short: labels.tabs.users.short },
+            { id: 'services', label: labels.tabs.services.label, icon: labels.tabs.services.icon, short: labels.tabs.services.short },
+            { id: 'performance', label: labels.tabs.performance.label, icon: labels.tabs.performance.icon, short: labels.tabs.performance.short },
+            { id: 'geography', label: labels.tabs.geography.label, icon: labels.tabs.geography.icon, short: labels.tabs.geography.short },
+            { id: 'finanzas', label: labels.tabs.finanzas.label, icon: labels.tabs.finanzas.icon, short: labels.tabs.finanzas.short },
+            { id: 'surveys', label: labels.tabs.surveys.label, icon: labels.tabs.surveys.icon, short: labels.tabs.surveys.short }
           ].map((tab) => (
             <button
               key={tab.id}

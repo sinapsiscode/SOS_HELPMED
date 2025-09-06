@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para crear/editar planes
- * ENFOQUE BALANCEADO: Lógica de formulario simple con validación de props
+ * ${LABELS.admin.planconfig.planFormModal.comments.title}
+ * ${LABELS.admin.planconfig.planFormModal.comments.approach}
  *
  * @param {boolean} isOpen - Si el modal está abierto
  * @param {Object|null} editingPlan - Plan en edición o null para crear nuevo
@@ -12,31 +13,33 @@ import React, { useState, useEffect } from 'react'
  * @returns {JSX.Element} Modal de formulario para planes
  */
 const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
+  const labels = LABELS.admin.planconfig.planFormModal
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof isOpen !== 'boolean') {
-    console.error('PlanFormModal: isOpen debe ser boolean')
+    console.error(labels.errors.isOpenBoolean)
     return null
   }
 
   if (editingPlan && typeof editingPlan !== 'object') {
-    console.error('PlanFormModal: editingPlan debe ser objeto o null')
+    console.error(labels.errors.editingPlanObject)
     return null
   }
 
   if (typeof onClose !== 'function') {
-    console.error('PlanFormModal: onClose debe ser una función')
+    console.error(labels.errors.onCloseFunction)
     return null
   }
 
   if (typeof onSave !== 'function') {
-    console.error('PlanFormModal: onSave debe ser una función')
+    console.error(labels.errors.onSaveFunction)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('PlanFormModal: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingBoolean)
     return null
   }
 
@@ -188,7 +191,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
           {/* Header del modal */}
           <div className="flex items-center justify-between p-6 border-b">
             <h2 className="text-xl font-semibold text-gray-800">
-              {editingPlan ? 'Editar Plan' : 'Crear Nuevo Plan'}
+              {editingPlan ? labels.title.edit : labels.title.create}
             </h2>
             <button
               type="button"
@@ -204,7 +207,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
             {/* Información básica */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Categoría *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.category.label}</label>
                 <select
                   value={formData.category}
                   onChange={(e) => handleInputChange('category', e.target.value)}
@@ -212,22 +215,22 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                   required
                 >
-                  <option value="familiar">Familiar</option>
-                  <option value="corporativo">Corporativo</option>
-                  <option value="externo">Externo</option>
+                  <option value="familiar">{labels.fields.category.options.familiar}</option>
+                  <option value="corporativo">{labels.fields.category.options.corporativo}</option>
+                  <option value="externo">{labels.fields.category.options.externo}</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Clave del Plan *
+                  {labels.fields.planKey.label}
                 </label>
                 <input
                   type="text"
                   value={formData.key}
                   onChange={(e) => handleInputChange('key', e.target.value.toUpperCase())}
                   disabled={isLoading}
-                  placeholder="Ej: BASICO, VIP, PREMIUM"
+                  placeholder={labels.fields.planKey.placeholder}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                   required
                 />
@@ -235,14 +238,14 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre del Plan *
+                  {labels.fields.planName.label}
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   disabled={isLoading}
-                  placeholder="Plan Básico"
+                  placeholder={labels.fields.planName.placeholder}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                   required
                 />
@@ -250,14 +253,14 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Mercado Objetivo
+                  {labels.fields.targetMarket.label}
                 </label>
                 <input
                   type="text"
                   value={formData.target_market}
                   onChange={(e) => handleInputChange('target_market', e.target.value)}
                   disabled={isLoading}
-                  placeholder="Familias clase media"
+                  placeholder={labels.fields.targetMarket.placeholder}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                 />
               </div>
@@ -265,13 +268,13 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
 
             {/* Descripción */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Descripción *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.description.label}</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
                 disabled={isLoading}
                 rows={3}
-                placeholder="Descripción detallada del plan..."
+                placeholder={labels.fields.description.placeholder}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
                 required
               />
@@ -279,13 +282,13 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
 
             {/* Configuración de precios */}
             <div>
-              <h3 className="text-lg font-medium text-gray-800 mb-3">Configuración de Precios</h3>
+              <h3 className="text-lg font-medium text-gray-800 mb-3">{labels.fields.pricing.title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {formData.category === 'familiar' ? (
                   <>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Precio Mensual (S/)
+                        {labels.fields.pricing.monthly}
                       </label>
                       <input
                         type="number"
@@ -299,7 +302,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Precio Trimestral (S/)
+                        {labels.fields.pricing.quarterly}
                       </label>
                       <input
                         type="number"
@@ -313,7 +316,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Precio Anual (S/)
+                        {labels.fields.pricing.annual}
                       </label>
                       <input
                         type="number"
@@ -330,7 +333,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                   <>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Precio por Empleado/Mes (S/)
+                        {labels.fields.pricing.perEmployee}
                       </label>
                       <input
                         type="number"
@@ -346,7 +349,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Mínimo de Empleados
+                        {labels.fields.pricing.minimumEmployees}
                       </label>
                       <input
                         type="number"
@@ -361,7 +364,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Tarifa de Configuración (S/)
+                        {labels.fields.pricing.setupFee}
                       </label>
                       <input
                         type="number"
@@ -389,7 +392,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
                   className="h-4 w-4 text-blue-600 rounded disabled:opacity-50"
                 />
                 <span className="text-sm font-medium text-gray-700">
-                  Plan activo para nuevas suscripciones
+                  {labels.fields.activeStatus}
                 </span>
               </label>
             </div>
@@ -403,7 +406,7 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
               disabled={isLoading}
               className="px-4 py-2 text-gray-700 hover:text-gray-900 disabled:opacity-50"
             >
-              Cancelar
+              {labels.buttons.cancel}
             </button>
             <button
               type="submit"
@@ -413,12 +416,12 @@ const PlanFormModal = ({ isOpen, editingPlan, onClose, onSave, isLoading }) => {
               {isLoading ? (
                 <>
                   <i className="fas fa-spinner fa-spin"></i>
-                  <span>Guardando...</span>
+                  <span>{labels.buttons.saving}</span>
                 </>
               ) : (
                 <>
                   <i className="fas fa-save"></i>
-                  <span>{editingPlan ? 'Actualizar' : 'Crear'} Plan</span>
+                  <span>{editingPlan ? labels.buttons.update : labels.buttons.create}{labels.buttons.plan}</span>
                 </>
               )}
             </button>

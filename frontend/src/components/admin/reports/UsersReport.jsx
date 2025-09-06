@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import useAppStore from '../../../stores/useAppStore'
+import LABELS from '../../../config/labels'
 
 // Componente para tarjeta de tipo de usuario
-const UserTypeCard = ({ type, stats }) => (
-  <div className="bg-gray-50 rounded-lg p-4">
-    <h4 className="font-medium text-gray-800 capitalize mb-2">{type}</h4>
-    <div className="text-2xl font-bold text-gray-900">{stats.count}</div>
-    <div className="flex justify-between items-center mt-2">
-      <span className="text-sm text-gray-600">{stats.percentage}%</span>
-      <span className="text-sm text-green-600">{stats.growth}</span>
+const UserTypeCard = ({ type, stats }) => {
+  const labels = LABELS.admin.reports.usersReport
+  return (
+    <div className="bg-gray-50 rounded-lg p-4">
+      <h4 className="font-medium text-gray-800 capitalize mb-2">{type}</h4>
+      <div className="text-2xl font-bold text-gray-900">{stats.count}</div>
+      <div className="flex justify-between items-center mt-2">
+        <span className="text-sm text-gray-600">{stats.percentage}%</span>
+        <span className="text-sm text-green-600">{stats.growth}</span>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 // Componente de gráfico de registro de usuarios
 const UserRegistrationChart = ({ dateRange }) => {
   const { allUsers, registrationRequests } = useAppStore()
+  const labels = LABELS.admin.reports.usersReport.userRegistrationChart
   
   const calculateRegistrationAnalysis = () => {
     const usersByStatus = {
@@ -63,26 +68,26 @@ const UserRegistrationChart = ({ dateRange }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-gray-800">Análisis de Registros y Solicitudes</h3>
-        <div className="text-sm text-gray-600">Estado actual del sistema</div>
+        <h3 className="text-lg font-bold text-gray-800">{labels.title}</h3>
+        <div className="text-sm text-gray-600">{labels.systemStatus}</div>
       </div>
       
       <div className="space-y-8">
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Estado de Usuarios Registrados</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.userRegistrationStatus.title}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-green-600">{analysis.usersByStatus.active}</div>
-                  <div className="text-sm text-green-700">Usuarios Activos</div>
+                  <div className="text-sm text-green-700">{labels.userRegistrationStatus.active}</div>
                 </div>
                 <div className="text-green-500">
                   <i className="fas fa-check-circle text-2xl"></i>
                 </div>
               </div>
               <div className="mt-2 text-xs text-green-600">
-                {analysis.totalUsers > 0 ? Math.round((analysis.usersByStatus.active / analysis.totalUsers) * 100) : 0}% del total
+                {analysis.totalUsers > 0 ? Math.round((analysis.usersByStatus.active / analysis.totalUsers) * 100) : 0}{labels.userRegistrationStatus.percentOfTotal}
               </div>
             </div>
             
@@ -90,68 +95,68 @@ const UserRegistrationChart = ({ dateRange }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-gray-600">{analysis.usersByStatus.inactive}</div>
-                  <div className="text-sm text-gray-700">Usuarios Inactivos</div>
+                  <div className="text-sm text-gray-700">{labels.userRegistrationStatus.inactive}</div>
                 </div>
                 <div className="text-gray-500">
                   <i className="fas fa-pause-circle text-2xl"></i>
                 </div>
               </div>
               <div className="mt-2 text-xs text-gray-600">
-                {analysis.totalUsers > 0 ? Math.round((analysis.usersByStatus.inactive / analysis.totalUsers) * 100) : 0}% del total
+                {analysis.totalUsers > 0 ? Math.round((analysis.usersByStatus.inactive / analysis.totalUsers) * 100) : 0}{labels.userRegistrationStatus.percentOfTotal}
               </div>
             </div>
           </div>
         </div>
         
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Estado de Solicitudes de Registro</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.registrationRequestStatus.title}</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xl sm:text-2xl font-bold text-yellow-600">{analysis.requestsByStatus.pending}</div>
-                  <div className="text-xs sm:text-sm text-yellow-700">Pendientes</div>
+                  <div className="text-xs sm:text-sm text-yellow-700">{labels.registrationRequestStatus.pending}</div>
                 </div>
                 <div className="text-yellow-500">
                   <i className="fas fa-clock text-xl sm:text-2xl"></i>
                 </div>
               </div>
-              <div className="mt-2 text-xs text-yellow-600">Requieren revisión</div>
+              <div className="mt-2 text-xs text-yellow-600">{labels.registrationRequestStatus.description.pending}</div>
             </div>
             
             <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xl sm:text-2xl font-bold text-green-600">{analysis.requestsByStatus.approved}</div>
-                  <div className="text-xs sm:text-sm text-green-700">Aprobadas</div>
+                  <div className="text-xs sm:text-sm text-green-700">{labels.registrationRequestStatus.approved}</div>
                 </div>
                 <div className="text-green-500">
                   <i className="fas fa-check text-xl sm:text-2xl"></i>
                 </div>
               </div>
-              <div className="mt-2 text-xs text-green-600">Usuarios creados</div>
+              <div className="mt-2 text-xs text-green-600">{labels.registrationRequestStatus.description.approved}</div>
             </div>
             
             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-red-600">{analysis.requestsByStatus.rejected}</div>
-                  <div className="text-sm text-red-700">Rechazadas</div>
+                  <div className="text-sm text-red-700">{labels.registrationRequestStatus.rejected}</div>
                 </div>
                 <div className="text-red-500">
                   <i className="fas fa-times text-2xl"></i>
                 </div>
               </div>
-              <div className="mt-2 text-xs text-red-600">No procesadas</div>
+              <div className="mt-2 text-xs text-red-600">{labels.registrationRequestStatus.description.rejected}</div>
             </div>
           </div>
         </div>
         
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Solicitudes por Tipo de Plan</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.requestsByPlanType.title}</h4>
           <div className="space-y-3">
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Familiar</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.requestsByPlanType.planTypes.familiar}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -172,7 +177,7 @@ const UserRegistrationChart = ({ dateRange }) => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Corporativo</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.requestsByPlanType.planTypes.corporate}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -193,7 +198,7 @@ const UserRegistrationChart = ({ dateRange }) => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Externo</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.requestsByPlanType.planTypes.external}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -220,9 +225,9 @@ const UserRegistrationChart = ({ dateRange }) => {
             <div className="flex items-center">
               <i className="fas fa-exclamation-triangle text-amber-600 mr-3"></i>
               <div>
-                <h5 className="font-medium text-amber-800">Acción Requerida</h5>
+                <h5 className="font-medium text-amber-800">{labels.actionRequired.title}</h5>
                 <p className="text-sm text-amber-700 mt-1">
-                  Hay {analysis.requestsByStatus.pending} solicitud(es) de registro pendiente(s) que requieren revisión.
+                  {labels.actionRequired.message.replace('{count}', analysis.requestsByStatus.pending)}
                 </p>
               </div>
             </div>
@@ -278,6 +283,7 @@ const calculateUserActivity = (user, userType) => {
 // Tabla de usuarios activos
 const ActiveUsersTable = ({ dateRange, filterType }) => {
   const { allUsers } = useAppStore()
+  const labels = LABELS.admin.reports.usersReport.activeUsersTable
   
   const getActiveUsers = () => {
     let usersData = []
@@ -288,13 +294,13 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
         if (serviceUsage.totalUsed > 0 || filterType === 'all') {
           usersData.push({
             id: user.id,
-            name: user.profile?.name || user.name || 'Usuario',
+            name: user.profile?.name || user.name || labels.userTypes.user,
             type: 'Familiar',
-            plan: user.plan?.name || user.plan?.subtype || 'Sin plan',
+            plan: user.plan?.name || user.plan?.subtype || labels.planTypes.noPlan,
             servicesUsed: serviceUsage.totalUsed,
             servicesRemaining: serviceUsage.totalRemaining,
             utilizationRate: serviceUsage.utilizationRate,
-            lastActivity: serviceUsage.lastActivity || 'Sin actividad',
+            lastActivity: serviceUsage.lastActivity || labels.noActivity,
             status: user.plan?.status || 'active',
             memberSince: user.profile?.memberSince || user.memberSince || new Date().toISOString()
           })
@@ -308,13 +314,13 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
         if (serviceUsage.totalUsed > 0 || filterType === 'all') {
           usersData.push({
             id: user.id,
-            name: user.company?.name || user.profile?.name || 'Empresa',
+            name: user.company?.name || user.profile?.name || labels.userTypes.company,
             type: 'Corporativo',
-            plan: 'Área Protegida',
+            plan: labels.planTypes.protectedArea,
             servicesUsed: serviceUsage.totalUsed,
             servicesRemaining: serviceUsage.totalRemaining,
             utilizationRate: serviceUsage.utilizationRate,
-            lastActivity: serviceUsage.lastActivity || 'Sin actividad',
+            lastActivity: serviceUsage.lastActivity || labels.noActivity,
             status: user.plan?.status || 'active',
             memberSince: user.plan?.start_date || new Date().toISOString(),
             employees: user.company?.employees_count || 0
@@ -333,9 +339,9 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Usuarios Más Activos</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.title}</h3>
         <div className="text-sm text-gray-600">
-          Filtro: <span className="font-medium">{filterType === 'all' ? 'Todos' : filterType}</span>
+          {labels.filter.label}<span className="font-medium">{filterType === 'all' ? labels.filter.all : filterType}</span>
         </div>
       </div>
       
@@ -344,13 +350,13 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
           <table className="w-full">
             <thead>
               <tr className="border-b bg-gray-50">
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Usuario</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Tipo</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Plan</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Servicios Usados</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Utilización</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Estado</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Miembro desde</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.headers.user}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.headers.type}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.headers.plan}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.headers.servicesUsed}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.headers.utilization}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.headers.status}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.headers.memberSince}</th>
               </tr>
             </thead>
             <tbody>
@@ -366,7 +372,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
                       <div>
                         <div className="font-medium text-gray-800">{user.name}</div>
                         {user.employees > 0 && (
-                          <div className="text-xs text-gray-500">{user.employees} empleados</div>
+                          <div className="text-xs text-gray-500">{user.employees} {labels.pagination.employees}</div>
                         )}
                       </div>
                     </div>
@@ -381,7 +387,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
                   <td className="py-3 px-4 text-sm text-gray-600">{user.plan}</td>
                   <td className="py-3 px-4 text-center">
                     <div className="font-semibold text-gray-800">{user.servicesUsed}</div>
-                    <div className="text-xs text-gray-500">de {user.servicesUsed + user.servicesRemaining}</div>
+                    <div className="text-xs text-gray-500">{labels.pagination.ofTotal.replace('{total}', user.servicesUsed + user.servicesRemaining)}</div>
                   </td>
                   <td className="py-3 px-4 text-center">
                     <div className="flex items-center justify-center">
@@ -402,7 +408,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {user.status === 'active' ? 'Activo' : 'Inactivo'}
+                      {user.status === 'active' ? labels.status.active : labels.status.inactive}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-600">
@@ -416,8 +422,8 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
       ) : (
         <div className="text-center py-8 text-gray-500">
           <i className="fas fa-user-clock text-4xl mb-2"></i>
-          <h4 className="text-lg font-medium mb-2">No hay usuarios activos</h4>
-          <p className="text-sm">No se encontraron usuarios con actividad en el período seleccionado.</p>
+          <h4 className="text-lg font-medium mb-2">{labels.noActiveUsers.title}</h4>
+          <p className="text-sm">{labels.noActiveUsers.description}</p>
         </div>
       )}
       
@@ -427,19 +433,19 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
             <div className="text-xl sm:text-2xl font-bold text-blue-600">
               {activeUsers.reduce((sum, user) => sum + user.servicesUsed, 0)}
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">Servicios Totales Usados</div>
+            <div className="text-xs sm:text-sm text-gray-600">{labels.summaryStats.totalServicesUsed}</div>
           </div>
           <div className="text-center p-2">
             <div className="text-xl sm:text-2xl font-bold text-green-600">
               {Math.round(activeUsers.reduce((sum, user) => sum + user.utilizationRate, 0) / activeUsers.length)}%
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">Utilización Promedio</div>
+            <div className="text-xs sm:text-sm text-gray-600">{labels.summaryStats.averageUtilization}</div>
           </div>
           <div className="text-center p-2">
             <div className="text-xl sm:text-2xl font-bold text-gray-800">
               {activeUsers.filter(user => user.status === 'active').length}
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">Usuarios Activos</div>
+            <div className="text-xs sm:text-sm text-gray-600">{labels.summaryStats.activeUsers}</div>
           </div>
         </div>
       )}
@@ -467,6 +473,7 @@ const UsersReport = ({ baseMetrics }) => {
   const { allUsers } = useAppStore()
   const [filterType, setFilterType] = useState('all')
   const [userStats, setUserStats] = useState({})
+  const labels = LABELS.admin.reports.usersReport
   
   useEffect(() => {
     const calculateUserStats = () => {
@@ -494,15 +501,15 @@ const UsersReport = ({ baseMetrics }) => {
     <div className="space-y-6">
       <div className="bg-white rounded-xl shadow-medium p-6">
         <div className="flex items-center space-x-4 mb-4">
-          <h3 className="text-lg font-bold text-gray-800">Filtros de Usuario</h3>
+          <h3 className="text-lg font-bold text-gray-800">{labels.filters.title}</h3>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2"
           >
-            <option value="all">Todos los tipos</option>
-            <option value="familiar">Solo Familiares</option>
-            <option value="corporativo">Solo Corporativos</option>
+            <option value="all">{labels.filters.types.all}</option>
+            <option value="familiar">{labels.filters.types.familiar}</option>
+            <option value="corporativo">{labels.filters.types.corporate}</option>
           </select>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

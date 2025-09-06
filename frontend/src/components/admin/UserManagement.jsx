@@ -5,6 +5,7 @@ import ExternalUsersManagement from './ExternalUsersManagement'
 import { UserCard, RegistrationRequestCard, UserFormModal } from './user'
 import StatCard from '../shared/StatCard'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
 /**
  * Componente principal para gestión de usuarios administrativos
@@ -52,11 +53,13 @@ const UserManagement = () => {
     clearError
   } = useUserManagement()
 
+  const labels = LABELS.admin.userManagement
+
   // Manejo de errores (Regla #8)
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en gestión de usuarios: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.error.prefix.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -69,10 +72,10 @@ const UserManagement = () => {
           <div>
             <h1 className="text-3xl font-exo font-bold text-gray-800">
               <i className="fas fa-users-cog text-helpmed-blue mr-3"></i>
-              Gestión de Usuarios
+              {labels.title}
             </h1>
             <p className="text-gray-600 font-roboto mt-2">
-              Administra usuarios del sistema y solicitudes de registro
+              {labels.subtitle}
             </p>
           </div>
           {canCreateUser && (
@@ -82,17 +85,17 @@ const UserManagement = () => {
               className="flex items-center px-4 py-2 bg-helpmed-blue text-white rounded-lg hover:bg-blue-700 transition-colors font-roboto disabled:opacity-50"
             >
               <i className="fas fa-plus mr-2"></i>
-              Crear Usuario
+              {labels.buttons.createUser}
             </button>
           )}
         </div>
 
         {/* Estadísticas rápidas */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <StatCard title="Familiares" count={userTypeStats.familiar} color="green" />
-          <StatCard title="Corporativos" count={userTypeStats.corporativo} color="purple" />
-          <StatCard title="Externos" count={userTypeStats.externo} color="blue" />
-          <StatCard title="Administradores" count={userTypeStats.admin} color="red" />
+          <StatCard title={labels.stats.familiares} count={userTypeStats.familiar} color="green" />
+          <StatCard title={labels.stats.corporativos} count={userTypeStats.corporativo} color="purple" />
+          <StatCard title={labels.stats.externos} count={userTypeStats.externo} color="blue" />
+          <StatCard title={labels.stats.administradores} count={userTypeStats.admin} color="red" />
         </div>
 
 
@@ -112,7 +115,7 @@ const UserManagement = () => {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {type === 'registrations' ? 'Solicitudes' : type}
+                  {type === 'registrations' ? labels.filters.registrations : type}
                 </button>
               ))}
             </div>
@@ -124,7 +127,7 @@ const UserManagement = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Buscar usuarios..."
+                  placeholder={labels.search.placeholder}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   disabled={loading}
@@ -148,15 +151,15 @@ const UserManagement = () => {
           <div className="p-6 border-b border-gray-100">
             <h2 className="text-lg font-exo font-bold text-gray-800 capitalize">
               {isRegistrationsTab
-                ? `Solicitudes de Registro (${filteredUsers.filter((r) => r.status === 'pending').length} pendientes)`
-                : `Usuarios ${selectedUserType} (${filteredUsers.length})`}
+                ? labels.headers.registrationsPending.replace('{count}', filteredUsers.filter((r) => r.status === 'pending').length)
+                : labels.headers.usersList.replace('{type}', selectedUserType).replace('{count}', filteredUsers.length)}
             </h2>
           </div>
 
           {loading ? (
             <div className="p-12 text-center">
               <i className="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-              <p className="text-gray-600 font-roboto">Cargando usuarios...</p>
+              <p className="text-gray-600 font-roboto">{labels.loading.message}</p>
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
@@ -187,17 +190,17 @@ const UserManagement = () => {
               {filteredUsers.length === 0 && !loading && (
                 <div className="p-12 text-center">
                   <i
-                    className={`${isRegistrationsTab ? 'fas fa-clipboard-list' : 'fas fa-users'} text-6xl text-gray-300 mb-4`}
+                    className={`${isRegistrationsTab ? labels.empty.registrations.icon : labels.empty.users.icon} text-6xl text-gray-300 mb-4`}
                   ></i>
                   <h3 className="text-xl font-exo font-semibold text-gray-700 mb-2">
                     {isRegistrationsTab
-                      ? 'No hay solicitudes pendientes'
-                      : 'No se encontraron usuarios'}
+                      ? labels.empty.registrations.title
+                      : labels.empty.users.title}
                   </h3>
                   <p className="text-gray-500 font-roboto">
                     {isRegistrationsTab
-                      ? 'Las nuevas solicitudes de registro aparecerán aquí'
-                      : 'Intenta ajustar los filtros de búsqueda'}
+                      ? labels.empty.registrations.description
+                      : labels.empty.users.description}
                   </p>
                 </div>
               )}
@@ -231,18 +234,16 @@ const UserManagement = () => {
           <div className="flex items-center text-gray-600">
             <i className="fas fa-info-circle mr-2"></i>
             <span className="text-sm font-roboto">
-              Sistema de gestión de usuarios HelpMED - Actualizado en tiempo real
+              {labels.footer.info}
             </span>
           </div>
 
           <div className="text-sm text-gray-600 font-roboto">
             <i className="fas fa-users mr-1"></i>
-            Total:{' '}
-            {Object.values(allUsers).reduce(
+            {labels.footer.total.replace('{count}', Object.values(allUsers).reduce(
               (sum, userArray) => sum + (userArray?.length || 0),
               0
-            )}{' '}
-            usuarios
+            ))}
           </div>
         </div>
       </div>

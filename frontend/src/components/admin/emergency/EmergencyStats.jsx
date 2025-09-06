@@ -1,77 +1,75 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente de estadísticas de emergencias
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.emergency.emergencyStats.comments.title}
+ * ${LABELS.admin.emergency.emergencyStats.comments.approach}
  *
  * @param {Object} stats - Estadísticas de emergencias
  */
 const EmergencyStats = ({ stats }) => {
+  const labels = LABELS.admin.emergency.emergencyStats
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!stats) {
-    console.error('EmergencyStats: stats es requerido')
+    console.error(labels.errors.statsRequired)
     return null
   }
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-      <EmergencyStatCard title="Total" count={stats.total} color="blue" icon="fas fa-list" />
+      <EmergencyStatCard title={labels.cards.total.title} count={stats.total} color={labels.cards.total.color} icon={labels.cards.total.icon} />
       <EmergencyStatCard
-        title="Activas"
+        title={labels.cards.active.title}
         count={stats.active}
-        color="yellow"
-        icon="fas fa-exclamation-triangle"
+        color={labels.cards.active.color}
+        icon={labels.cards.active.icon}
       />
       <EmergencyStatCard
-        title="Pendientes"
+        title={labels.cards.pending.title}
         count={stats.pending}
-        color="orange"
-        icon="fas fa-clock"
+        color={labels.cards.pending.color}
+        icon={labels.cards.pending.icon}
       />
       <EmergencyStatCard
-        title="Completadas"
+        title={labels.cards.completed.title}
         count={stats.completed}
-        color="green"
-        icon="fas fa-check-circle"
+        color={labels.cards.completed.color}
+        icon={labels.cards.completed.icon}
       />
       <EmergencyStatCard
-        title="Críticas"
+        title={labels.cards.critical.title}
         count={stats.criticalCount}
-        color="red"
-        icon="fas fa-heartbeat"
+        color={labels.cards.critical.color}
+        icon={labels.cards.critical.icon}
       />
       <EmergencyStatCard
-        title="Tiempo Prom."
-        count={`${stats.avgResponseTime}min`}
-        color="purple"
-        icon="fas fa-stopwatch"
+        title={labels.cards.avgTime.title}
+        count={labels.cards.avgTime.format.replace('{time}', stats.avgResponseTime)}
+        color={labels.cards.avgTime.color}
+        icon={labels.cards.avgTime.icon}
       />
     </div>
   )
 }
 
 /**
- * Tarjeta individual de estadística
+ * ${LABELS.admin.emergency.emergencyStats.comments.cardTitle}
  */
 const EmergencyStatCard = ({ title, count, color, icon }) => {
+  const labels = LABELS.admin.emergency.emergencyStats
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!title || count === undefined) {
-    console.error('EmergencyStatCard: title y count son requeridos')
+    console.error(labels.errors.cardFieldsRequired)
     return null
   }
 
-  const colorClasses = {
-    blue: 'bg-blue-50 border-blue-200 text-blue-600',
-    yellow: 'bg-yellow-50 border-yellow-200 text-yellow-600',
-    orange: 'bg-orange-50 border-orange-200 text-orange-600',
-    green: 'bg-green-50 border-green-200 text-green-600',
-    red: 'bg-red-50 border-red-200 text-red-600',
-    purple: 'bg-purple-50 border-purple-200 text-purple-600'
-  }
+  const colorClasses = labels.colorClasses
 
   return (
     <div className={`border rounded-lg p-4 ${colorClasses[color] || colorClasses.blue}`}>

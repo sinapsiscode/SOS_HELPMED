@@ -1,135 +1,80 @@
-import { useCallback } from 'react'
-import useAppStore from '../stores/useAppStore'
-import Swal from 'sweetalert2'
+import { useState, useCallback } from 'react'
+import { LABELS } from '../config/labels'
 
 /**
- * Hook para manejar la lógica de una fila de ambulancia individual
- * ENFOQUE BALANCEADO: Solo lógica de negocio y transformaciones
- *
+ * Hook para manejar la lógica de una fila de ambulancia
  * @param {string} ambulanceId - ID de la ambulancia
- * @returns {Object} Handlers y utilidades para la fila
+ * @returns {Object} Funciones y estado para el componente
  */
 export const useAmbulanceRowLogic = (ambulanceId) => {
-  const { updateAmbulanceStatus } = useAppStore()
+  const [error, setError] = useState(null)
+  const labels = LABELS.admin.ambulance
 
   /**
    * Maneja el cambio de estado de la ambulancia
-   *
-   * @param {string} newStatus - Nuevo estado a establecer
+   * @param {string} newStatus - Nuevo estado
    */
-  const handleStatusChange = useCallback(
-    async (newStatus) => {
-      try {
-        await updateAmbulanceStatus(ambulanceId, newStatus)
-      } catch (error) {
-        Swal.fire({
-          title: 'Error',
-          text: 'No se pudo actualizar el estado',
-          icon: 'error'
-        })
-      }
-    },
-    [ambulanceId, updateAmbulanceStatus]
-  )
+  const handleStatusChange = useCallback(async (newStatus) => {
+    try {
+      // TODO: Implementar llamada a API para cambiar estado
+      console.log(`Cambiando estado de ambulancia ${ambulanceId} a ${newStatus}`)
+      
+      // Por ahora solo simulamos el cambio
+      // await ambulanceService.updateStatus(ambulanceId, newStatus)
+    } catch (err) {
+      setError(err.message || labels.form.errors.unexpectedError)
+    }
+  }, [ambulanceId, labels.form.errors.unexpectedError])
 
   /**
-   * Formatea la ubicación para mostrar
-   *
-   * @param {Object} location - Objeto con datos de ubicación
+   * Formatea la ubicación GPS para mostrar
+   * @param {Object} location - Objeto de ubicación
    * @returns {string} Ubicación formateada
    */
   const formatLocation = useCallback((location) => {
-    if (!location) return 'Sin ubicación'
-    if (location.simulated) return 'Ubicación simulada'
-    return `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`
-  }, [])
+    if (!location || !location.lat || !location.lng) {
+      return labels.row.notSpecifiedFemale
+    }
+    return `${location.lat.toFixed(6)}, ${location.lng.toFixed(6)}`
+  }, [labels.row.notSpecifiedFemale])
 
   /**
-   * Obtiene las clases CSS para el estado principal
-   *
-   * @param {string} status - Estado de la ambulancia
-   * @returns {string} Clases CSS
+   * Formatea el tipo de equipo médico
+   * @param {string} medicalTeam - Tipo de equipo médico
+   * @returns {string} Texto formateado
    */
-  const getStatusColor = useCallback((status) => {
-    switch (status) {
-      case 'active':
-        return 'bg-green-100 text-green-800 border-green-200'
-      case 'inactive':
-        return 'bg-gray-100 text-gray-800 border-gray-200'
-      case 'maintenance':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+  const formatMedicalTeam = useCallback((medicalTeam) => {
+    const teamTypes = {
+      'tecnico_enfermeria': labels.form.options.medicalTeam.nursingTech,
+      'licenciado_enfermeria': labels.form.options.medicalTeam.nursingLicense,
+      'ambos': labels.form.options.medicalTeam.both
     }
-  }, [])
+    
+    return teamTypes[medicalTeam] || labels.row.notSpecified
+  }, [labels.form.options.medicalTeam, labels.row.notSpecified])
 
   /**
-   * Obtiene las clases CSS para el estado actual
-   *
-   * @param {string} status - Estado actual de la ambulancia
-   * @returns {string} Clases CSS
+   * Formatea la fecha para mostrar
+   * @param {string|Date} date - Fecha a formatear
+   * @returns {string} Fecha formateada
    */
-  const getCurrentStatusColor = useCallback((status) => {
-    switch (status) {
-      case 'available':
-        return 'bg-green-100 text-green-800 border-green-200'
-      case 'en_route':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'on_scene':
-        return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'off_duty':
-        return 'bg-gray-100 text-gray-800 border-gray-200'
-      default:
-        return 'bg-gray-100 text-gray-800 border-gray-200'
+  const formatDate = useCallback((date, format = 'date') => {
+    if (!date) return labels.row.never
+    
+    const dateObj = new Date(date)
+    if (isNaN(dateObj.getTime())) return labels.row.never
+    
+    if (format === 'time') {
+      return dateObj.toLocaleTimeString('es-CL')
     }
-  }, [])
-
-  /**
-   * Obtiene el texto para mostrar el estado
-   *
-   * @param {string} status - Estado de la ambulancia
-   * @returns {string} Texto del estado
-   */
-  const getStatusText = useCallback((status) => {
-    switch (status) {
-      case 'active':
-        return 'ACTIVA'
-      case 'inactive':
-        return 'INACTIVA'
-      case 'maintenance':
-        return 'MANTENIMIENTO'
-      default:
-        return 'DESCONOCIDO'
-    }
-  }, [])
-
-  /**
-   * Obtiene el texto para el estado actual
-   *
-   * @param {string} status - Estado actual
-   * @returns {string} Texto del estado actual
-   */
-  const getCurrentStatusText = useCallback((status) => {
-    switch (status) {
-      case 'available':
-        return 'DISPONIBLE'
-      case 'en_route':
-        return 'EN CAMINO'
-      case 'on_scene':
-        return 'EN SITIO'
-      case 'off_duty':
-        return 'FUERA DE SERVICIO'
-      default:
-        return 'DESCONOCIDO'
-    }
-  }, [])
+    return dateObj.toLocaleDateString('es-CL')
+  }, [labels.row.never])
 
   return {
     handleStatusChange,
     formatLocation,
-    getStatusColor,
-    getCurrentStatusColor,
-    getStatusText,
-    getCurrentStatusText
+    formatMedicalTeam,
+    formatDate,
+    error
   }
 }

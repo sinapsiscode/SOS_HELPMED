@@ -1,10 +1,11 @@
 import React from 'react'
 import { useUsersFiltersUI } from '../../../hooks/useUsersFiltersUI'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Filtros para la lista de usuarios
- * ENFOQUE BALANCEADO: Clases estáticas en componente, lógica en hook
- * Optimizado con React.memo solo si hay problemas de performance medidos
+ * ${LABELS.admin.users.usersFilters.comments.title}
+ * ${LABELS.admin.users.usersFilters.comments.approach}
+ * ${LABELS.admin.users.usersFilters.comments.optimization}
  *
  * @param {string} searchTerm - Término de búsqueda
  * @param {Function} onSearchChange - Callback para cambio de búsqueda
@@ -12,13 +13,15 @@ import { useUsersFiltersUI } from '../../../hooks/useUsersFiltersUI'
  * @param {Function} onStatusChange - Callback para cambio de estado
  */
 const UsersFilters = React.memo(({ searchTerm, onSearchChange, filterStatus, onStatusChange }) => {
+  const labels = LABELS.admin.users.usersFilters
+  
   // Validación de props (Regla #4)
   if (typeof onSearchChange !== 'function') {
-    console.error('UsersFilters: onSearchChange debe ser una función')
+    console.error(labels.errors.onSearchChange)
     return null
   }
   if (typeof onStatusChange !== 'function') {
-    console.error('UsersFilters: onStatusChange debe ser una función')
+    console.error(labels.errors.onStatusChange)
     return null
   }
   // ============================================
@@ -33,7 +36,7 @@ const UsersFilters = React.memo(({ searchTerm, onSearchChange, filterStatus, onS
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p className="text-red-600 text-sm">Error en filtros: {error}</p>
+        <p className="text-red-600 text-sm">{labels.errors.filterError.replace('{error}', error)}</p>
       </div>
     )
   }
@@ -47,7 +50,7 @@ const UsersFilters = React.memo(({ searchTerm, onSearchChange, filterStatus, onS
         {/* Campo de búsqueda */}
         <div className="flex-1">
           <label htmlFor="search" className="sr-only">
-            Buscar usuarios
+            {labels.labels.searchLabel}
           </label>
           <div className="relative">
             <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
@@ -56,7 +59,7 @@ const UsersFilters = React.memo(({ searchTerm, onSearchChange, filterStatus, onS
             <input
               id="search"
               type="text"
-              placeholder="Buscar por nombre o email..."
+              placeholder={labels.labels.searchPlaceholder}
               value={searchTerm || ''}
               onChange={handleSearchChange}
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
@@ -67,7 +70,7 @@ const UsersFilters = React.memo(({ searchTerm, onSearchChange, filterStatus, onS
         {/* Filtro por estado */}
         <div className="sm:w-48">
           <label htmlFor="status-filter" className="sr-only">
-            Filtrar por estado
+            {labels.labels.statusFilterLabel}
           </label>
           <select
             id="status-filter"

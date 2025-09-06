@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Tarjeta individual de plan con todas sus características
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.planconfig.planCard.comments.title}
+ * ${LABELS.admin.planconfig.planCard.comments.approach}
  *
  * @param {Object} plan - Datos del plan
  * @param {Function} onEdit - Función para editar plan
@@ -14,41 +15,43 @@ import React from 'react'
  * @returns {JSX.Element} Tarjeta de plan con controles
  */
 const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, isLoading }) => {
+  const labels = LABELS.admin.planconfig.planCard
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!plan || typeof plan !== 'object') {
-    console.error('PlanCard: plan es requerido y debe ser un objeto')
+    console.error(labels.errors.planObject)
     return null
   }
 
   if (typeof onEdit !== 'function') {
-    console.error('PlanCard: onEdit debe ser una función')
+    console.error(labels.errors.onEditFunction)
     return null
   }
 
   if (typeof onDelete !== 'function') {
-    console.error('PlanCard: onDelete debe ser una función')
+    console.error(labels.errors.onDeleteFunction)
     return null
   }
 
   if (typeof onDuplicate !== 'function') {
-    console.error('PlanCard: onDuplicate debe ser una función')
+    console.error(labels.errors.onDuplicateFunction)
     return null
   }
 
   if (typeof onSelect !== 'function') {
-    console.error('PlanCard: onSelect debe ser una función')
+    console.error(labels.errors.onSelectFunction)
     return null
   }
 
   if (typeof isSelected !== 'boolean') {
-    console.error('PlanCard: isSelected debe ser boolean')
+    console.error(labels.errors.isSelectedBoolean)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('PlanCard: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingBoolean)
     return null
   }
 
@@ -83,12 +86,12 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
 
   const formatPrice = (pricing) => {
     if (pricing.monthly) {
-      return `S/ ${pricing.monthly}/mes`
+      return `${labels.pricing.currency.replace('/', '')} ${pricing.monthly}${labels.pricing.perMonth}`
     }
     if (pricing.per_employee) {
-      return `S/ ${pricing.per_employee}/empleado`
+      return `${labels.pricing.currency.replace('/', '')} ${pricing.per_employee}${labels.pricing.perEmployee}`
     }
-    return 'Precio personalizado'
+    return labels.pricing.customPrice
   }
 
   const getStatusColor = (active) => {
@@ -99,13 +102,13 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
     const displayLimits = []
 
     if (limits.EMERGENCIA === 'ILIMITADO') {
-      displayLimits.push('Emergencias ilimitadas')
+      displayLimits.push(labels.limits.unlimitedEmergencies)
     }
     if (limits.URGENCIA && limits.URGENCIA !== 0) {
-      displayLimits.push(`${limits.URGENCIA} urgencias`)
+      displayLimits.push(labels.limits.urgencies.replace('{count}', limits.URGENCIA))
     }
     if (limits.MEDICO_DOMICILIO && limits.MEDICO_DOMICILIO !== 0) {
-      displayLimits.push(`${limits.MEDICO_DOMICILIO} médicos a domicilio`)
+      displayLimits.push(labels.limits.homeDoctors.replace('{count}', limits.MEDICO_DOMICILIO))
     }
 
     return displayLimits.slice(0, 3) // Mostrar solo los primeros 3
@@ -131,7 +134,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
           <span
             className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(plan.active)}`}
           >
-            {plan.active ? 'Activo' : 'Inactivo'}
+            {plan.active ? labels.status.active : labels.status.inactive}
           </span>
         </div>
 
@@ -144,7 +147,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
             }}
             disabled={isLoading}
             className="p-1 text-gray-400 hover:text-blue-600 transition-colors disabled:opacity-50"
-            title="Editar plan"
+            title={labels.actions.edit}
           >
             <i className="fas fa-edit"></i>
           </button>
@@ -156,7 +159,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
             }}
             disabled={isLoading}
             className="p-1 text-gray-400 hover:text-green-600 transition-colors disabled:opacity-50"
-            title="Duplicar plan"
+            title={labels.actions.duplicate}
           >
             <i className="fas fa-copy"></i>
           </button>
@@ -168,7 +171,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
             }}
             disabled={isLoading}
             className="p-1 text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50"
-            title="Eliminar plan"
+            title={labels.actions.delete}
           >
             <i className="fas fa-trash"></i>
           </button>
@@ -187,9 +190,9 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{formatPrice(plan.pricing)}</div>
             <div className="text-xs text-blue-500 mt-1">
-              {plan.pricing.currency || 'PEN'}
+              {plan.pricing.currency || labels.pricing.currency}
               {plan.pricing.setup_fee && (
-                <span className="ml-2">+ S/ {plan.pricing.setup_fee} setup</span>
+                <span className="ml-2">{labels.pricing.setupFee.replace('{fee}', plan.pricing.setup_fee)}</span>
               )}
             </div>
           </div>
@@ -198,7 +201,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
 
       {/* Límites principales */}
       <div className="mb-4">
-        <h4 className="text-sm font-medium text-gray-700 mb-2">Servicios Incluidos</h4>
+        <h4 className="text-sm font-medium text-gray-700 mb-2">{labels.sections.includedServices}</h4>
         <div className="space-y-1">
           {getLimitDisplay(plan.limits).map((limit, index) => (
             <div key={index} className="flex items-center text-xs text-gray-600">
@@ -208,7 +211,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
           ))}
           {plan.limits && Object.keys(plan.limits).length > 3 && (
             <div className="text-xs text-gray-500 italic">
-              + {Object.keys(plan.limits).length - 3} servicios más
+              {labels.limits.moreServices.replace('{count}', Object.keys(plan.limits).length - 3)}
             </div>
           )}
         </div>
@@ -217,7 +220,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
       {/* Beneficios destacados */}
       {plan.benefits && (
         <div className="mb-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Beneficios</h4>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">{labels.sections.benefits}</h4>
           <div className="flex flex-wrap gap-1">
             {Object.entries(plan.benefits).map(
               ([key, value]) =>
@@ -250,7 +253,7 @@ const PlanCard = ({ plan, onEdit, onDelete, onDuplicate, onSelect, isSelected, i
         {plan.features?.tiempo_respuesta_max && (
           <div className="mt-2 text-xs text-gray-500">
             <i className="fas fa-clock mr-1"></i>
-            Respuesta máxima: {plan.features.tiempo_respuesta_max} min
+            {labels.footer.maxResponseTime.replace('{time}', plan.features.tiempo_respuesta_max)}
           </div>
         )}
       </div>

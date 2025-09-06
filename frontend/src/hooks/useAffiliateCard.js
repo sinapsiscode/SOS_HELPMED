@@ -7,6 +7,7 @@ import {
   getStatusText,
   formatDate
 } from '../utils/affiliateHelpers'
+import { LABELS } from '../config/labels'
 
 /**
  * Hook que maneja TODA la lógica de la tarjeta de afiliado
@@ -29,7 +30,7 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
    */
   const headerInfo = useMemo(
     () => ({
-      name: affiliate.name || 'Sin nombre',
+      name: affiliate.name || LABELS.admin.affiliates.card.noName,
       relationship: getRelationshipText(affiliate.relationship),
       avatarIcon: '👤',
       statusBadge: {
@@ -50,8 +51,8 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
     // DNI siempre se muestra
     rows.push({
       id: 'dni',
-      label: 'DNI',
-      value: affiliate.dni || 'No especificado',
+      label: LABELS.admin.affiliates.card.labels.dni,
+      value: affiliate.dni || LABELS.admin.affiliates.card.notSpecified,
       visible: true
     })
 
@@ -59,7 +60,7 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
     if (affiliate.phone) {
       rows.push({
         id: 'phone',
-        label: 'Teléfono',
+        label: LABELS.admin.affiliates.card.labels.phone,
         value: affiliate.phone,
         visible: true
       })
@@ -68,7 +69,7 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
     // Edad
     rows.push({
       id: 'age',
-      label: 'Edad',
+      label: LABELS.admin.affiliates.card.labels.age,
       value: formatAge(affiliate.birthDate),
       visible: true
     })
@@ -76,7 +77,7 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
     // Fecha de agregado
     rows.push({
       id: 'addedAt',
-      label: 'Agregado',
+      label: LABELS.admin.affiliates.card.labels.added,
       value: formatDate(affiliate.addedAt),
       visible: true
     })
@@ -91,11 +92,11 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
     const isActive = affiliate.status === AFFILIATE_STATUSES.ACTIVE
 
     return {
-      text: isActive ? 'Desactivar' : 'Activar',
+      text: isActive ? LABELS.admin.affiliates.card.actions.deactivate : LABELS.admin.affiliates.card.actions.activate,
       className: isActive
         ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200'
         : 'bg-green-100 text-green-800 hover:bg-green-200',
-      title: isActive ? 'Desactivar afiliado' : 'Activar afiliado'
+      title: isActive ? LABELS.admin.affiliates.card.actions.deactivateTitle : LABELS.admin.affiliates.card.actions.activateTitle
     }
   }, [affiliate.status])
 
@@ -104,9 +105,9 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
    */
   const editButton = useMemo(
     () => ({
-      text: 'Editar',
+      text: LABELS.admin.affiliates.card.actions.edit,
       className: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
-      title: 'Editar información del afiliado'
+      title: LABELS.admin.affiliates.card.actions.editTitle
     }),
     []
   )
@@ -116,9 +117,9 @@ export const useAffiliateCard = (affiliate, onEdit, onDelete, onToggleStatus) =>
    */
   const deleteButton = useMemo(
     () => ({
-      text: 'Eliminar',
+      text: LABELS.admin.affiliates.card.actions.delete,
       className: 'bg-red-100 text-red-800 hover:bg-red-200',
-      title: 'Eliminar afiliado'
+      title: LABELS.admin.affiliates.card.actions.deleteTitle
     }),
     []
   )

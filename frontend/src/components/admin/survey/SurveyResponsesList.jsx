@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para lista detallada de respuestas de encuestas
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, datos del hook
+ * ${LABELS.admin.survey.surveyResponsesList.comments.title}
+ * ${LABELS.admin.survey.surveyResponsesList.comments.rule3}
+ * ${LABELS.admin.survey.surveyResponsesList.comments.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Array} props.responses - Lista de respuestas filtradas
@@ -12,12 +13,14 @@ import React from 'react'
  * @returns {JSX.Element} Vista de lista de respuestas
  */
 const SurveyResponsesList = ({ responses, questions, loading }) => {
+  const labels = LABELS.admin.survey.surveyResponsesList
+  
   if (loading) {
     return (
       <div className="bg-white rounded-xl shadow-medium p-8 text-center">
         <i className="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-        <h3 className="text-lg font-exo font-semibold text-gray-800 mb-2">Cargando...</h3>
-        <p className="text-gray-600 font-roboto">Obteniendo respuestas de encuestas</p>
+        <h3 className="text-lg font-exo font-semibold text-gray-800 mb-2">{labels.loading.title}</h3>
+        <p className="text-gray-600 font-roboto">{labels.loading.message}</p>
       </div>
     )
   }
@@ -27,10 +30,10 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
       <div className="bg-white rounded-xl shadow-medium p-12 text-center">
         <i className="fas fa-comments text-6xl text-gray-300 mb-4"></i>
         <h3 className="text-xl font-exo font-semibold text-gray-700 mb-2">
-          Sin respuestas disponibles
+          {labels.emptyState.title}
         </h3>
         <p className="text-gray-500 font-roboto">
-          No se encontraron respuestas de encuestas con los filtros seleccionados.
+          {labels.emptyState.message}
         </p>
       </div>
     )
@@ -42,10 +45,10 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
       <div className="bg-white rounded-xl shadow-medium p-6">
         <h2 className="text-xl font-exo font-semibold text-gray-800 mb-2">
           <i className="fas fa-list text-helpmed-blue mr-2"></i>
-          Respuestas Detalladas ({responses.length})
+          {labels.header.title.replace('{count}', responses.length)}
         </h2>
         <p className="text-gray-600 font-roboto">
-          Listado completo de todas las respuestas de encuestas de satisfacción
+          {labels.header.subtitle}
         </p>
       </div>
 
@@ -66,7 +69,9 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
                   <div>
                     <h3 className="font-exo font-semibold text-gray-800">{response.patientName}</h3>
                     <p className="text-sm text-gray-600 font-roboto">
-                      {response.serviceType} • ID: {response.serviceId}
+                      {labels.responseItem.serviceFormat
+                        .replace('{serviceType}', response.serviceType)
+                        .replace('{serviceId}', response.serviceId)}
                     </p>
                   </div>
                 </div>
@@ -99,7 +104,7 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
                               : 'text-red-600'
                       }`}
                     >
-                      {response.average}/5.0
+                      {labels.responseItem.ratingFormat.replace('{rating}', response.average)}
                     </span>
                   </div>
                 </div>
@@ -109,7 +114,7 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
             {/* Calificaciones por pregunta */}
             <div className="p-6">
               <h4 className="text-lg font-exo font-semibold text-gray-800 mb-4">
-                Calificaciones por Pregunta
+                {labels.sections.questionsTitle}
               </h4>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
@@ -147,7 +152,7 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
                                       : 'text-red-600'
                               }`}
                             >
-                              {rating}/5
+                              {labels.responseItem.questionRatingFormat.replace('{rating}', rating)}
                             </div>
                           </div>
                         </div>
@@ -172,7 +177,7 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
                 <div className="border-t pt-4">
                   <h5 className="font-exo font-semibold text-gray-800 mb-2">
                     <i className="fas fa-quote-left text-helpmed-blue mr-2"></i>
-                    Comentarios del Usuario
+                    {labels.sections.commentsTitle}
                   </h5>
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                     <p className="text-gray-800 font-roboto italic">"{response.comments}"</p>
@@ -184,22 +189,22 @@ const SurveyResponsesList = ({ responses, questions, loading }) => {
               {response.ratings && response.ratings.question5 !== undefined && (
                 <div className="border-t pt-4 mt-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-roboto text-gray-600">Clasificación NPS:</span>
+                    <span className="text-sm font-roboto text-gray-600">{labels.sections.npsLabel}</span>
                     <div className="flex items-center">
                       {response.ratings.question5 >= 4 ? (
                         <>
                           <i className="fas fa-thumbs-up text-green-600 mr-1"></i>
-                          <span className="text-green-600 font-exo font-semibold">Promotor</span>
+                          <span className="text-green-600 font-exo font-semibold">{labels.sections.npsCategories.promoter}</span>
                         </>
                       ) : response.ratings.question5 === 3 ? (
                         <>
                           <i className="fas fa-minus text-yellow-600 mr-1"></i>
-                          <span className="text-yellow-600 font-exo font-semibold">Pasivo</span>
+                          <span className="text-yellow-600 font-exo font-semibold">{labels.sections.npsCategories.passive}</span>
                         </>
                       ) : (
                         <>
                           <i className="fas fa-thumbs-down text-red-600 mr-1"></i>
-                          <span className="text-red-600 font-exo font-semibold">Detractor</span>
+                          <span className="text-red-600 font-exo font-semibold">{labels.sections.npsCategories.detractor}</span>
                         </>
                       )}
                     </div>

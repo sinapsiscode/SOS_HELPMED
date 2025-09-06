@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import useAppStore from '../../../stores/useAppStore'
+import { LABELS } from '../../../config/labels'
 
 // Componente de tarjeta de métrica de servicio
-const ServiceMetricCard = ({ title, total, completed, inProgress, icon, color }) => (
+const ServiceMetricCard = ({ title, total, completed, inProgress, icon, color }) => {
+  const labels = LABELS.admin.reports.servicesReport.serviceMetricCard
+  return (
   <div className="bg-white rounded-xl shadow-medium p-6">
     <div className="flex items-center justify-between mb-4">
       <i className={`${icon} text-2xl text-${color}-600`}></i>
@@ -10,33 +13,35 @@ const ServiceMetricCard = ({ title, total, completed, inProgress, icon, color })
     </div>
     <div className="space-y-2">
       <div className="flex justify-between">
-        <span>Total:</span>
+        <span>{labels.total}</span>
         <span className="font-bold">{total}</span>
       </div>
       <div className="flex justify-between">
-        <span>Completados:</span>
+        <span>{labels.completed}</span>
         <span className="font-bold text-green-600">{completed}</span>
       </div>
       <div className="flex justify-between">
-        <span>En progreso:</span>
+        <span>{labels.inProgress}</span>
         <span className="font-bold text-blue-600">{inProgress}</span>
       </div>
     </div>
   </div>
-)
+  )
+}
 
 // Distribución de tipos de servicios con datos reales
 const ServiceTypeDistribution = ({ serviceMetrics }) => {
+  const labels = LABELS.admin.reports.servicesReport
   const totalServices = Object.values(serviceMetrics).reduce((sum, metric) => sum + (metric.total || 0), 0)
   
   const serviceData = Object.entries(serviceMetrics)
     .filter(([_, metric]) => metric.total > 0)
     .map(([type, metric]) => ({
       type: {
-        emergencias: 'Emergencias',
-        domicilio: 'Médico Domicilio',
-        urgencias: 'Urgencias', 
-        traslados: 'Traslados'
+        emergencias: labels.serviceTypes.emergencies,
+        domicilio: labels.serviceTypes.homeDoctor,
+        urgencias: labels.serviceTypes.urgencies, 
+        traslados: labels.serviceTypes.transfers
       }[type] || type,
       count: metric.total,
       percentage: totalServices > 0 ? Math.round((metric.total / totalServices) * 100) : 0,
@@ -50,7 +55,7 @@ const ServiceTypeDistribution = ({ serviceMetrics }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Distribución de Servicios</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.serviceDistribution.title}</h3>
       
       {serviceData.length > 0 ? (
         <>
@@ -81,13 +86,13 @@ const ServiceTypeDistribution = ({ serviceMetrics }) => {
 
           <div className="mt-6 pt-4 border-t text-center">
             <div className="text-2xl font-bold text-gray-800">{totalServices}</div>
-            <div className="text-sm text-gray-600">Total Servicios Utilizados</div>
+            <div className="text-sm text-gray-600">{labels.serviceDistribution.totalServices}</div>
           </div>
         </>
       ) : (
         <div className="text-center py-8 text-gray-500">
           <i className="fas fa-chart-pie text-4xl mb-2"></i>
-          <p>No hay servicios registrados</p>
+          <p>{labels.serviceDistribution.noServices}</p>
         </div>
       )}
     </div>
@@ -96,13 +101,14 @@ const ServiceTypeDistribution = ({ serviceMetrics }) => {
 
 // Utilización de servicios por tipo de plan
 const ServiceUtilizationByPlan = ({ allUsers }) => {
+  const labels = LABELS.admin.reports.servicesReport.utilizationByPlan
   const calculatePlanUtilization = () => {
     const planData = {}
 
     // Analizar usuarios familiares
     if (allUsers.familiar) {
       allUsers.familiar.forEach(user => {
-        const planName = user.plan?.name || user.plan?.subtype || 'Plan Desconocido'
+        const planName = user.plan?.name || user.plan?.subtype || LABELS.admin.reports.servicesReport.detailedAnalysis.planTypes.unknown
         
         if (!planData[planName]) {
           planData[planName] = {
@@ -137,7 +143,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
     // Analizar usuarios corporativos
     if (allUsers.corporativo) {
       allUsers.corporativo.forEach(user => {
-        const planName = 'Área Protegida'
+        const planName = LABELS.admin.reports.servicesReport.detailedAnalysis.planTypes.protectedArea
         
         if (!planData[planName]) {
           planData[planName] = {
@@ -169,7 +175,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Utilización por Plan</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.title}</h3>
       
       {planUtilization.length > 0 ? (
         <div className="space-y-4">
@@ -178,11 +184,11 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <h4 className="font-medium text-gray-800">{plan.name}</h4>
-                  <div className="text-sm text-gray-600">{plan.users} usuario(s)</div>
+                  <div className="text-sm text-gray-600">{labels.users.replace('{count}', plan.users)}</div>
                 </div>
                 <div className="text-right">
                   <div className="text-lg font-bold text-gray-800">{plan.utilizationRate}%</div>
-                  <div className="text-xs text-gray-600">Utilización</div>
+                  <div className="text-xs text-gray-600">{labels.utilization}</div>
                 </div>
               </div>
               
@@ -198,8 +204,8 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
               </div>
               
               <div className="flex justify-between text-xs text-gray-600">
-                <span>{plan.usedServices} usados</span>
-                <span>{plan.totalServices} total</span>
+                <span>{labels.used.replace('{used}', plan.usedServices)}</span>
+                <span>{labels.total.replace('{total}', plan.totalServices)}</span>
               </div>
             </div>
           ))}
@@ -207,7 +213,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
       ) : (
         <div className="text-center py-8 text-gray-500">
           <i className="fas fa-chart-bar text-4xl mb-2"></i>
-          <p>No hay datos de planes disponibles</p>
+          <p>{labels.noData}</p>
         </div>
       )}
     </div>
@@ -216,6 +222,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
 
 // Análisis detallado de servicios por plan
 const ServicesByPlanAnalysis = ({ allUsers }) => {
+  const labels = LABELS.admin.reports.servicesReport.detailedAnalysis
   const getAvailableServicesByPlan = (planName, planType) => {
     const availableServices = []
     
@@ -279,7 +286,7 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
         analysis.push({
           planName: name,
           users: data.users,
-          type: 'Familiar',
+          type: labels.planTypes.familiar,
           services: data.services,
           availableServices: getAvailableServicesByPlan(name, 'Familiar')
         })
@@ -299,11 +306,11 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
       }
       
       analysis.push({
-        planName: 'Área Protegida',
+        planName: labels.planTypes.protectedArea,
         users: corporateData.users,
-        type: 'Corporativo',
+        type: labels.planTypes.corporate,
         services: corporateData.services,
-        availableServices: getAvailableServicesByPlan('Área Protegida', 'Corporativo')
+        availableServices: getAvailableServicesByPlan(labels.planTypes.protectedArea, labels.planTypes.corporate)
       })
     }
 
@@ -323,23 +330,23 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
   const serviceColumns = getAllServiceColumns()
   
   const serviceHeaders = {
-    'EMERGENCIA': 'Emergencias',
-    'URGENCIA': 'Urgencias', 
-    'MEDICO_DOMICILIO': 'Domicilio',
-    'TRASLADO_PROGRAMADO': 'Traslados'
+    'EMERGENCIA': labels.headers.emergencies,
+    'URGENCIA': labels.headers.urgencies, 
+    'MEDICO_DOMICILIO': labels.headers.homeVisits,
+    'TRASLADO_PROGRAMADO': labels.headers.transfers
   }
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Análisis Detallado por Plan</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.title}</h3>
       
       {detailedAnalysis.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b bg-gray-50">
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Plan</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Usuarios</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.headers.plan}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.headers.users}</th>
                 {serviceColumns.map(service => (
                   <th key={service} className="text-center py-3 px-4 font-medium text-gray-700">
                     {serviceHeaders[service]}
@@ -374,7 +381,7 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
                     if (!serviceData || serviceData.limit === 0) {
                       return (
                         <td key={service} className="py-3 px-4 text-center">
-                          <span className="text-gray-500">N/A</span>
+                          <span className="text-gray-500">{labels.notAvailable}</span>
                         </td>
                       )
                     }
@@ -412,7 +419,7 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
       ) : (
         <div className="text-center py-8 text-gray-500">
           <i className="fas fa-table text-4xl mb-2"></i>
-          <p>No hay datos para analizar</p>
+          <p>{labels.noData}</p>
         </div>
       )}
     </div>
@@ -420,6 +427,7 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
 }
 
 const ServicesReport = ({ baseMetrics }) => {
+  const labels = LABELS.admin.reports.servicesReport
   const { allUsers, activeEmergencies } = useAppStore()
   const [serviceMetrics, setServiceMetrics] = useState({})
   
@@ -485,7 +493,7 @@ const ServicesReport = ({ baseMetrics }) => {
       {/* Métricas principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <ServiceMetricCard
-          title="Emergencias"
+          title={labels.serviceTypes.emergencies}
           total={serviceMetrics.emergencias?.total || 0}
           completed={serviceMetrics.emergencias?.completed || 0}
           inProgress={serviceMetrics.emergencias?.inProgress || 0}
@@ -493,7 +501,7 @@ const ServicesReport = ({ baseMetrics }) => {
           color="red"
         />
         <ServiceMetricCard
-          title="Médico a Domicilio"
+          title={labels.serviceTypes.medicalHome}
           total={serviceMetrics.domicilio?.total || 0}
           completed={serviceMetrics.domicilio?.completed || 0}
           inProgress={serviceMetrics.domicilio?.inProgress || 0}
@@ -501,7 +509,7 @@ const ServicesReport = ({ baseMetrics }) => {
           color="blue"
         />
         <ServiceMetricCard
-          title="Urgencias"
+          title={labels.serviceTypes.urgencies}
           total={serviceMetrics.urgencias?.total || 0}
           completed={serviceMetrics.urgencias?.completed || 0}
           inProgress={serviceMetrics.urgencias?.inProgress || 0}
@@ -509,7 +517,7 @@ const ServicesReport = ({ baseMetrics }) => {
           color="orange"
         />
         <ServiceMetricCard
-          title="Traslados"
+          title={labels.serviceTypes.transfers}
           total={serviceMetrics.traslados?.total || 0}
           completed={serviceMetrics.traslados?.completed || 0}
           inProgress={serviceMetrics.traslados?.inProgress || 0}

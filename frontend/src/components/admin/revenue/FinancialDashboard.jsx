@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para el dashboard financiero con KPIs principales
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, datos del hook
+ * ${LABELS.admin.revenue.financialDashboard.comments.title}
+ * ${LABELS.admin.revenue.financialDashboard.comments.rules.rule3}
+ * ${LABELS.admin.revenue.financialDashboard.comments.rules.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object} props.metrics - Métricas financieras calculadas
@@ -11,6 +12,7 @@ import React from 'react'
  * @returns {JSX.Element} Vista del dashboard financiero
  */
 const FinancialDashboard = ({ metrics, formatCurrency }) => {
+  const labels = LABELS.admin.revenue.financialDashboard
   // Componente KPI Card reutilizable
   const KPICard = ({ title, value, icon, color, subtitle, trend }) => (
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
@@ -44,36 +46,36 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
       {/* KPIs principales - Responsive */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard
-          title="Ingresos Totales"
+          title={labels.kpis.totalRevenue.title}
           value={formatCurrency(metrics.totalRevenue)}
           icon="fas fa-dollar-sign"
           color="green"
-          subtitle="Acumulado total"
+          subtitle={labels.kpis.totalRevenue.subtitle}
         />
 
         <KPICard
-          title="Ingresos del Mes"
+          title={labels.kpis.monthlyRevenue.title}
           value={formatCurrency(metrics.monthlyRevenue)}
           icon="fas fa-calendar"
           color="blue"
-          subtitle="Mes actual"
+          subtitle={labels.kpis.monthlyRevenue.subtitle}
           trend={metrics.monthlyGrowth}
         />
 
         <KPICard
-          title="Ingresos Hoy"
+          title={labels.kpis.dailyRevenue.title}
           value={formatCurrency(metrics.dailyRevenue)}
           icon="fas fa-clock"
           color="purple"
-          subtitle="Día actual"
+          subtitle={labels.kpis.dailyRevenue.subtitle}
         />
 
         <KPICard
-          title="Transacción Promedio"
+          title={labels.kpis.averageTransaction.title}
           value={formatCurrency(metrics.averageTransaction)}
           icon="fas fa-calculator"
           color="orange"
-          subtitle="Por transacción"
+          subtitle={labels.kpis.averageTransaction.subtitle}
         />
       </div>
 
@@ -82,7 +84,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-lg font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-chart-pie text-helpmed-blue mr-2"></i>
-            Ingresos por Tipo de Transacción
+            {labels.sections.transactionTypes.title}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -122,7 +124,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-lg font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-chart-line text-helpmed-blue mr-2"></i>
-            Tendencia de Ingresos (Últimos 6 Meses)
+            {labels.sections.trends.title}
           </h3>
 
           <div className="overflow-x-auto">
@@ -148,7 +150,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
                     <div className="text-sm font-roboto font-medium text-gray-700">
                       {trend.month}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1">{trend.transactions} trans.</div>
+                    <div className="text-xs text-gray-500 mt-1">{labels.sections.trends.transactions.replace('{count}', trend.transactions)}</div>
                   </div>
                 )
               })}
@@ -165,7 +167,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
               <i className="fas fa-check-circle text-2xl text-green-600"></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Completadas</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.sections.transactionStatus.completed}</p>
               <p className="text-2xl font-exo font-bold text-gray-800">
                 {metrics.byStatus?.COMPLETED || 0}
               </p>
@@ -179,7 +181,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
               <i className="fas fa-clock text-2xl text-yellow-600"></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Pendientes</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.sections.transactionStatus.pending}</p>
               <p className="text-2xl font-exo font-bold text-gray-800">
                 {metrics.byStatus?.PENDING || 0}
               </p>
@@ -193,7 +195,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
               <i className="fas fa-times-circle text-2xl text-red-600"></i>
             </div>
             <div>
-              <p className="text-gray-600 text-sm font-roboto">Fallidas</p>
+              <p className="text-gray-600 text-sm font-roboto">{labels.sections.transactionStatus.failed}</p>
               <p className="text-2xl font-exo font-bold text-gray-800">
                 {metrics.byStatus?.FAILED || 0}
               </p>
@@ -207,18 +209,7 @@ const FinancialDashboard = ({ metrics, formatCurrency }) => {
 
 // Función utilitaria para nombres de tipos
 const getTypeDisplayName = (type) => {
-  const typeNames = {
-    service_payment: 'Pago de Servicio',
-    plan_payment: 'Pago de Plan',
-    additional_fee: 'Tarifa Adicional',
-    refund: 'Reembolso',
-    adjustment: 'Ajuste',
-    consultation_fee: 'Consulta Médica',
-    emergency_fee: 'Emergencia',
-    transfer_fee: 'Traslado',
-    insurance_payment: 'Seguro',
-    other: 'Otro'
-  }
+  const typeNames = LABELS.admin.revenue.financialDashboard.transactionTypes
   return typeNames[type] || type
 }
 

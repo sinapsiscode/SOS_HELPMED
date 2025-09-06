@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { getAffiliatesStats } from '../utils/affiliateHelpers'
+import { LABELS } from '../config/labels'
 
 /**
  * Hook que maneja TODA la lógica de la lista de afiliados
@@ -41,11 +42,11 @@ export const useAffiliatesList = (affiliates, onEdit, onDelete, onToggleStatus, 
    */
   const emptyState = useMemo(
     () => ({
-      icon: '👥',
-      title: 'No hay afiliados registrados',
-      description: 'Comienza agregando afiliados al plan familiar',
+      icon: LABELS.admin.affiliates.list.empty.icon,
+      title: LABELS.admin.affiliates.list.empty.title,
+      description: LABELS.admin.affiliates.list.empty.description,
       button: {
-        text: 'Agregar Primer Afiliado',
+        text: LABELS.admin.affiliates.list.empty.addButton,
         icon: '➕',
         onClick: onAddFirst,
         className:
@@ -64,8 +65,8 @@ export const useAffiliatesList = (affiliates, onEdit, onDelete, onToggleStatus, 
    */
   const headerInfo = useMemo(
     () => ({
-      title: `Afiliados (${safeAffiliates.length})`,
-      subtitle: 'Administra los afiliados del plan familiar',
+      title: `${LABELS.admin.affiliates.list.title} (${safeAffiliates.length})`,
+      subtitle: LABELS.admin.affiliates.list.subtitle,
       visible: !isEmpty
     }),
     [safeAffiliates.length, isEmpty]
@@ -83,25 +84,25 @@ export const useAffiliatesList = (affiliates, onEdit, onDelete, onToggleStatus, 
 
     return {
       visible: !isEmpty,
-      title: 'Estadísticas Rápidas',
+      title: LABELS.admin.affiliates.list.stats.title,
       items: [
         {
           id: 'total',
-          label: 'Total',
+          label: LABELS.admin.affiliates.list.stats.total,
           value: calculatedStats.total,
           colorClass: 'text-blue-600',
           bgClass: 'bg-white'
         },
         {
           id: 'active',
-          label: 'Activos',
+          label: LABELS.admin.affiliates.list.stats.active,
           value: calculatedStats.active,
           colorClass: 'text-green-600',
           bgClass: 'bg-white'
         },
         {
           id: 'inactive',
-          label: 'Inactivos',
+          label: LABELS.admin.affiliates.list.stats.inactive,
           value: calculatedStats.inactive,
           colorClass: 'text-red-600',
           bgClass: 'bg-white'

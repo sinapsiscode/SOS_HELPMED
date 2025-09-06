@@ -1,5 +1,6 @@
 import React from 'react'
 import Swal from 'sweetalert2'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Componente de Acciones Rápidas
@@ -9,6 +10,8 @@ import Swal from 'sweetalert2'
  * @param {Function} onTabChange - Función para cambiar de tab en el dashboard
  */
 const QuickActions = ({ onTabChange }) => {
+  const labels = LABELS.admin.dashboard.quickActions
+  
   const handleAction = (action, tabId) => {
     if (tabId && onTabChange) {
       // Si hay un tabId y función de cambio, navegar a ese tab
@@ -16,8 +19,8 @@ const QuickActions = ({ onTabChange }) => {
     } else {
       // Fallback: mostrar mensaje si no hay navegación disponible
       Swal.fire({
-        title: 'Acción Rápida',
-        text: `Ejecutando: ${action}`,
+        title: labels.alert.title,
+        text: labels.alert.text.replace('{action}', action),
         icon: 'info',
         timer: 2000,
         showConfirmButton: false
@@ -25,41 +28,12 @@ const QuickActions = ({ onTabChange }) => {
     }
   }
 
-  const actions = [
-    { 
-      name: 'Gestionar Usuarios', 
-      icon: 'fas fa-user-plus', 
-      color: 'blue', 
-      tab: 'users',
-      description: 'Administrar usuarios del sistema'
-    },
-    { 
-      name: 'Contratos Corporativos', 
-      icon: 'fas fa-file-contract', 
-      color: 'red', 
-      tab: 'contracts',
-      description: 'Gestionar contratos empresariales'
-    },
-    { 
-      name: 'Ver Reportes', 
-      icon: 'fas fa-chart-bar', 
-      color: 'green', 
-      tab: 'reports',
-      description: 'Visualizar reportes y estadísticas'
-    },
-    { 
-      name: 'Configurar Planes', 
-      icon: 'fas fa-cog', 
-      color: 'purple', 
-      tab: 'plans',
-      description: 'Configurar planes y servicios'
-    },
-  ]
+  const actions = labels.actions
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
       <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">
-        Acciones Rápidas
+        {labels.title}
       </h3>
       
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">

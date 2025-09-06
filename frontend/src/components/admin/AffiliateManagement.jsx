@@ -5,24 +5,27 @@ import { AffiliatesList } from './affiliates'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
 import logger from '../../utils/logger'
+import LABELS from '../../config/labels'
 
 // Lazy loading de modales para optimizar bundle (Regla #5)
 const AddAffiliateModal = lazy(() => import('./affiliates/AddAffiliateModal'))
 const EditAffiliateModal = lazy(() => import('./affiliates/EditAffiliateModal'))
 
 /**
- * Componente principal para gestión de afiliados
- * REFACTORIZADO siguiendo TODAS las reglas:
+ * ${LABELS.admin.affiliateManagement.comments.title}
+ * ${LABELS.admin.affiliateManagement.comments.refactored}
  *
- * ✅ Regla #1: <200 líneas
- * ✅ Regla #3: Props con PropTypes
- * ✅ Regla #5: Usa logger en lugar de console.log
- * ✅ Regla #8: Manejo robusto de errores
- * ✅ Regla #12: Hooks llamados correctamente (no condicionalmente)
+ * ${LABELS.admin.affiliateManagement.comments.rules.rule1}
+ * ${LABELS.admin.affiliateManagement.comments.rules.rule3}
+ * ${LABELS.admin.affiliateManagement.comments.rules.rule5}
+ * ${LABELS.admin.affiliateManagement.comments.rules.rule8}
+ * ${LABELS.admin.affiliateManagement.comments.rules.rule12}
  *
  * @component
  */
 const AffiliateManagement = ({ user, onSave, onClose }) => {
+  // Labels configuration
+  const labels = LABELS.admin.affiliateManagement
   // ============================================
   // HOOKS LLAMADOS SIEMPRE AL INICIO (Regla #12)
   // ============================================
@@ -47,28 +50,28 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
   // VALIDACIÓN DE PROPS (Regla #4) - DESPUÉS DE HOOKS
   // ============================================
   if (!user || typeof user !== 'object') {
-    logger.error('AffiliateManagement: user es requerido y debe ser un objeto')
-    return <ErrorModal message="Información de usuario incompleta" onClose={onClose} />
+    logger.error(labels.errors.userRequired)
+    return <ErrorModal message={labels.errors.incompleteUserInfo} onClose={onClose} />
   }
 
   if (!user.profile || typeof user.profile.name !== 'string') {
-    logger.error('AffiliateManagement: user.profile.name es requerido')
-    return <ErrorModal message="Información de usuario incompleta" onClose={onClose} />
+    logger.error(labels.errors.profileNameRequired)
+    return <ErrorModal message={labels.errors.incompleteUserInfo} onClose={onClose} />
   }
 
   if (!user.plan || typeof user.plan.name !== 'string') {
-    logger.error('AffiliateManagement: user.plan.name es requerido')
-    return <ErrorModal message="Plan de usuario no encontrado" onClose={onClose} />
+    logger.error(labels.errors.planNameRequired)
+    return <ErrorModal message={labels.errors.userPlanNotFound} onClose={onClose} />
   }
 
   if (typeof onSave !== 'function') {
-    logger.error('AffiliateManagement: onSave debe ser una función')
-    return <ErrorModal message="Configuración incorrecta" onClose={onClose} />
+    logger.error(labels.errors.onSaveFunction)
+    return <ErrorModal message={labels.errors.incorrectConfig} onClose={onClose} />
   }
 
   if (typeof onClose !== 'function') {
-    logger.error('AffiliateManagement: onClose debe ser una función')
-    return <ErrorModal message="Configuración incorrecta" />
+    logger.error(labels.errors.onCloseFunction)
+    return <ErrorModal message={labels.errors.incorrectConfig} />
   }
 
   // ============================================
@@ -83,14 +86,14 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
       }
       return {
         success: false,
-        error: result.error || 'Error al agregar afiliado',
+        error: result.error || labels.errors.addError,
         code: result.code || 'ADD_ERROR'
       }
     } catch (error) {
-      logger.error('Error inesperado al agregar afiliado', error)
+      logger.error(labels.errors.unexpectedAddError, error)
       return {
         success: false,
-        error: error.message || 'Error inesperado al agregar afiliado',
+        error: error.message || labels.errors.unexpectedAddError,
         code: 'UNEXPECTED_ERROR'
       }
     }
@@ -105,14 +108,14 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
       }
       return {
         success: false,
-        error: result.error || 'Error al editar afiliado',
+        error: result.error || labels.errors.editError,
         code: result.code || 'EDIT_ERROR'
       }
     } catch (error) {
-      logger.error('Error inesperado al editar afiliado', error)
+      logger.error(labels.errors.unexpectedEditError, error)
       return {
         success: false,
-        error: error.message || 'Error inesperado al editar afiliado',
+        error: error.message || labels.errors.unexpectedEditError,
         code: 'UNEXPECTED_ERROR'
       }
     }
@@ -133,16 +136,16 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
         <div className="sticky top-0 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-200 rounded-t-xl">
           <div>
             <h2 className="text-xl font-bold text-gray-800">
-              Gestión de Afiliados - {user.profile?.name}
+              {labels.header.title.replace('{name}', user.profile?.name)}
             </h2>
             <p className="text-sm text-gray-600">
-              Plan: {user.plan?.name} • Afiliados: {affiliates.length}
+              {labels.header.subtitle.replace('{plan}', user.plan?.name).replace('{count}', affiliates.length)}
             </p>
           </div>
           <button
             onClick={onClose}
             className="p-2 text-gray-400 transition-colors rounded-lg hover:text-gray-600 hover:bg-gray-100"
-            aria-label="Cerrar"
+            aria-label={labels.header.closeAriaLabel}
           >
             ✕
           </button>
@@ -151,16 +154,16 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
         <div className="p-6 space-y-6">
           {/* Plan Info */}
           <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
-            <h3 className="mb-2 font-semibold text-blue-800">Información del Plan Familiar</h3>
+            <h3 className="mb-2 font-semibold text-blue-800">{labels.planInfo.title}</h3>
             <div className="grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
               <div>
                 <span className="text-blue-700">
-                  <strong>Titular:</strong> {user.profile?.name}
+                  <strong>{labels.planInfo.owner}</strong> {user.profile?.name}
                 </span>
               </div>
               <div>
                 <span className="text-blue-700">
-                  <strong>Plan:</strong> {user.plan?.name}
+                  <strong>{labels.planInfo.plan}</strong> {user.plan?.name}
                 </span>
               </div>
             </div>
@@ -191,7 +194,7 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
                   className="flex items-center px-4 py-2 ml-6 space-x-2 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   <span>➕</span>
-                  <span>Agregar Afiliado</span>
+                  <span>{labels.buttons.addAffiliate}</span>
                 </button>
               )}
             </div>
@@ -203,14 +206,14 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
               onClick={onClose}
               className="flex-1 px-4 py-2 font-medium text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
             >
-              Cancelar
+              {labels.buttons.cancel}
             </button>
             <button
               onClick={handleSaveChanges}
               disabled={loading}
               className="flex-1 px-4 py-2 font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Guardando...' : 'Guardar Cambios'}
+              {loading ? labels.buttons.saving : labels.buttons.saveChanges}
             </button>
           </div>
         </div>
@@ -242,25 +245,29 @@ const AffiliateManagement = ({ user, onSave, onClose }) => {
 }
 
 /**
- * Componente de modal de error reutilizable
- * ✅ Regla #1: Componente pequeño
+ * ${LABELS.admin.affiliateManagement.comments.errorModalTitle}
+ * ${LABELS.admin.affiliateManagement.comments.errorModalRule}
  */
-const ErrorModal = ({ message, onClose }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-white rounded-xl shadow-2xl max-w-md w-full m-4 p-6">
-      <h2 className="text-xl font-bold text-red-600 mb-4">Error de Datos</h2>
-      <p className="text-gray-600 mb-4">{message}</p>
-      {onClose && (
-        <button
-          onClick={onClose}
-          className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-        >
-          Cerrar
-        </button>
-      )}
+const ErrorModal = ({ message, onClose }) => {
+  const labels = LABELS.admin.affiliateManagement
+  
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full m-4 p-6">
+        <h2 className="text-xl font-bold text-red-600 mb-4">{labels.errorModal.title}</h2>
+        <p className="text-gray-600 mb-4">{message}</p>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+          >
+            {labels.buttons.close}
+          </button>
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 // PropTypes
 AffiliateManagement.propTypes = {

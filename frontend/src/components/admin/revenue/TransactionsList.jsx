@@ -1,9 +1,10 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para la lista de transacciones con filtros
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, lógica delegada
+ * ${LABELS.admin.revenue.transactionsList.comments.title}
+ * ${LABELS.admin.revenue.transactionsList.comments.rules.rule3}
+ * ${LABELS.admin.revenue.transactionsList.comments.rules.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Array} props.transactions - Lista de transacciones filtradas
@@ -30,19 +31,20 @@ const TransactionsList = ({
   clearFilters,
   loading
 }) => {
+  const labels = LABELS.admin.revenue.transactionsList
   return (
     <div className="space-y-6">
       {/* Filtros */}
       <div className="bg-white rounded-xl shadow-medium p-6">
         <h3 className="text-lg font-exo font-semibold text-gray-800 mb-4">
           <i className="fas fa-filter text-helpmed-blue mr-2"></i>
-          Filtros de Búsqueda
+          {labels.filters.title}
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           <div>
             <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-              Desde
+              {labels.filters.fields.from}
             </label>
             <input
               type="date"
@@ -54,7 +56,7 @@ const TransactionsList = ({
 
           <div>
             <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-              Hasta
+              {labels.filters.fields.to}
             </label>
             <input
               type="date"
@@ -65,46 +67,46 @@ const TransactionsList = ({
           </div>
 
           <div>
-            <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">Tipo</label>
+            <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">{labels.filters.fields.type}</label>
             <select
               value={filters.type}
               onChange={(e) => onFilterChange('type', e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
             >
-              <option value="all">Todos los tipos</option>
-              <option value="service_payment">Pago de Servicio</option>
-              <option value="plan_payment">Pago de Plan</option>
-              <option value="additional_fee">Tarifa Adicional</option>
-              <option value="refund">Reembolso</option>
-              <option value="adjustment">Ajuste</option>
+              <option value="all">{labels.filters.options.allTypes}</option>
+              <option value="service_payment">{labels.transactionTypes.service_payment}</option>
+              <option value="plan_payment">{labels.transactionTypes.plan_payment}</option>
+              <option value="additional_fee">{labels.transactionTypes.additional_fee}</option>
+              <option value="refund">{labels.transactionTypes.refund}</option>
+              <option value="adjustment">{labels.transactionTypes.adjustment}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-              Estado
+              {labels.filters.fields.status}
             </label>
             <select
               value={filters.status}
               onChange={(e) => onFilterChange('status', e.target.value)}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
             >
-              <option value="all">Todos los estados</option>
-              <option value="COMPLETED">Completado</option>
-              <option value="PENDING">Pendiente</option>
-              <option value="FAILED">Fallido</option>
-              <option value="CANCELLED">Cancelado</option>
+              <option value="all">{labels.filters.options.allStatuses}</option>
+              <option value="COMPLETED">{labels.statuses.completed}</option>
+              <option value="PENDING">{labels.statuses.pending}</option>
+              <option value="FAILED">{labels.statuses.failed}</option>
+              <option value="CANCELLED">{labels.statuses.cancelled}</option>
             </select>
           </div>
 
           <div>
             <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-              Búsqueda
+              {labels.filters.fields.search}
             </label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Buscar por concepto, cliente..."
+                placeholder={labels.filters.placeholders.search}
                 value={filters.search}
                 onChange={(e) => onFilterChange('search', e.target.value)}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
@@ -120,11 +122,11 @@ const TransactionsList = ({
             className="text-sm text-gray-600 hover:text-gray-800 font-roboto"
           >
             <i className="fas fa-times mr-1"></i>
-            Limpiar filtros
+            {labels.filters.clearFilters}
           </button>
 
           <span className="text-sm text-gray-600 font-roboto">
-            {transactions.length} transacciones encontradas
+            {labels.filters.transactionsFound.replace('{count}', transactions.length)}
           </span>
         </div>
       </div>
@@ -132,23 +134,23 @@ const TransactionsList = ({
       {/* Lista de Transacciones */}
       <div className="bg-white rounded-xl shadow-medium overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-exo font-semibold text-gray-800">Transacciones</h3>
+          <h3 className="text-lg font-exo font-semibold text-gray-800">{labels.list.title}</h3>
         </div>
 
         {loading ? (
           <div className="p-8 text-center">
             <i className="fas fa-spinner fa-spin text-4xl text-gray-400 mb-4"></i>
-            <h3 className="text-lg font-exo font-semibold text-gray-800 mb-2">Cargando...</h3>
-            <p className="text-gray-600 font-roboto">Obteniendo transacciones</p>
+            <h3 className="text-lg font-exo font-semibold text-gray-800 mb-2">{labels.list.loading.title}</h3>
+            <p className="text-gray-600 font-roboto">{labels.list.loading.message}</p>
           </div>
         ) : transactions.length === 0 ? (
           <div className="p-8 text-center">
             <i className="fas fa-receipt text-4xl text-gray-400 mb-4"></i>
             <h3 className="text-lg font-exo font-semibold text-gray-800 mb-2">
-              No hay transacciones
+              {labels.list.empty.title}
             </h3>
             <p className="text-gray-600 font-roboto">
-              No se encontraron transacciones con los filtros seleccionados.
+              {labels.list.empty.message}
             </p>
           </div>
         ) : (
@@ -157,25 +159,25 @@ const TransactionsList = ({
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Fecha
+                    {labels.list.headers.date}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Concepto
+                    {labels.list.headers.concept}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Cliente
+                    {labels.list.headers.client}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Tipo
+                    {labels.list.headers.type}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Monto
+                    {labels.list.headers.amount}
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Estado
+                    {labels.list.headers.status}
                   </th>
                   <th className="px-6 py-3 text-right text-xs font-exo font-semibold text-gray-500 uppercase tracking-wider">
-                    Acciones
+                    {labels.list.headers.actions}
                   </th>
                 </tr>
               </thead>
@@ -213,12 +215,12 @@ const TransactionsList = ({
                         {transaction.status === 'FAILED' && <i className="fas fa-times mr-1"></i>}
                         {transaction.status === 'CANCELLED' && <i className="fas fa-ban mr-1"></i>}
                         {transaction.status === 'COMPLETED'
-                          ? 'Completado'
+                          ? labels.statuses.completed
                           : transaction.status === 'PENDING'
-                            ? 'Pendiente'
+                            ? labels.statuses.pending
                             : transaction.status === 'FAILED'
-                              ? 'Fallido'
-                              : 'Cancelado'}
+                              ? labels.statuses.failed
+                              : labels.statuses.cancelled}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -226,14 +228,14 @@ const TransactionsList = ({
                         <button
                           onClick={() => onEdit(transaction)}
                           className="text-helpmed-blue hover:text-blue-700 transition-colors"
-                          title="Editar transacción"
+                          title={labels.list.actions.edit}
                         >
                           <i className="fas fa-edit"></i>
                         </button>
                         <button
                           onClick={() => onDelete(transaction.id)}
                           className="text-red-600 hover:text-red-700 transition-colors"
-                          title="Eliminar transacción"
+                          title={labels.list.actions.delete}
                         >
                           <i className="fas fa-trash"></i>
                         </button>

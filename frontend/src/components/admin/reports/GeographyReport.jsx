@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import useAppStore from '../../../stores/useAppStore'
+import { LABELS } from '../../../config/labels'
 
 const GeographyReport = ({ dateRange }) => {
+  const labels = LABELS.admin.reports.geographyReport
   const { allUsers, activeEmergencies, ambulanceUsers } = useAppStore()
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   
@@ -40,16 +42,16 @@ const GeographyReport = ({ dateRange }) => {
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Análisis Geográfico</h2>
+            <h2 className="text-2xl font-bold mb-2">{labels.title}</h2>
             <p className="text-blue-100 text-sm">
-              Distribución de servicios y cobertura por zonas de Lima Metropolitana
+              {labels.subtitle}
             </p>
           </div>
           <div className="flex items-center space-x-2">
             <i className="fas fa-map-marked-alt text-3xl text-blue-200"></i>
             <div className="text-right">
               <div className="text-2xl font-bold">{kpis.totalUsers.toLocaleString()}</div>
-              <div className="text-sm text-blue-200">Usuarios Totales</div>
+              <div className="text-sm text-blue-200">{labels.kpis.totalUsers}</div>
             </div>
           </div>
         </div>
@@ -60,7 +62,7 @@ const GeographyReport = ({ dateRange }) => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Emergencias</p>
+              <p className="text-sm text-gray-600 font-medium">{labels.kpis.emergencies}</p>
               <p className="text-2xl font-bold text-gray-900">{kpis.totalEmergencies}</p>
             </div>
             <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
@@ -69,7 +71,7 @@ const GeographyReport = ({ dateRange }) => {
           </div>
           <div className="mt-2">
             <span className="text-sm text-green-600 font-medium">
-              ↑ 12% vs mes anterior
+              {labels.kpis.vsLastMonth.replace('{percentage}', '12')}
             </span>
           </div>
         </div>
@@ -77,7 +79,7 @@ const GeographyReport = ({ dateRange }) => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Tiempo Promedio</p>
+              <p className="text-sm text-gray-600 font-medium">{labels.kpis.averageTime}</p>
               <p className="text-2xl font-bold text-gray-900">{kpis.averageResponseTime}min</p>
             </div>
             <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -88,7 +90,7 @@ const GeographyReport = ({ dateRange }) => {
             <span className={`text-sm font-medium ${
               kpis.averageResponseTime <= 8 ? 'text-green-600' : 'text-red-600'
             }`}>
-              {kpis.averageResponseTime <= 8 ? '✓ Excelente' : '⚠ Mejorable'}
+              {kpis.averageResponseTime <= 8 ? labels.performance.excellent : labels.performance.improvable}
             </span>
           </div>
         </div>
@@ -96,7 +98,7 @@ const GeographyReport = ({ dateRange }) => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Cobertura</p>
+              <p className="text-sm text-gray-600 font-medium">{labels.kpis.coverage}</p>
               <p className="text-2xl font-bold text-gray-900">{kpis.coveragePercentage}%</p>
             </div>
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -105,7 +107,7 @@ const GeographyReport = ({ dateRange }) => {
           </div>
           <div className="mt-2">
             <span className="text-sm text-gray-600">
-              {kpis.availableUnits}/{kpis.activeUnits} unidades
+              {labels.kpis.units.replace('{available}', kpis.availableUnits).replace('{total}', kpis.activeUnits)}
             </span>
           </div>
         </div>
@@ -113,7 +115,7 @@ const GeographyReport = ({ dateRange }) => {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-600 font-medium">Zonas Cubiertas</p>
+              <p className="text-sm text-gray-600 font-medium">{labels.kpis.coveredZones}</p>
               <p className="text-2xl font-bold text-gray-900">9</p>
             </div>
             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -122,7 +124,7 @@ const GeographyReport = ({ dateRange }) => {
           </div>
           <div className="mt-2">
             <span className="text-sm text-green-600 font-medium">
-              100% Lima Metro
+              {labels.kpis.limaMetro}
             </span>
           </div>
         </div>
@@ -138,31 +140,31 @@ const GeographyReport = ({ dateRange }) => {
               <i className="fas fa-chart-line text-blue-600"></i>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Resumen Ejecutivo</h3>
-              <p className="text-sm text-gray-600">Principales métricas y tendencias geográficas</p>
+              <h3 className="text-lg font-semibold text-gray-900">{labels.executive.title}</h3>
+              <p className="text-sm text-gray-600">{labels.executive.subtitle}</p>
             </div>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-green-50 to-green-100 rounded-lg border border-green-200">
               <i className="fas fa-trophy text-green-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-green-800 text-sm sm:text-base">Distrito Líder</h4>
-              <p className="text-xs sm:text-sm text-green-700">Surco con {Math.floor(kpis.totalUsers * 0.18)} usuarios</p>
-              <p className="text-xs text-green-600 mt-1">18% del total</p>
+              <h4 className="font-semibold text-green-800 text-sm sm:text-base">{labels.executive.cards.leader.title}</h4>
+              <p className="text-xs sm:text-sm text-green-700">{labels.executive.cards.leader.description.replace('{district}', 'Surco').replace('{count}', Math.floor(kpis.totalUsers * 0.18))}</p>
+              <p className="text-xs text-green-600 mt-1">{labels.executive.cards.leader.percentage.replace('{percentage}', '18')}</p>
             </div>
             
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-blue-50 to-blue-100 rounded-lg border border-blue-200">
               <i className="fas fa-zap text-blue-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-blue-800 text-sm sm:text-base">Respuesta Más Rápida</h4>
-              <p className="text-xs sm:text-sm text-blue-700">Miraflores: 7 min promedio</p>
-              <p className="text-xs text-blue-600 mt-1">25% bajo objetivo</p>
+              <h4 className="font-semibold text-blue-800 text-sm sm:text-base">{labels.executive.cards.fastest.title}</h4>
+              <p className="text-xs sm:text-sm text-blue-700">{labels.executive.cards.fastest.description.replace('{district}', 'Miraflores').replace('{time}', '7')}</p>
+              <p className="text-xs text-blue-600 mt-1">{labels.executive.cards.fastest.percentage.replace('{percentage}', '25')}</p>
             </div>
             
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-purple-50 to-purple-100 rounded-lg border border-purple-200">
               <i className="fas fa-bullseye text-purple-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-purple-800 text-sm sm:text-base">Oportunidad</h4>
-              <p className="text-xs sm:text-sm text-purple-700">Callao necesita refuerzo</p>
-              <p className="text-xs text-purple-600 mt-1">18 min promedio</p>
+              <h4 className="font-semibold text-purple-800 text-sm sm:text-base">{labels.executive.cards.opportunity.title}</h4>
+              <p className="text-xs sm:text-sm text-purple-700">{labels.executive.cards.opportunity.description.replace('{district}', 'Callao')}</p>
+              <p className="text-xs text-purple-600 mt-1">{labels.executive.cards.opportunity.average.replace('{time}', '18')}
             </div>
           </div>
         </div>
@@ -200,19 +202,19 @@ const ServicesTrendChart = ({ dateRange }) => {
   // Datos mock para los últimos 6 meses
   const servicesData = {
     last30days: [
-      { period: 'Hace 30 días', emergencias: 45, urgencias: 32, domicilio: 28, traslados: 12 },
-      { period: 'Hace 25 días', emergencias: 52, urgencias: 38, domicilio: 31, traslados: 15 },
-      { period: 'Hace 20 días', emergencias: 48, urgencias: 35, domicilio: 29, traslados: 14 },
-      { period: 'Hace 15 días', emergencias: 58, urgencias: 42, domicilio: 35, traslados: 18 },
-      { period: 'Hace 10 días', emergencias: 61, urgencias: 45, domicilio: 38, traslados: 20 },
-      { period: 'Hace 5 días', emergencias: 65, urgencias: 48, domicilio: 41, traslados: 22 },
-      { period: 'Hoy', emergencias: 70, urgencias: 52, domicilio: 45, traslados: 25 }
+      { period: labels.serviceTrend.periods.days30, emergencias: 45, urgencias: 32, domicilio: 28, traslados: 12 },
+      { period: labels.serviceTrend.periods.days25, emergencias: 52, urgencias: 38, domicilio: 31, traslados: 15 },
+      { period: labels.serviceTrend.periods.days20, emergencias: 48, urgencias: 35, domicilio: 29, traslados: 14 },
+      { period: labels.serviceTrend.periods.days15, emergencias: 58, urgencias: 42, domicilio: 35, traslados: 18 },
+      { period: labels.serviceTrend.periods.days10, emergencias: 61, urgencias: 45, domicilio: 38, traslados: 20 },
+      { period: labels.serviceTrend.periods.days5, emergencias: 65, urgencias: 48, domicilio: 41, traslados: 22 },
+      { period: labels.serviceTrend.periods.today, emergencias: 70, urgencias: 52, domicilio: 45, traslados: 25 }
     ],
     last3months: [
-      { period: 'Hace 3 meses', emergencias: 420, urgencias: 310, domicilio: 280, traslados: 95 },
-      { period: 'Hace 2 meses', emergencias: 465, urgencias: 340, domicilio: 315, traslados: 110 },
-      { period: 'Mes pasado', emergencias: 510, urgencias: 375, domicilio: 350, traslados: 125 },
-      { period: 'Este mes', emergencias: 580, urgencias: 420, domicilio: 385, traslados: 145 }
+      { period: labels.serviceTrend.periods.months3, emergencias: 420, urgencias: 310, domicilio: 280, traslados: 95 },
+      { period: labels.serviceTrend.periods.months2, emergencias: 465, urgencias: 340, domicilio: 315, traslados: 110 },
+      { period: labels.serviceTrend.periods.lastMonth, emergencias: 510, urgencias: 375, domicilio: 350, traslados: 125 },
+      { period: labels.serviceTrend.periods.thisMonth, emergencias: 580, urgencias: 420, domicilio: 385, traslados: 145 }
     ]
   }
   
@@ -222,23 +224,23 @@ const ServicesTrendChart = ({ dateRange }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Tendencia de Servicios</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.serviceTrend.title}</h3>
         <div className="flex items-center space-x-4 text-xs">
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span>Emergencias</span>
+            <span>{labels.serviceTrend.legend.emergencies}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>Urgencias</span>
+            <span>{labels.serviceTrend.legend.urgencies}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>Domicilio</span>
+            <span>{labels.serviceTrend.legend.homeVisits}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Traslados</span>
+            <span>{labels.serviceTrend.legend.transfers}</span>
           </div>
         </div>
       </div>
@@ -282,25 +284,25 @@ const ServicesTrendChart = ({ dateRange }) => {
                     <div 
                       className="bg-green-500 w-full transition-opacity hover:opacity-80"
                       style={{ height: `${trasladoHeight}px` }}
-                      title={`Traslados: ${point.traslados}`}
+                      title={labels.serviceTrend.tooltips.transfers.replace('{count}', point.traslados)}
                     ></div>
                     {/* Domicilio (azul) */}
                     <div 
                       className="bg-blue-500 w-full transition-opacity hover:opacity-80"
                       style={{ height: `${domicilioHeight}px` }}
-                      title={`Médico Domicilio: ${point.domicilio}`}
+                      title={labels.serviceTrend.tooltips.homeVisits.replace('{count}', point.domicilio)}
                     ></div>
                     {/* Urgencias (amarillo) */}
                     <div 
                       className="bg-yellow-500 w-full transition-opacity hover:opacity-80"
                       style={{ height: `${urgenciaHeight}px` }}
-                      title={`Urgencias: ${point.urgencias}`}
+                      title={labels.serviceTrend.tooltips.urgencies.replace('{count}', point.urgencias)}
                     ></div>
                     {/* Emergencias (rojo) - arriba */}
                     <div 
                       className="bg-red-500 w-full transition-opacity hover:opacity-80"
                       style={{ height: `${emergenciaHeight}px` }}
-                      title={`Emergencias: ${point.emergencias}`}
+                      title={labels.serviceTrend.tooltips.emergencies.replace('{count}', point.emergencias)}
                     ></div>
                   </div>
                   
@@ -314,19 +316,19 @@ const ServicesTrendChart = ({ dateRange }) => {
                     <div className="font-semibold mb-2 text-center">{point.period}</div>
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center"><div className="w-2 h-2 bg-red-500 rounded mr-2"></div>Emergencias:</span>
+                        <span className="flex items-center"><div className="w-2 h-2 bg-red-500 rounded mr-2"></div>{labels.serviceTrend.legend.emergencies}:</span>
                         <span className="font-semibold ml-2">{point.emergencias}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center"><div className="w-2 h-2 bg-yellow-500 rounded mr-2"></div>Urgencias:</span>
+                        <span className="flex items-center"><div className="w-2 h-2 bg-yellow-500 rounded mr-2"></div>{labels.serviceTrend.legend.urgencies}:</span>
                         <span className="font-semibold ml-2">{point.urgencias}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center"><div className="w-2 h-2 bg-blue-500 rounded mr-2"></div>Domicilio:</span>
+                        <span className="flex items-center"><div className="w-2 h-2 bg-blue-500 rounded mr-2"></div>{labels.serviceTrend.legend.homeVisits}:</span>
                         <span className="font-semibold ml-2">{point.domicilio}</span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="flex items-center"><div className="w-2 h-2 bg-green-500 rounded mr-2"></div>Traslados:</span>
+                        <span className="flex items-center"><div className="w-2 h-2 bg-green-500 rounded mr-2"></div>{labels.serviceTrend.legend.transfers}:</span>
                         <span className="font-semibold ml-2">{point.traslados}</span>
                       </div>
                       <div className="border-t pt-1 mt-1 flex justify-between">
@@ -415,7 +417,7 @@ const UserGrowthChart = ({ dateRange }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Crecimiento de Usuarios</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.userGrowth.title}</h3>
         <div className="flex items-center space-x-4 text-xs">
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
@@ -579,16 +581,16 @@ const SummaryTable = ({ dateRange }) => {
   
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Resumen por Tipo de Plan</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.planAnalysis.summary}</h3>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
             <tr className="border-b">
-              <th className="text-left py-3">Tipo de Plan</th>
-              <th className="text-center py-3">Usuarios</th>
-              <th className="text-center py-3">Servicios Usados</th>
-              <th className="text-center py-3">Ingresos Anuales</th>
-              <th className="text-center py-3">Utilización</th>
+              <th className="text-left py-3">{labels.planAnalysis.headers.planType}</th>
+              <th className="text-center py-3">{labels.planAnalysis.headers.users}</th>
+              <th className="text-center py-3">{labels.planAnalysis.headers.servicesUsed}</th>
+              <th className="text-center py-3">{labels.planAnalysis.headers.annualRevenue}</th>
+              <th className="text-center py-3">{labels.planAnalysis.headers.utilization}</th>
             </tr>
           </thead>
           <tbody>
@@ -689,7 +691,7 @@ const UserRegistrationChart = ({ dateRange }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-bold text-gray-800">Análisis de Registros y Solicitudes</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.registrationAnalysis.title}</h3>
         <div className="text-sm text-gray-600">
           Estado actual del sistema
         </div>
@@ -698,14 +700,14 @@ const UserRegistrationChart = ({ dateRange }) => {
       <div className="space-y-8">
         {/* ✅ ESTADO DE USUARIOS REGISTRADOS */}
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Estado de Usuarios Registrados</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.registrationAnalysis.userStatus.title}</h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Usuarios Activos */}
             <div className="bg-green-50 border border-green-200 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-green-600">{analysis.usersByStatus.active}</div>
-                  <div className="text-sm text-green-700">Usuarios Activos</div>
+                  <div className="text-sm text-green-700">{labels.activeUsers.status.active}</div>
                 </div>
                 <div className="text-green-500">
                   <i className="fas fa-check-circle text-2xl"></i>
@@ -721,7 +723,7 @@ const UserRegistrationChart = ({ dateRange }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-gray-600">{analysis.usersByStatus.inactive}</div>
-                  <div className="text-sm text-gray-700">Usuarios Inactivos</div>
+                  <div className="text-sm text-gray-700">{labels.activeUsers.status.inactive}</div>
                 </div>
                 <div className="text-gray-500">
                   <i className="fas fa-pause-circle text-2xl"></i>
@@ -736,21 +738,21 @@ const UserRegistrationChart = ({ dateRange }) => {
         
         {/* ✅ ESTADO DE SOLICITUDES DE REGISTRO */}
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Estado de Solicitudes de Registro</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.registrationAnalysis.requestStatus.title}</h4>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {/* Pendientes */}
             <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xl sm:text-2xl font-bold text-yellow-600">{analysis.requestsByStatus.pending}</div>
-                  <div className="text-xs sm:text-sm text-yellow-700">Pendientes</div>
+                  <div className="text-xs sm:text-sm text-yellow-700">{labels.registrationAnalysis.requestStatus.pending}</div>
                 </div>
                 <div className="text-yellow-500">
                   <i className="fas fa-clock text-xl sm:text-2xl"></i>
                 </div>
               </div>
               <div className="mt-2 text-xs text-yellow-600">
-                Requieren revisión
+                {labels.registrationAnalysis.requestStatus.requireReview}
               </div>
             </div>
             
@@ -759,14 +761,14 @@ const UserRegistrationChart = ({ dateRange }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-xl sm:text-2xl font-bold text-green-600">{analysis.requestsByStatus.approved}</div>
-                  <div className="text-xs sm:text-sm text-green-700">Aprobadas</div>
+                  <div className="text-xs sm:text-sm text-green-700">{labels.registrationAnalysis.requestStatus.approved}</div>
                 </div>
                 <div className="text-green-500">
                   <i className="fas fa-check text-xl sm:text-2xl"></i>
                 </div>
               </div>
               <div className="mt-2 text-xs text-green-600">
-                Usuarios creados
+                {labels.registrationAnalysis.requestStatus.created}
               </div>
             </div>
             
@@ -775,14 +777,14 @@ const UserRegistrationChart = ({ dateRange }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="text-2xl font-bold text-red-600">{analysis.requestsByStatus.rejected}</div>
-                  <div className="text-sm text-red-700">Rechazadas</div>
+                  <div className="text-sm text-red-700">{labels.registrationAnalysis.requestStatus.rejected}</div>
                 </div>
                 <div className="text-red-500">
                   <i className="fas fa-times text-2xl"></i>
                 </div>
               </div>
               <div className="mt-2 text-xs text-red-600">
-                No procesadas
+                {labels.registrationAnalysis.requestStatus.notProcessed}
               </div>
             </div>
           </div>
@@ -790,11 +792,11 @@ const UserRegistrationChart = ({ dateRange }) => {
         
         {/* ✅ DISTRIBUCIÓN POR TIPO DE PLAN SOLICITADO */}
         <div>
-          <h4 className="font-medium text-gray-800 mb-4">Solicitudes por Tipo de Plan</h4>
+          <h4 className="font-medium text-gray-800 mb-4">{labels.registrationAnalysis.planRequests.title}</h4>
           <div className="space-y-3">
             {/* Planes Familiares */}
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Familiar</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.registrationAnalysis.planRequests.familiar}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -816,7 +818,7 @@ const UserRegistrationChart = ({ dateRange }) => {
             
             {/* Planes Corporativos */}
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Corporativo</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.registrationAnalysis.planRequests.corporate}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -838,7 +840,7 @@ const UserRegistrationChart = ({ dateRange }) => {
             
             {/* Planes Externos */}
             <div className="flex items-center space-x-4">
-              <div className="w-24 text-sm font-medium text-gray-700">Externo</div>
+              <div className="w-24 text-sm font-medium text-gray-700">{labels.registrationAnalysis.planRequests.external}</div>
               <div className="flex-1 relative">
                 <div className="w-full bg-gray-200 rounded-full h-6">
                   <div 
@@ -897,7 +899,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
             id: user.id,
             name: user.profile?.name || user.name || 'Usuario',
             type: 'Familiar',
-            plan: user.plan?.name || user.plan?.subtype || 'Sin plan',
+            plan: user.plan?.name || user.plan?.subtype || labels.activeUsers.noPlan,
             servicesUsed: serviceUsage.totalUsed,
             servicesRemaining: serviceUsage.totalRemaining,
             utilizationRate: serviceUsage.utilizationRate,
@@ -942,9 +944,9 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Usuarios Más Activos</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.activeUsers.title}</h3>
         <div className="text-sm text-gray-600">
-          Filtro: <span className="font-medium">{filterType === 'all' ? 'Todos' : filterType}</span>
+          {labels.districtAnalysis.filters.label} <span className="font-medium">{filterType === 'all' ? labels.districtAnalysis.filters.all : filterType}</span>
         </div>
       </div>
       
@@ -953,13 +955,13 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
           <table className="w-full">
             <thead>
               <tr className="border-b bg-gray-50">
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Usuario</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Tipo</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Plan</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Servicios Usados</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Utilización</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700">Estado</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700">Miembro desde</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.activeUsers.headers.user}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.activeUsers.headers.type}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.activeUsers.headers.plan}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.planAnalysis.headers.servicesUsed}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.planAnalysis.headers.utilization}</th>
+                <th className="text-center py-3 px-4 font-medium text-gray-700">{labels.activeUsers.headers.status}</th>
+                <th className="text-left py-3 px-4 font-medium text-gray-700">{labels.activeUsers.headers.memberSince}</th>
               </tr>
             </thead>
             <tbody>
@@ -975,7 +977,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
                       <div>
                         <div className="font-medium text-gray-800">{user.name}</div>
                         {user.employees > 0 && (
-                          <div className="text-xs text-gray-500">{user.employees} empleados</div>
+                          <div className="text-xs text-gray-500">{labels.planAnalysis.stats.employees.replace('{count}', user.employees)}</div>
                         )}
                       </div>
                     </div>
@@ -1011,7 +1013,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
-                      {user.status === 'active' ? 'Activo' : 'Inactivo'}
+                      {user.status === 'active' ? labels.activeUsers.status.active : labels.activeUsers.status.inactive}
                     </span>
                   </td>
                   <td className="py-3 px-4 text-sm text-gray-600">
@@ -1026,7 +1028,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
         <div className="text-center py-8 text-gray-500">
           <i className="fas fa-user-clock text-4xl mb-2"></i>
           <h4 className="text-lg font-medium mb-2">No hay usuarios activos</h4>
-          <p className="text-sm">No se encontraron usuarios con actividad en el período seleccionado.</p>
+          <p className="text-sm">{labels.activeUsers.empty}</p>
         </div>
       )}
       
@@ -1036,7 +1038,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
             <div className="text-xl sm:text-2xl font-bold text-blue-600">
               {activeUsers.reduce((sum, user) => sum + user.servicesUsed, 0)}
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">Servicios Totales Usados</div>
+            <div className="text-xs sm:text-sm text-gray-600">{labels.serviceUtilization.distribution}</div>
           </div>
           <div className="text-center p-2">
             <div className="text-xl sm:text-2xl font-bold text-green-600">
@@ -1048,7 +1050,7 @@ const ActiveUsersTable = ({ dateRange, filterType }) => {
             <div className="text-xl sm:text-2xl font-bold text-gray-800">
               {activeUsers.filter(user => user.status === 'active').length}
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">Usuarios Activos</div>
+            <div className="text-xs sm:text-sm text-gray-600">{labels.activeUsers.status.active}</div>
           </div>
         </div>
       )}
@@ -1091,7 +1093,7 @@ const ServiceTypeDistribution = () => (
 
 const ResponseTimeChart = ({ dateRange }) => (
   <div className="bg-white rounded-xl shadow-medium p-6">
-    <h3 className="text-lg font-bold text-gray-800 mb-4">Tiempos de Respuesta</h3>
+    <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.responseTime.times}</h3>
     <div className="h-48 flex items-center justify-center bg-gray-50 rounded-lg">
       <span className="text-gray-500">Gráfico de tiempos de respuesta</span>
     </div>
@@ -1184,7 +1186,7 @@ const ResponseTimeAnalysis = ({ dateRange, responseTime, activeEmergencies }) =>
     const maxTime = responseTimes.length > 0 ? Math.max(...responseTimes) : 0
     
     const summary = total > 0 
-      ? `${Math.round((fastResponses / total) * 100)}% respuestas rápidas (< 10 min)`
+      ? labels.responseTime.percentage.replace('{percentage}', Math.round((fastResponses / total) * 100))
       : 'No hay datos disponibles'
     
     return { 
@@ -1200,9 +1202,9 @@ const ResponseTimeAnalysis = ({ dateRange, responseTime, activeEmergencies }) =>
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Análisis Tiempos Respuesta</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.responseTime.title}</h3>
         <div className="text-sm text-gray-600">
-          Promedio: {responseTime.value}
+          {labels.responseTime.average}: {responseTime.value}
         </div>
       </div>
       
@@ -1212,19 +1214,19 @@ const ResponseTimeAnalysis = ({ dateRange, responseTime, activeEmergencies }) =>
           <div className="grid grid-cols-4 gap-3 mb-4">
             <div className="text-center p-3 bg-blue-50 rounded-lg border border-blue-200">
               <div className="text-lg font-bold text-blue-600">{distribution.stats.avgTime}min</div>
-              <div className="text-xs text-blue-700">Promedio</div>
+              <div className="text-xs text-blue-700">{labels.responseTime.average}</div>
             </div>
             <div className="text-center p-3 bg-green-50 rounded-lg border border-green-200">
               <div className="text-lg font-bold text-green-600">{distribution.stats.minTime}min</div>
-              <div className="text-xs text-green-700">Mínimo</div>
+              <div className="text-xs text-green-700">{labels.responseTime.minimum}</div>
             </div>
             <div className="text-center p-3 bg-red-50 rounded-lg border border-red-200">
               <div className="text-lg font-bold text-red-600">{distribution.stats.maxTime}min</div>
-              <div className="text-xs text-red-700">Máximo</div>
+              <div className="text-xs text-red-700">{labels.responseTime.maximum}</div>
             </div>
             <div className="text-center p-3 bg-purple-50 rounded-lg border border-purple-200">
               <div className="text-lg font-bold text-purple-600">{distribution.total}</div>
-              <div className="text-xs text-purple-700">Total</div>
+              <div className="text-xs text-purple-700">{labels.responseTime.total}</div>
             </div>
           </div>
 
@@ -1321,7 +1323,7 @@ const ResponseTimeAnalysis = ({ dateRange, responseTime, activeEmergencies }) =>
                 <p className="text-xs text-green-700 mt-1">
                   Basado en {distribution.total} emergencias completadas
                   {distribution.stats.responseTimes.length > 0 && (
-                    <span> • Tiempo promedio: {distribution.stats.avgTime} minutos</span>
+                    <span> • {labels.emergencyDensity.averageTime.replace('{time}', distribution.stats.avgTime)}</span>
                   )}
                 </p>
               </div>
@@ -1470,16 +1472,16 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
       alerts.push({
         level: 'critical',
         icon: 'fas fa-exclamation-triangle',
-        title: 'Tiempo de respuesta crítico',
-        message: `Promedio actual: ${responseTime.value}, excede significativamente el objetivo`,
+        title: labels.alerts.responseTimeCritical.title,
+        message: labels.alerts.responseTimeCritical.description.replace('{district}', `Promedio actual: ${responseTime.value}`),
         color: 'red'
       })
     } else if (responseTime.status === 'warning') {
       alerts.push({
         level: 'warning', 
         icon: 'fas fa-clock',
-        title: 'Tiempo de respuesta elevado',
-        message: `Promedio actual: ${responseTime.value}, cerca del límite objetivo`,
+        title: labels.alerts.responseTimeHigh.title,
+        message: labels.alerts.responseTimeHigh.description.replace('{district}', `Promedio actual: ${responseTime.value}`),
         color: 'yellow'
       })
     }
@@ -1502,8 +1504,8 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
       alerts.push({
         level: unitUtilization.status,
         icon: 'fas fa-ambulance',
-        title: 'Disponibilidad de unidades baja',
-        message: `Solo ${unitUtilization.activeUnits} de ${unitUtilization.totalUnits} unidades operativas`,
+        title: labels.alerts.unitsLow.title,
+        message: labels.alerts.unitsLow.description.replace('{active}', unitUtilization.activeUnits).replace('{total}', unitUtilization.totalUnits),
         color: unitUtilization.status === 'critical' ? 'red' : 'yellow'
       })
     }
@@ -1517,15 +1519,15 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Alertas de Performance</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.alerts.title}</h3>
         <div className="flex items-center space-x-2">
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
             alerts.length === 0 ? 'bg-green-100 text-green-800' :
             alerts.some(a => a.level === 'critical') ? 'bg-red-100 text-red-800' :
             'bg-yellow-100 text-yellow-800'
           }`}>
-            {alerts.length === 0 ? 'Todo Normal' : 
-             alerts.some(a => a.level === 'critical') ? 'Crítico' : 'Advertencia'}
+            {alerts.length === 0 ? labels.alerts.allGood.title : 
+             alerts.some(a => a.level === 'critical') ? labels.alerts.critical : labels.alerts.warning}
           </span>
         </div>
       </div>
@@ -1551,9 +1553,9 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
             <div className="flex">
               <i className="fas fa-check-circle text-green-400 mr-3 mt-1"></i>
               <div>
-                <h4 className="font-medium text-green-800">Sistema funcionando correctamente</h4>
+                <h4 className="font-medium text-green-800">{labels.alerts.allGood.message}</h4>
                 <p className="text-green-700 text-sm">
-                  Todas las métricas de performance están dentro de los objetivos establecidos
+                  {labels.alerts.allGood.description}
                 </p>
               </div>
             </div>
@@ -1572,7 +1574,7 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
               <i className="fas fa-clock mr-1"></i>
               {responseTime.value}
             </div>
-            <p className="text-xs text-gray-600 mt-1">Tiempo Respuesta</p>
+            <p className="text-xs text-gray-600 mt-1">{labels.responseTime.times}</p>
           </div>
           
           <div className="text-center">
@@ -1695,10 +1697,10 @@ const UnifiedDistrictAnalysis = ({ dateRange }) => {
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
         <div className="min-w-0 flex-1">
-          <h3 className="text-lg sm:text-xl font-bold text-gray-800 truncate">Análisis Integral por Distrito</h3>
+          <h3 className="text-lg sm:text-xl font-bold text-gray-800 truncate">{labels.districtAnalysis.title}</h3>
           <p className="text-xs sm:text-sm text-gray-600 mt-1">
-            <span className="hidden sm:inline">Servicios solicitados, usuarios y métricas operativas</span>
-            <span className="sm:hidden">Vista general</span>
+            <span className="hidden sm:inline">{labels.districtAnalysis.subtitle}</span>
+            <span className="sm:hidden">{labels.districtAnalysis.overview}</span>
           </p>
         </div>
         <div className="flex items-center space-x-2 flex-shrink-0">
@@ -1783,11 +1785,11 @@ const UnifiedDistrictAnalysis = ({ dateRange }) => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <div className="text-center">
             <p className="text-xl sm:text-2xl font-bold text-blue-600">{totalServices.toLocaleString()}</p>
-            <p className="text-xs sm:text-sm text-gray-600">Total Servicios</p>
+            <p className="text-xs sm:text-sm text-gray-600">{labels.districtAnalysis.cards.totalServices}</p>
           </div>
           <div className="text-center">
             <p className="text-xl sm:text-2xl font-bold text-purple-600">{totalUsers.toLocaleString()}</p>
-            <p className="text-xs sm:text-sm text-gray-600">Total Usuarios</p>
+            <p className="text-xs sm:text-sm text-gray-600">{labels.districtAnalysis.cards.totalUsers}</p>
           </div>
           <div className="text-center">
             <p className="text-xl sm:text-2xl font-bold text-orange-600">{totalEmergencies}</p>
@@ -1902,7 +1904,7 @@ const calculateRevenueByPlan = (allUsers) => {
   // Analizar usuarios familiares
   if (allUsers.familiar) {
     allUsers.familiar.forEach(user => {
-      const planName = user.plan?.name || 'Plan Desconocido'
+      const planName = user.plan?.name || labels.planAnalysis.plans.unknown
       const monthlyCost = user.billing?.monthly_cost || 0
       const annualRevenue = monthlyCost * 12
       
@@ -2078,7 +2080,7 @@ const UserDistributionChart = ({ allUsers }) => {
   
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Distribución de Usuarios</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.userDistribution.title}</h3>
       
       {chartData.length > 0 ? (
         <>
@@ -2112,13 +2114,13 @@ const UserDistributionChart = ({ allUsers }) => {
           <div className="mt-6 pt-4 border-t grid grid-cols-2 gap-4">
             <div className="text-center">
               <div className="text-2xl font-bold text-gray-800">{total}</div>
-              <div className="text-sm text-gray-600">Total Usuarios</div>
+              <div className="text-sm text-gray-600">{labels.districtAnalysis.cards.totalUsers}</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold text-blue-600">
                 {chartData.length}
               </div>
-              <div className="text-sm text-gray-600">Tipos de Usuario</div>
+              <div className="text-sm text-gray-600">{labels.userDistribution.byType}</div>
             </div>
           </div>
         </>
@@ -2154,7 +2156,7 @@ const ServiceUtilizationChart = ({ utilization }) => {
   
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Utilización de Servicios</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.serviceUtilization.title}</h3>
       
       <div className="flex items-center justify-center">
         {/* Gráfico circular */}
@@ -2307,7 +2309,7 @@ const ServiceTypeDistributionReal = ({ serviceMetrics }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Distribución de Servicios</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.serviceUtilization.distribution}</h3>
       
       {serviceData.length > 0 ? (
         <>
@@ -2338,7 +2340,7 @@ const ServiceTypeDistributionReal = ({ serviceMetrics }) => {
 
           <div className="mt-6 pt-4 border-t text-center">
             <div className="text-2xl font-bold text-gray-800">{totalServices}</div>
-            <div className="text-sm text-gray-600">Total Servicios Utilizados</div>
+            <div className="text-sm text-gray-600">{labels.serviceUtilization.distribution}</div>
           </div>
         </>
       ) : (
@@ -2359,7 +2361,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
     // Analizar usuarios familiares
     if (allUsers.familiar) {
       allUsers.familiar.forEach(user => {
-        const planName = user.plan?.name || user.plan?.subtype || 'Plan Desconocido'
+        const planName = user.plan?.name || user.plan?.subtype || labels.planAnalysis.plans.unknown
         
         if (!planData[planName]) {
           planData[planName] = {
@@ -2426,7 +2428,7 @@ const ServiceUtilizationByPlan = ({ allUsers }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Utilización por Plan</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.serviceUtilization.byPlan}</h3>
       
       {planUtilization.length > 0 ? (
         <div className="space-y-4">
@@ -2594,7 +2596,7 @@ const ServicesByPlanAnalysis = ({ allUsers }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
-      <h3 className="text-lg font-bold text-gray-800 mb-4">Análisis Detallado por Plan</h3>
+      <h3 className="text-lg font-bold text-gray-800 mb-4">{labels.planAnalysis.title}</h3>
       
       {detailedAnalysis.length > 0 ? (
         <div className="overflow-x-auto">

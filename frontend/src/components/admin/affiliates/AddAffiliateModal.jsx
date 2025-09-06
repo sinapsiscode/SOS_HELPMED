@@ -1,6 +1,7 @@
 import React from 'react'
 import { useAddAffiliateModal } from '../../../hooks/useAddAffiliateModal'
 import { FormField, SelectField, ErrorAlert, ModalHeader, FormButtons } from './FormComponents'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Modal para agregar un nuevo afiliado
@@ -49,8 +50,8 @@ const AddAffiliateModal = React.memo(({ onClose, onSave, loading = false }) => {
             onCancel={handleClose}
             isDisabled={submitButton.disabled}
             isSubmitting={submitButton.isLoading}
-            submitText="Agregar"
-            submittingText="Agregando..."
+            submitText={LABELS.admin.affiliates.add.submitButton}
+            submittingText={LABELS.admin.affiliates.add.submittingButton}
           />
         </form>
       </div>

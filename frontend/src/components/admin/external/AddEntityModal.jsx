@@ -1,9 +1,10 @@
 import React from 'react'
 import { ENTITY_TYPES } from '../../../mocks/externalEntityData'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para agregar nueva entidad externa
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.external.addEntityModal.comments.title}
+ * ${LABELS.admin.external.addEntityModal.comments.approach}
  *
  * @param {boolean} isOpen - Si el modal está abierto
  * @param {Object} entityForm - Formulario de entidad
@@ -23,41 +24,43 @@ const AddEntityModal = ({
   isLoading,
   isFormValid
 }) => {
+  const labels = LABELS.admin.external.addEntityModal
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof isOpen !== 'boolean') {
-    console.error('AddEntityModal: isOpen debe ser boolean')
+    console.error(labels.errors.isOpenRequired)
     return null
   }
 
   if (!entityForm || typeof entityForm !== 'object') {
-    console.error('AddEntityModal: entityForm es requerido y debe ser un objeto')
+    console.error(labels.errors.entityFormRequired)
     return null
   }
 
   if (typeof onClose !== 'function') {
-    console.error('AddEntityModal: onClose debe ser una función')
+    console.error(labels.errors.onCloseRequired)
     return null
   }
 
   if (typeof onSubmit !== 'function') {
-    console.error('AddEntityModal: onSubmit debe ser una función')
+    console.error(labels.errors.onSubmitRequired)
     return null
   }
 
   if (typeof updateEntityForm !== 'function') {
-    console.error('AddEntityModal: updateEntityForm debe ser una función')
+    console.error(labels.errors.updateFormRequired)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('AddEntityModal: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingRequired)
     return null
   }
 
   if (typeof isFormValid !== 'function') {
-    console.error('AddEntityModal: isFormValid debe ser una función')
+    console.error(labels.errors.isFormValidRequired)
     return null
   }
 
@@ -69,7 +72,7 @@ const AddEntityModal = ({
         {/* Header */}
         <div className="p-4 sm:p-6 border-b">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg sm:text-xl font-bold text-gray-800">Nueva Entidad Externa</h3>
+            <h3 className="text-lg sm:text-xl font-bold text-gray-800">{labels.title}</h3>
             <button
               onClick={onClose}
               disabled={isLoading}
@@ -86,7 +89,7 @@ const AddEntityModal = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre de la Entidad *
+                {labels.fields.name.label}
               </label>
               <input
                 type="text"
@@ -94,26 +97,26 @@ const AddEntityModal = ({
                 onChange={(e) => updateEntityForm('name', e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                placeholder="Ej: Banco Nacional"
+                placeholder={labels.fields.name.placeholder}
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Código *</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.code.label}</label>
               <input
                 type="text"
                 value={entityForm.code}
                 onChange={(e) => updateEntityForm('code', e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                placeholder="Ej: BN"
+                placeholder={labels.fields.code.placeholder}
                 maxLength="10"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Entidad *
+                {labels.fields.type.label}
               </label>
               <select
                 value={entityForm.type}
@@ -131,7 +134,7 @@ const AddEntityModal = ({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Límite de Usuarios
+                {labels.fields.maxUsers.label}
               </label>
               <input
                 type="number"
@@ -139,31 +142,31 @@ const AddEntityModal = ({
                 onChange={(e) => updateEntityForm('maxUsers', e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                placeholder="Sin límite"
+                placeholder={labels.fields.maxUsers.placeholder}
                 min="1"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Descripción</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.description.label}</label>
             <textarea
               value={entityForm.description}
               onChange={(e) => updateEntityForm('description', e.target.value)}
               disabled={isLoading}
               className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
               rows="2"
-              placeholder="Descripción de la entidad..."
+              placeholder={labels.fields.description.placeholder}
             />
           </div>
 
           {/* Información de contacto */}
           <div className="border-t pt-4">
-            <h4 className="font-medium text-gray-800 mb-3">Información de Contacto</h4>
+            <h4 className="font-medium text-gray-800 mb-3">{labels.fields.contact.title}</h4>
             <div className="grid grid-cols-1 gap-3 sm:gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre del Contacto
+                  {labels.fields.contact.name.label}
                 </label>
                 <input
                   type="text"
@@ -171,13 +174,13 @@ const AddEntityModal = ({
                   onChange={(e) => updateEntityForm('contactName', e.target.value)}
                   disabled={isLoading}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                  placeholder="Nombre del contacto principal"
+                  placeholder={labels.fields.contact.name.placeholder}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email del Contacto
+                  {labels.fields.contact.email.label}
                 </label>
                 <input
                   type="email"
@@ -185,13 +188,13 @@ const AddEntityModal = ({
                   onChange={(e) => updateEntityForm('contactEmail', e.target.value)}
                   disabled={isLoading}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                  placeholder="contacto@entidad.com"
+                  placeholder={labels.fields.contact.email.placeholder}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Teléfono del Contacto
+                  {labels.fields.contact.phone.label}
                 </label>
                 <input
                   type="tel"
@@ -199,7 +202,7 @@ const AddEntityModal = ({
                   onChange={(e) => updateEntityForm('contactPhone', e.target.value)}
                   disabled={isLoading}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                  placeholder="999-999-999"
+                  placeholder={labels.fields.contact.phone.placeholder}
                 />
               </div>
             </div>
@@ -213,7 +216,7 @@ const AddEntityModal = ({
             disabled={isLoading}
             className="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            Cancelar
+            {labels.buttons.cancel}
           </button>
           <button
             onClick={onSubmit}
@@ -223,12 +226,12 @@ const AddEntityModal = ({
             {isLoading ? (
               <>
                 <i className="fas fa-spinner fa-spin"></i>
-                <span>Creando...</span>
+                <span>{labels.buttons.submitting}</span>
               </>
             ) : (
               <>
                 <i className="fas fa-plus"></i>
-                <span>Crear Entidad</span>
+                <span>{labels.buttons.submit}</span>
               </>
             )}
           </button>

@@ -3,52 +3,55 @@ import { useEmergencyTracking } from '../../hooks/useEmergencyTracking'
 import { EmergencyHeader, EmergencyCard } from './emergency'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
-// Lazy loading de componentes pesados (Regla #5)
+// ${LABELS.admin.emergencyTracking.comments.lazyLoading}
 const EmergencyTimelineItem = lazy(() => import('./emergency/EmergencyTimelineItem'))
 const EmergencyDetailPanel = lazy(() => import('./emergency/EmergencyDetailPanel'))
 const EmergencyMapView = lazy(() => import('./emergency/EmergencyMapView'))
 
 /**
- * Sistema de seguimiento de emergencias activas en tiempo real
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.emergencyTracking.comments.title}
+ * ${LABELS.admin.emergencyTracking.comments.approach}
  *
- * Funcionalidades:
- * - Monitoreo en tiempo real de emergencias activas
- * - Filtrado por prioridad, estado y rango temporal
- * - Vista timeline, grid y mapa intercambiables
- * - Asignación de unidades médicas
- * - Establecimiento de tiempos de llegada
- * - Panel de detalles con información completa
- * - Gestión de notas y actualizaciones de estado
+ * ${LABELS.admin.emergencyTracking.comments.features.title}
+ * ${LABELS.admin.emergencyTracking.comments.features.monitoring}
+ * ${LABELS.admin.emergencyTracking.comments.features.filtering}
+ * ${LABELS.admin.emergencyTracking.comments.features.views}
+ * ${LABELS.admin.emergencyTracking.comments.features.assignment}
+ * ${LABELS.admin.emergencyTracking.comments.features.eta}
+ * ${LABELS.admin.emergencyTracking.comments.features.details}
+ * ${LABELS.admin.emergencyTracking.comments.features.notes}
  *
- * Arquitectura modular:
- * - EmergencyHeader: Header con filtros y estadísticas
- * - EmergencyCard: Tarjetas individuales de emergencias
- * - EmergencyTimelineItem: Items de vista timeline (lazy)
- * - EmergencyDetailPanel: Panel de detalles (lazy)
- * - EmergencyMapView: Vista de mapa (lazy)
+ * ${LABELS.admin.emergencyTracking.comments.architecture.title}
+ * ${LABELS.admin.emergencyTracking.comments.architecture.header}
+ * ${LABELS.admin.emergencyTracking.comments.architecture.card}
+ * ${LABELS.admin.emergencyTracking.comments.architecture.timeline}
+ * ${LABELS.admin.emergencyTracking.comments.architecture.detailPanel}
+ * ${LABELS.admin.emergencyTracking.comments.architecture.mapView}
  *
  * @returns {JSX.Element} Componente de seguimiento de emergencias
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <EmergencyTracking />
+ * ${LABELS.admin.emergencyTracking.comments.example.title}
+ * ${LABELS.admin.emergencyTracking.comments.example.usage}
+ * ${LABELS.admin.emergencyTracking.comments.example.component}
  *
- * @see {@link useEmergencyTracking} Hook que maneja toda la lógica de negocio
- * @see {@link MOCK_EMERGENCY_DATA} Datos mock de emergencias
+ * ${LABELS.admin.emergencyTracking.comments.see.hook}
+ * ${LABELS.admin.emergencyTracking.comments.see.mockData}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (180 líneas aprox)
- * - Regla #4: Validación de datos y props
- * - Regla #5: Lógica compleja en hook personalizado + lazy loading
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.emergencyTracking.comments.rules.title}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule3}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule4}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule5}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule6}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule8}
+ * ${LABELS.admin.emergencyTracking.comments.rules.rule12}
  */
 const EmergencyTracking = () => {
+  const labels = LABELS.admin.emergencyTracking
+  
   // ============================================
-  // HOOK - Toda la lógica compleja (Regla #2)
+  // ${LABELS.admin.emergencyTracking.comments.businessLogic}
   // ============================================
   const {
     // Estado
@@ -85,13 +88,13 @@ const EmergencyTracking = () => {
   } = useEmergencyTracking()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.emergencyTracking.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
         <ErrorMessage
-          message={`Error en seguimiento de emergencias: ${error}`}
+          message={labels.errors.trackingError.replace('{error}', error)}
           onRetry={clearError}
         />
       </div>
@@ -132,7 +135,7 @@ const EmergencyTracking = () => {
             <div className="bg-white rounded-xl shadow-medium">
               <div className="p-6 border-b border-gray-100">
                 <h2 className="text-lg font-bold text-gray-800">
-                  Emergencias ({filteredEmergencies.length})
+                  {labels.header.emergenciesCount.replace('{count}', filteredEmergencies.length)}
                 </h2>
               </div>
 

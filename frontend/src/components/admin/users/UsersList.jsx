@@ -1,27 +1,30 @@
 import React from 'react'
 import { useUsersList } from '../../../hooks/useUsersList'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Lista de usuarios para administración
- * ENFOQUE BALANCEADO: Clases estáticas en componente, lógica compleja en hook
- * React.memo solo si se detectan problemas de performance
+ * ${LABELS.admin.users.usersList.comments.title}
+ * ${LABELS.admin.users.usersList.comments.approach}
+ * ${LABELS.admin.users.usersList.comments.optimization}
  *
  * @param {Array} users - Lista de usuarios
  * @param {Function} onUpdate - Callback para actualizar usuario
  * @param {Function} onDelete - Callback para eliminar usuario
  */
 const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
+  const labels = LABELS.admin.users.usersList
+  
   // Validación de props (Regla #4)
   if (!Array.isArray(users)) {
-    console.error('UsersList: users debe ser un array')
+    console.error(labels.errors.usersArray)
     return null
   }
   if (typeof onUpdate !== 'function') {
-    console.error('UsersList: onUpdate debe ser una función')
+    console.error(labels.errors.onUpdateFunction)
     return null
   }
   if (typeof onDelete !== 'function') {
-    console.error('UsersList: onDelete debe ser una función')
+    console.error(labels.errors.onDeleteFunction)
     return null
   }
   // ============================================
@@ -38,12 +41,12 @@ const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
   if (error) {
     return (
       <div className="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
-        <p className="text-red-600">Error al cargar usuarios: {error}</p>
+        <p className="text-red-600">{labels.errors.loadingError.replace('{error}', error)}</p>
         <button
           onClick={() => window.location.reload()}
           className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
         >
-          Reintentar
+          {labels.buttons.retry}
         </button>
       </div>
     )
@@ -55,7 +58,7 @@ const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
   if (isEmpty) {
     return (
       <div className="bg-white rounded-lg shadow p-8 text-center">
-        <p className="text-gray-500">No se encontraron usuarios</p>
+        <p className="text-gray-500">{labels.emptyState.message}</p>
       </div>
     )
   }
@@ -70,22 +73,22 @@ const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Usuario
+                {labels.headers.user}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Rol
+                {labels.headers.role}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Plan
+                {labels.headers.plan}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Estado
+                {labels.headers.status}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Fecha de registro
+                {labels.headers.registrationDate}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Acciones
+                {labels.headers.actions}
               </th>
             </tr>
           </thead>
@@ -129,7 +132,7 @@ const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
                     onClick={async () => {
                       const result = await handleStatusToggle(user.id, user.newStatus)
                       if (!result.success) {
-                        alert(`Error: ${result.error}`)
+                        alert(labels.errors.errorPrefix.replace('{error}', result.error))
                       }
                     }}
                     className="text-blue-600 hover:text-blue-900 transition-colors"
@@ -140,12 +143,12 @@ const UsersList = React.memo(({ users, onUpdate, onDelete }) => {
                     onClick={async () => {
                       const result = await handleDelete(user)
                       if (!result.success) {
-                        alert(`Error: ${result.error}`)
+                        alert(labels.errors.errorPrefix.replace('{error}', result.error))
                       }
                     }}
                     className="text-red-600 hover:text-red-900 transition-colors"
                   >
-                    Eliminar
+                    {labels.buttons.delete}
                   </button>
                 </td>
               </tr>

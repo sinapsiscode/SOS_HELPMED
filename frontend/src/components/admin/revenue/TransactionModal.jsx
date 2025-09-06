@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para agregar/editar transacciones
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #4: Validación completa de inputs
+ * ${LABELS.admin.revenue.transactionModal.comments.title}
+ * ${LABELS.admin.revenue.transactionModal.comments.rules.rule3}
+ * ${LABELS.admin.revenue.transactionModal.comments.rules.rule4}
  *
  * @param {Object} props - Props del componente
  * @param {Boolean} props.isOpen - Si el modal está abierto
@@ -14,6 +15,7 @@ import React, { useState, useEffect } from 'react'
  * @returns {JSX.Element} Modal de transacción
  */
 const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = false }) => {
+  const labels = LABELS.admin.revenue.transactionModal
   const [formData, setFormData] = useState({
     concept: '',
     amount: '',
@@ -58,25 +60,25 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
     const newErrors = {}
 
     if (!formData.concept.trim()) {
-      newErrors.concept = 'El concepto es requerido'
+      newErrors.concept = labels.errors.conceptRequired
     } else if (formData.concept.trim().length < 3) {
-      newErrors.concept = 'El concepto debe tener al menos 3 caracteres'
+      newErrors.concept = labels.errors.conceptMinLength
     }
 
     if (!formData.amount) {
-      newErrors.amount = 'El monto es requerido'
+      newErrors.amount = labels.errors.amountRequired
     } else if (parseFloat(formData.amount) <= 0) {
-      newErrors.amount = 'El monto debe ser mayor a 0'
+      newErrors.amount = labels.errors.amountMinValue
     } else if (parseFloat(formData.amount) > 50000) {
-      newErrors.amount = 'El monto no puede exceder S/ 50,000'
+      newErrors.amount = labels.errors.amountMaxValue
     }
 
     if (!formData.type) {
-      newErrors.type = 'El tipo de transacción es requerido'
+      newErrors.type = labels.errors.typeRequired
     }
 
     if (!formData.userName.trim() && !formData.companyName.trim()) {
-      newErrors.client = 'Debe especificar un cliente o empresa'
+      newErrors.client = labels.errors.clientRequired
     }
 
     return newErrors
@@ -119,7 +121,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
         <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <h2 className="text-xl font-exo font-semibold text-gray-800">
             <i className="fas fa-receipt text-helpmed-blue mr-2"></i>
-            {transaction ? 'Editar Transacción' : 'Nueva Transacción'}
+            {transaction ? labels.title.edit : labels.title.new}
           </h2>
           <button
             onClick={onClose}
@@ -136,13 +138,13 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
             {/* Concepto */}
             <div>
               <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                Concepto *
+                {labels.fields.concept.label}
               </label>
               <input
                 type="text"
                 value={formData.concept}
                 onChange={(e) => handleChange('concept', e.target.value)}
-                placeholder="Descripción de la transacción"
+                placeholder={labels.fields.concept.placeholder}
                 className={`w-full border rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue ${
                   errors.concept ? 'border-red-500' : 'border-gray-300'
                 }`}
@@ -157,7 +159,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                  Monto (S/) *
+                  {labels.fields.amount.label}
                 </label>
                 <input
                   type="number"
@@ -166,7 +168,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
                   max="50000"
                   value={formData.amount}
                   onChange={(e) => handleChange('amount', e.target.value)}
-                  placeholder="0.00"
+                  placeholder={labels.fields.amount.placeholder}
                   className={`w-full border rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue ${
                     errors.amount ? 'border-red-500' : 'border-gray-300'
                   }`}
@@ -179,7 +181,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
 
               <div>
                 <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                  Tipo de Transacción *
+                  {labels.fields.transactionType.label}
                 </label>
                 <select
                   value={formData.type}
@@ -189,16 +191,16 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
                   }`}
                   disabled={loading}
                 >
-                  <option value="service_payment">Pago de Servicio</option>
-                  <option value="plan_payment">Pago de Plan</option>
-                  <option value="additional_fee">Tarifa Adicional</option>
-                  <option value="consultation_fee">Consulta Médica</option>
-                  <option value="emergency_fee">Servicio de Emergencia</option>
-                  <option value="transfer_fee">Traslado</option>
-                  <option value="insurance_payment">Pago de Seguro</option>
-                  <option value="refund">Reembolso</option>
-                  <option value="adjustment">Ajuste</option>
-                  <option value="other">Otro</option>
+                  <option value="service_payment">{labels.transactionTypes.service_payment}</option>
+                  <option value="plan_payment">{labels.transactionTypes.plan_payment}</option>
+                  <option value="additional_fee">{labels.transactionTypes.additional_fee}</option>
+                  <option value="consultation_fee">{labels.transactionTypes.consultation_fee}</option>
+                  <option value="emergency_fee">{labels.transactionTypes.emergency_fee}</option>
+                  <option value="transfer_fee">{labels.transactionTypes.transfer_fee}</option>
+                  <option value="insurance_payment">{labels.transactionTypes.insurance_payment}</option>
+                  <option value="refund">{labels.transactionTypes.refund}</option>
+                  <option value="adjustment">{labels.transactionTypes.adjustment}</option>
+                  <option value="other">{labels.transactionTypes.other}</option>
                 </select>
                 {errors.type && (
                   <p className="text-red-500 text-sm mt-1 font-roboto">{errors.type}</p>
@@ -210,13 +212,13 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                  Nombre del Cliente
+                  {labels.fields.clientName.label}
                 </label>
                 <input
                   type="text"
                   value={formData.userName}
                   onChange={(e) => handleChange('userName', e.target.value)}
-                  placeholder="Nombre completo del cliente"
+                  placeholder={labels.fields.clientName.placeholder}
                   className={`w-full border rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue ${
                     errors.client ? 'border-red-500' : 'border-gray-300'
                   }`}
@@ -226,13 +228,13 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
 
               <div>
                 <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                  Nombre de la Empresa
+                  {labels.fields.companyName.label}
                 </label>
                 <input
                   type="text"
                   value={formData.companyName}
                   onChange={(e) => handleChange('companyName', e.target.value)}
-                  placeholder="Razón social o empresa"
+                  placeholder={labels.fields.companyName.placeholder}
                   className={`w-full border rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue ${
                     errors.client ? 'border-red-500' : 'border-gray-300'
                   }`}
@@ -245,7 +247,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
             {/* Método de Pago */}
             <div>
               <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                Método de Pago
+                {labels.fields.paymentMethod.label}
               </label>
               <select
                 value={formData.paymentMethod}
@@ -253,25 +255,25 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue"
                 disabled={loading}
               >
-                <option value="cash">Efectivo</option>
-                <option value="card">Tarjeta</option>
-                <option value="transfer">Transferencia</option>
-                <option value="check">Cheque</option>
-                <option value="digital">Pago Digital</option>
-                <option value="insurance">Seguro</option>
-                <option value="other">Otro</option>
+                <option value="cash">{labels.paymentMethods.cash}</option>
+                <option value="card">{labels.paymentMethods.card}</option>
+                <option value="transfer">{labels.paymentMethods.transfer}</option>
+                <option value="check">{labels.paymentMethods.check}</option>
+                <option value="digital">{labels.paymentMethods.digital}</option>
+                <option value="insurance">{labels.paymentMethods.insurance}</option>
+                <option value="other">{labels.paymentMethods.other}</option>
               </select>
             </div>
 
             {/* Notas */}
             <div>
               <label className="block text-sm font-roboto font-medium text-gray-700 mb-2">
-                Notas Adicionales
+                {labels.fields.notes.label}
               </label>
               <textarea
                 value={formData.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
-                placeholder="Información adicional sobre la transacción (opcional)"
+                placeholder={labels.fields.notes.placeholder}
                 rows={3}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 font-roboto focus:ring-2 focus:ring-helpmed-blue resize-none"
                 disabled={loading}
@@ -287,7 +289,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
               disabled={loading}
               className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 font-roboto transition-colors disabled:opacity-50"
             >
-              Cancelar
+              {labels.buttons.cancel}
             </button>
             <button
               type="submit"
@@ -295,7 +297,7 @@ const TransactionModal = ({ isOpen, transaction, onClose, onSubmit, loading = fa
               className="px-6 py-2 bg-helpmed-blue text-white rounded-lg hover:bg-blue-700 font-roboto transition-colors disabled:opacity-50 flex items-center"
             >
               {loading && <i className="fas fa-spinner fa-spin mr-2"></i>}
-              {transaction ? 'Actualizar' : 'Registrar'} Transacción
+              {transaction ? labels.buttons.update : labels.buttons.register} {labels.buttons.transaction}
             </button>
           </div>
         </form>

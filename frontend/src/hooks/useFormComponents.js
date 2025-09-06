@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+import { LABELS } from '../config/labels'
+import { FORM_STYLES, MODAL_STYLES } from '../config/styles'
 
 /**
  * Hook que maneja la lógica del componente ErrorAlert
@@ -19,7 +21,7 @@ export const useErrorAlert = (message) => {
    * Clases CSS para el contenedor
    */
   const containerClassName = useMemo(() => {
-    return 'bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-600'
+    return FORM_STYLES.error.alert
   }, [])
 
   return {
@@ -44,8 +46,8 @@ export const useModalHeader = (title, onClose, disabled) => {
    */
   const containerClasses = useMemo(
     () => ({
-      wrapper: 'px-6 py-4 border-b border-gray-200',
-      content: 'flex items-center justify-between'
+      wrapper: MODAL_STYLES.header.wrapper,
+      content: MODAL_STYLES.header.content
     }),
     []
   )
@@ -56,7 +58,7 @@ export const useModalHeader = (title, onClose, disabled) => {
   const titleConfig = useMemo(
     () => ({
       text: title || '',
-      className: 'text-lg font-bold text-gray-800'
+      className: MODAL_STYLES.header.title
     }),
     [title]
   )
@@ -68,8 +70,8 @@ export const useModalHeader = (title, onClose, disabled) => {
     () => ({
       onClick: onClose,
       disabled: disabled || false,
-      className: 'text-gray-400 hover:text-gray-600 transition-colors disabled:cursor-not-allowed',
-      ariaLabel: 'Cerrar modal',
+      className: MODAL_STYLES.header.closeButton,
+      ariaLabel: LABELS.forms.accessibility.closeModal,
       icon: '✕'
     }),
     [onClose, disabled]
@@ -93,14 +95,14 @@ export const useFormButtons = ({
   onCancel,
   isDisabled,
   isSubmitting,
-  submitText = 'Agregar',
-  submittingText = 'Agregando...'
+  submitText = LABELS.forms.buttons.submit,
+  submittingText = LABELS.forms.buttons.submitting
 }) => {
   /**
    * Clases para el contenedor
    */
   const containerClassName = useMemo(() => {
-    return 'flex space-x-3 pt-4'
+    return FORM_STYLES.container.formButtons
   }, [])
 
   /**
@@ -111,9 +113,8 @@ export const useFormButtons = ({
       type: 'button',
       onClick: onCancel,
       disabled: isDisabled || false,
-      className:
-        'flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors disabled:cursor-not-allowed disabled:opacity-50',
-      text: 'Cancelar'
+      className: FORM_STYLES.button.secondary,
+      text: LABELS.forms.buttons.cancel
     }),
     [onCancel, isDisabled]
   )
@@ -125,8 +126,7 @@ export const useFormButtons = ({
     () => ({
       type: 'submit',
       disabled: isDisabled || false,
-      className:
-        'flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center',
+      className: `${FORM_STYLES.button.primary} ${FORM_STYLES.button.withSpinner}`,
       showSpinner: isSubmitting || false,
       text: isSubmitting ? submittingText : submitText
     }),
@@ -139,25 +139,10 @@ export const useFormButtons = ({
   const spinnerConfig = useMemo(
     () => ({
       show: isSubmitting || false,
-      className: 'animate-spin -ml-1 mr-2 h-4 w-4 text-white',
-      svg: {
-        xmlns: 'http://www.w3.org/2000/svg',
-        fill: 'none',
-        viewBox: '0 0 24 24'
-      },
-      circle: {
-        className: 'opacity-25',
-        cx: '12',
-        cy: '12',
-        r: '10',
-        stroke: 'currentColor',
-        strokeWidth: '4'
-      },
-      path: {
-        className: 'opacity-75',
-        fill: 'currentColor',
-        d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
-      }
+      className: FORM_STYLES.spinner.base,
+      svg: FORM_STYLES.spinner.svg,
+      circle: FORM_STYLES.spinner.circle,
+      path: FORM_STYLES.spinner.path
     }),
     [isSubmitting]
   )
@@ -182,25 +167,10 @@ export const useLoadingSpinner = () => {
    */
   const spinnerConfig = useMemo(
     () => ({
-      className: 'animate-spin -ml-1 mr-2 h-4 w-4 text-white',
-      svg: {
-        xmlns: 'http://www.w3.org/2000/svg',
-        fill: 'none',
-        viewBox: '0 0 24 24'
-      },
-      circle: {
-        className: 'opacity-25',
-        cx: '12',
-        cy: '12',
-        r: '10',
-        stroke: 'currentColor',
-        strokeWidth: '4'
-      },
-      path: {
-        className: 'opacity-75',
-        fill: 'currentColor',
-        d: 'M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'
-      }
+      className: FORM_STYLES.spinner.base,
+      svg: FORM_STYLES.spinner.svg,
+      circle: FORM_STYLES.spinner.circle,
+      path: FORM_STYLES.spinner.path
     }),
     []
   )

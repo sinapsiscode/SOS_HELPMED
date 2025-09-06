@@ -1,4 +1,5 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Componente de Métricas Clave del Dashboard
@@ -6,18 +7,15 @@ import React from 'react'
  * Extraído del AdminDashboard monolítico durante refactorización
  */
 const QuickMetrics = () => {
+  const labels = LABELS.admin.dashboard.quickMetrics
+  
   // TODO: Conectar con datos reales del backend/store
-  const metrics = [
-    { label: 'Tiempo respuesta promedio', value: '8.3 min', color: 'green' },
-    { label: 'Satisfacción del cliente', value: '94%', color: 'blue' },
-    { label: 'Utilización de unidades', value: '78%', color: 'purple' },
-    { label: 'Servicios completados hoy', value: '127', color: 'orange' }
-  ]
+  const metrics = labels.metrics
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
       <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">
-        Métricas Clave
+        {labels.title}
       </h3>
       
       <div className="space-y-3 sm:space-y-4">

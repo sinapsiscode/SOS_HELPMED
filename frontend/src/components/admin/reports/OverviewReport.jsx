@@ -1,16 +1,18 @@
 import React from 'react'
 import useOverviewReport from '../../../hooks/useOverviewReport'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Componente para el reporte Overview (Vista General)
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación, lógica en hook
+ * ${LABELS.admin.reports.overviewReport.comments.title}
+ * ${LABELS.admin.reports.overviewReport.comments.rules.rule3}
+ * ${LABELS.admin.reports.overviewReport.comments.rules.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object} props.baseMetrics - Métricas base del sistema
  * @returns {JSX.Element} Vista del reporte overview
  */
 const OverviewReport = ({ baseMetrics }) => {
+  const labels = LABELS.admin.reports.overviewReport
   const { overviewMetrics, chartData, loading, hasData, exportReport } =
     useOverviewReport(baseMetrics)
 
@@ -18,7 +20,7 @@ const OverviewReport = ({ baseMetrics }) => {
     return (
       <div className="flex items-center justify-center py-12">
         <i className="fas fa-spinner fa-spin text-4xl text-helpmed-blue mr-4"></i>
-        <span className="text-lg text-gray-600 font-roboto">Generando vista general...</span>
+        <span className="text-lg text-gray-600 font-roboto">{labels.loading}</span>
       </div>
     )
   }
@@ -27,9 +29,9 @@ const OverviewReport = ({ baseMetrics }) => {
     return (
       <div className="text-center py-12">
         <i className="fas fa-chart-pie text-6xl text-gray-300 mb-4"></i>
-        <h3 className="text-xl font-exo font-semibold text-gray-700 mb-2">Sin datos disponibles</h3>
+        <h3 className="text-xl font-exo font-semibold text-gray-700 mb-2">{labels.noData.title}</h3>
         <p className="text-gray-500 font-roboto">
-          No hay información suficiente para generar la vista general.
+          {labels.noData.message}
         </p>
       </div>
     )
@@ -42,7 +44,7 @@ const OverviewReport = ({ baseMetrics }) => {
         <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-blue-100 text-sm font-roboto">Usuarios Totales</p>
+              <p className="text-blue-100 text-sm font-roboto">{labels.metrics.totalUsers}</p>
               <p className="text-3xl font-exo font-bold">
                 {overviewMetrics.users.total.toLocaleString()}
               </p>
@@ -51,8 +53,9 @@ const OverviewReport = ({ baseMetrics }) => {
                   className={`fas fa-arrow-${overviewMetrics.users.growth >= 0 ? 'up' : 'down'} mr-1`}
                 ></i>
                 <span className="text-sm font-roboto">
-                  {overviewMetrics.users.growth >= 0 ? '+' : ''}
-                  {overviewMetrics.users.growth}% vs período anterior
+                  {labels.metrics.vsPreviousPeriod
+                    .replace('{sign}', overviewMetrics.users.growth >= 0 ? '+' : '')
+                    .replace('{value}', overviewMetrics.users.growth)}
                 </span>
               </div>
             </div>
@@ -65,7 +68,7 @@ const OverviewReport = ({ baseMetrics }) => {
         <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-green-100 text-sm font-roboto">Servicios Prestados</p>
+              <p className="text-green-100 text-sm font-roboto">{labels.metrics.servicesProvided}</p>
               <p className="text-3xl font-exo font-bold">
                 {overviewMetrics.services.total.toLocaleString()}
               </p>
@@ -74,8 +77,9 @@ const OverviewReport = ({ baseMetrics }) => {
                   className={`fas fa-arrow-${overviewMetrics.services.growth >= 0 ? 'up' : 'down'} mr-1`}
                 ></i>
                 <span className="text-sm font-roboto">
-                  {overviewMetrics.services.growth >= 0 ? '+' : ''}
-                  {overviewMetrics.services.growth}% vs período anterior
+                  {labels.metrics.vsPreviousPeriod
+                    .replace('{sign}', overviewMetrics.services.growth >= 0 ? '+' : '')
+                    .replace('{value}', overviewMetrics.services.growth)}
                 </span>
               </div>
             </div>
@@ -88,7 +92,7 @@ const OverviewReport = ({ baseMetrics }) => {
         <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-purple-100 text-sm font-roboto">Ingresos Totales</p>
+              <p className="text-purple-100 text-sm font-roboto">{labels.metrics.totalRevenue}</p>
               <p className="text-3xl font-exo font-bold">
                 S/ {overviewMetrics.revenue.total.toLocaleString()}
               </p>
@@ -97,8 +101,9 @@ const OverviewReport = ({ baseMetrics }) => {
                   className={`fas fa-arrow-${overviewMetrics.revenue.growth >= 0 ? 'up' : 'down'} mr-1`}
                 ></i>
                 <span className="text-sm font-roboto">
-                  {overviewMetrics.revenue.growth >= 0 ? '+' : ''}
-                  {overviewMetrics.revenue.growth}% vs período anterior
+                  {labels.metrics.vsPreviousPeriod
+                    .replace('{sign}', overviewMetrics.revenue.growth >= 0 ? '+' : '')
+                    .replace('{value}', overviewMetrics.revenue.growth)}
                 </span>
               </div>
             </div>
@@ -111,14 +116,14 @@ const OverviewReport = ({ baseMetrics }) => {
         <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-xl p-6 text-white">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-yellow-100 text-sm font-roboto">Satisfacción</p>
+              <p className="text-yellow-100 text-sm font-roboto">{labels.metrics.satisfaction}</p>
               <p className="text-3xl font-exo font-bold">
                 {overviewMetrics.satisfaction.average}/5.0
               </p>
               <div className="flex items-center mt-2">
                 <i className="fas fa-star mr-1"></i>
                 <span className="text-sm font-roboto">
-                  {overviewMetrics.satisfaction.total} encuestas
+                  {labels.metrics.surveys.replace('{count}', overviewMetrics.satisfaction.total)}
                 </span>
               </div>
             </div>
@@ -133,7 +138,7 @@ const OverviewReport = ({ baseMetrics }) => {
       <div className="bg-white rounded-xl shadow-medium p-6">
         <h3 className="text-xl font-exo font-semibold text-gray-800 mb-6">
           <i className="fas fa-tachometer-alt text-helpmed-blue mr-2"></i>
-          KPIs Operacionales
+          {labels.kpis.title}
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -143,18 +148,18 @@ const OverviewReport = ({ baseMetrics }) => {
                 overviewMetrics.performance.avgResponseTime < 15 ? 'text-green-600' : 'text-red-600'
               }`}
             >
-              {overviewMetrics.performance.avgResponseTime} min
+              {labels.kpis.responseTime.unit.replace('{time}', overviewMetrics.performance.avgResponseTime)}
             </div>
-            <p className="text-gray-600 font-roboto">Tiempo Promedio Respuesta</p>
-            <p className="text-sm text-gray-500 mt-1">Objetivo: &lt; 15 min</p>
+            <p className="text-gray-600 font-roboto">{labels.kpis.responseTime.label}</p>
+            <p className="text-sm text-gray-500 mt-1">{labels.kpis.responseTime.objective}</p>
             <div className="mt-2">
               {overviewMetrics.performance.avgResponseTime < 15 ? (
                 <span className="text-green-600">
-                  <i className="fas fa-check-circle mr-1"></i>Cumplido
+                  <i className="fas fa-check-circle mr-1"></i>{labels.kpis.status.achieved}
                 </span>
               ) : (
                 <span className="text-red-600">
-                  <i className="fas fa-exclamation-circle mr-1"></i>No cumplido
+                  <i className="fas fa-exclamation-circle mr-1"></i>{labels.kpis.status.notAchieved}
                 </span>
               )}
             </div>
@@ -166,18 +171,18 @@ const OverviewReport = ({ baseMetrics }) => {
                 overviewMetrics.performance.successRate > 95 ? 'text-green-600' : 'text-yellow-600'
               }`}
             >
-              {overviewMetrics.performance.successRate}%
+              {labels.kpis.successRate.unit.replace('{percentage}', overviewMetrics.performance.successRate)}
             </div>
-            <p className="text-gray-600 font-roboto">Tasa de Éxito</p>
-            <p className="text-sm text-gray-500 mt-1">Objetivo: &gt; 95%</p>
+            <p className="text-gray-600 font-roboto">{labels.kpis.successRate.label}</p>
+            <p className="text-sm text-gray-500 mt-1">{labels.kpis.successRate.objective}</p>
             <div className="mt-2">
               {overviewMetrics.performance.successRate > 95 ? (
                 <span className="text-green-600">
-                  <i className="fas fa-check-circle mr-1"></i>Cumplido
+                  <i className="fas fa-check-circle mr-1"></i>{labels.kpis.status.achieved}
                 </span>
               ) : (
                 <span className="text-yellow-600">
-                  <i className="fas fa-exclamation-triangle mr-1"></i>En seguimiento
+                  <i className="fas fa-exclamation-triangle mr-1"></i>{labels.kpis.status.monitoring}
                 </span>
               )}
             </div>
@@ -189,18 +194,18 @@ const OverviewReport = ({ baseMetrics }) => {
                 overviewMetrics.satisfaction.average > 4.0 ? 'text-green-600' : 'text-yellow-600'
               }`}
             >
-              {overviewMetrics.satisfaction.average}/5.0
+              {labels.kpis.customerSatisfaction.unit.replace('{rating}', overviewMetrics.satisfaction.average)}
             </div>
-            <p className="text-gray-600 font-roboto">Satisfacción Cliente</p>
-            <p className="text-sm text-gray-500 mt-1">Objetivo: &gt; 4.0</p>
+            <p className="text-gray-600 font-roboto">{labels.kpis.customerSatisfaction.label}</p>
+            <p className="text-sm text-gray-500 mt-1">{labels.kpis.customerSatisfaction.objective}</p>
             <div className="mt-2">
               {overviewMetrics.satisfaction.average > 4.0 ? (
                 <span className="text-green-600">
-                  <i className="fas fa-check-circle mr-1"></i>Cumplido
+                  <i className="fas fa-check-circle mr-1"></i>{labels.kpis.status.achieved}
                 </span>
               ) : (
                 <span className="text-yellow-600">
-                  <i className="fas fa-exclamation-triangle mr-1"></i>En seguimiento
+                  <i className="fas fa-exclamation-triangle mr-1"></i>{labels.kpis.status.monitoring}
                 </span>
               )}
             </div>
@@ -213,7 +218,7 @@ const OverviewReport = ({ baseMetrics }) => {
         <div className="bg-white rounded-xl shadow-medium p-6">
           <h3 className="text-xl font-exo font-semibold text-gray-800 mb-6">
             <i className="fas fa-chart-pie text-helpmed-blue mr-2"></i>
-            Distribución de Servicios
+            {labels.serviceDistribution.title}
           </h3>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -223,10 +228,10 @@ const OverviewReport = ({ baseMetrics }) => {
                   const percentage = ((count / overviewMetrics.services.total) * 100).toFixed(1)
                   const typeName =
                     {
-                      emergency: 'Emergencias',
-                      scheduled: 'Citas Programadas',
-                      transfer: 'Traslados',
-                      consultation: 'Consultas'
+                      emergency: labels.serviceDistribution.types.emergency,
+                      scheduled: labels.serviceDistribution.types.scheduled,
+                      transfer: labels.serviceDistribution.types.transfer,
+                      consultation: labels.serviceDistribution.types.consultation
                     }[type] || type
 
                   return (
@@ -262,7 +267,7 @@ const OverviewReport = ({ baseMetrics }) => {
               <div className="text-center">
                 <div className="text-4xl text-gray-300 mb-4">📊</div>
                 <p className="text-gray-600 font-roboto">
-                  Gráfico circular disponible en la exportación PDF
+                  {labels.serviceDistribution.chartPlaceholder}
                 </p>
               </div>
             </div>
@@ -274,7 +279,7 @@ const OverviewReport = ({ baseMetrics }) => {
       <div className="bg-gray-50 rounded-xl p-6">
         <h3 className="text-lg font-exo font-semibold text-gray-800 mb-4">
           <i className="fas fa-download text-helpmed-blue mr-2"></i>
-          Exportar Reporte
+          {labels.export.title}
         </h3>
 
         <div className="flex flex-wrap gap-3">
@@ -283,7 +288,7 @@ const OverviewReport = ({ baseMetrics }) => {
             className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-roboto"
           >
             <i className="fas fa-file-pdf mr-2"></i>
-            Descargar PDF
+            {labels.export.pdf}
           </button>
 
           <button
@@ -291,7 +296,7 @@ const OverviewReport = ({ baseMetrics }) => {
             className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-roboto"
           >
             <i className="fas fa-file-excel mr-2"></i>
-            Descargar Excel
+            {labels.export.excel}
           </button>
         </div>
       </div>

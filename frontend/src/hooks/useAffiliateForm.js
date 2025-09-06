@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { affiliateFormSchema, affiliateUpdateSchema } from '../schemas/affiliateSchema'
 import { ERROR_MESSAGES, FORM_CONFIG } from '../constants/affiliateConstants'
+import { LABELS } from '../config/labels'
 
 /**
  * Hook personalizado para manejar la lógica de formularios de afiliados
@@ -119,7 +120,7 @@ export const useAffiliateForm = (initialData = null, isEditMode = false) => {
       if (isSubmitting) {
         return {
           success: false,
-          error: 'Ya se está procesando una solicitud'
+          error: LABELS.admin.affiliates.edit.processingRequest
         }
       }
 
@@ -131,7 +132,7 @@ export const useAffiliateForm = (initialData = null, isEditMode = false) => {
         if (!isValid) {
           return {
             success: false,
-            error: 'Por favor corrige los errores del formulario'
+            error: LABELS.admin.affiliates.edit.correctErrors
           }
         }
 
@@ -139,10 +140,10 @@ export const useAffiliateForm = (initialData = null, isEditMode = false) => {
         if (isEditMode) {
           const changedFields = getChangedFields()
           if (Object.keys(changedFields).length === 0) {
-            setErrors({ general: 'No se han realizado cambios' })
+            setErrors({ general: LABELS.admin.affiliates.edit.noChanges })
             return {
               success: false,
-              error: 'No se han realizado cambios'
+              error: LABELS.admin.affiliates.edit.noChanges
             }
           }
 

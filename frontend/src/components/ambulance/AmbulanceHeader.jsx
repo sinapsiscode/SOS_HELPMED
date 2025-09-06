@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react'
 import useAppStore from '../../stores/useAppStore'
+import { APP_CONFIG } from '../../config/constants'
+import { LABELS } from '../../config/labels'
+import { MOCK_DATA } from '../../config/mockData'
 
 /**
  * Header específico para el dashboard de ambulancia
@@ -35,16 +38,16 @@ const AmbulanceHeader = ({ user }) => {
           <div className="flex items-center space-x-4">
             {/* Logo HelpMED */}
             <img 
-              src="/public/Logo-Helpmed-negativo.png" 
-              alt="Help MED Logo" 
+              src={APP_CONFIG.logo} 
+              alt={`${APP_CONFIG.name} Logo`} 
               className="h-10 w-auto object-contain"
             />
             
             {/* Información del panel */}
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Panel Ambulancia</h1>
+              <h1 className="text-lg font-bold text-gray-900">{LABELS.ambulance.title}</h1>
               <p className="text-sm text-gray-600">
-                Conductor: {user?.profile?.name || user?.name || 'Carlos Mendoza'}
+                {LABELS.ambulance.header.driver}: {user?.profile?.name || user?.name || MOCK_DATA.defaultUsers.ambulance.name}
               </p>
             </div>
           </div>
@@ -54,10 +57,10 @@ const AmbulanceHeader = ({ user }) => {
             {/* Información del usuario */}
             <div className="hidden sm:flex flex-col text-right">
               <p className="text-sm font-semibold text-gray-900">
-                {user?.profile?.name || user?.name || 'Carlos Mendoza'}
+                {user?.profile?.name || user?.name || MOCK_DATA.defaultUsers.ambulance.name}
               </p>
               <p className="text-xs text-gray-600">
-                Unidad: {user?.ambulance_unit || 'AMB-001'}
+                {LABELS.ambulance.header.unit}: {user?.ambulance_unit || MOCK_DATA.defaultUsers.ambulance.ambulance_unit}
               </p>
             </div>
 
@@ -69,7 +72,7 @@ const AmbulanceHeader = ({ user }) => {
                 title="Perfil de usuario"
               >
                 <span className="text-white font-bold text-base">
-                  {(user?.profile?.name || user?.name || 'Carlos Mendoza')?.charAt(0) || 'C'}
+                  {(user?.profile?.name || user?.name || MOCK_DATA.defaultUsers.ambulance.name)?.charAt(0) || 'C'}
                 </span>
               </button>
 
@@ -78,10 +81,10 @@ const AmbulanceHeader = ({ user }) => {
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                   <div className="px-4 py-3 border-b border-gray-100">
                     <p className="text-sm font-medium text-gray-900">
-                      {user?.profile?.name || user?.name || 'Carlos Mendoza'}
+                      {user?.profile?.name || user?.name || MOCK_DATA.defaultUsers.ambulance.name}
                     </p>
                     <p className="text-xs text-gray-500">
-                      Unidad: {user?.ambulance_unit || 'AMB-001'}
+                      {LABELS.ambulance.header.unit}: {user?.ambulance_unit || MOCK_DATA.defaultUsers.ambulance.ambulance_unit}
                     </p>
                   </div>
                   <div className="py-2">
@@ -93,7 +96,7 @@ const AmbulanceHeader = ({ user }) => {
                       className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center"
                     >
                       <i className="fas fa-sign-out-alt mr-3 text-red-400"></i>
-                      Cerrar Sesión
+                      {LABELS.buttons.logout}
                     </button>
                   </div>
                 </div>

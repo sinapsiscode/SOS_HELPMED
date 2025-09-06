@@ -5,18 +5,21 @@ import { UnitsTab, AssignmentsTab } from './ambulance'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
 import { MOCK_PENDING_EMERGENCIES } from '../../mocks/emergencyData'
+import { LABELS } from '../../config/labels'
 
-// Lazy loading de modal (Regla #5)
+// ${LABELS.admin.ambulanceManagement.comments.lazyLoading}
 const AmbulanceFormModal = lazy(() => import('./ambulance/AmbulanceFormModal'))
 
 /**
- * Componente principal de gestión de ambulancias
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
- * Componente <200 líneas siguiendo Regla #3
+ * ${LABELS.admin.ambulanceManagement.comments.title}
+ * ${LABELS.admin.ambulanceManagement.comments.approach}
+ * ${LABELS.admin.ambulanceManagement.comments.rule3}
  */
 const AmbulanceManagement = () => {
+  const labels = LABELS.admin.ambulanceManagement
+  
   // ============================================
-  // HOOK - Toda la lógica de negocio compleja
+  // ${LABELS.admin.ambulanceManagement.comments.businessLogic}
   // ============================================
   const {
     ambulanceUsers,
@@ -42,12 +45,12 @@ const AmbulanceManagement = () => {
   } = useAmbulanceManagement()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.ambulanceManagement.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-6">
-        <ErrorMessage message={`Error en gestión de ambulancias: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.managementError.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -57,7 +60,7 @@ const AmbulanceManagement = () => {
   }
 
   // ============================================
-  // FUNCIONES DE RENDERIZADO DE TABS
+  // ${LABELS.admin.ambulanceManagement.comments.tabRendering}
   // ============================================
   const renderActiveTab = () => {
     switch (activeTab) {
@@ -106,10 +109,10 @@ const AmbulanceManagement = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-4 sm:space-y-0">
           <div className="min-w-0 flex-1">
             <h2 className="text-xl sm:text-2xl font-exo font-bold text-gray-800">
-              Gestión de Unidades Médicas
+              {labels.header.title}
             </h2>
             <p className="text-sm sm:text-base text-gray-600 font-roboto">
-              Administra unidades y asigna servicios manualmente
+              {labels.header.subtitle}
             </p>
           </div>
 
@@ -121,10 +124,10 @@ const AmbulanceManagement = () => {
                   onChange={(e) => setFilter(e.target.value)}
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-helpmed-blue focus:border-helpmed-blue font-roboto"
                 >
-                  <option value="all">Todas</option>
-                  <option value="active">Activas</option>
-                  <option value="inactive">Inactivas</option>
-                  <option value="on_duty">En Servicio</option>
+                  <option value="all">{labels.filters.all}</option>
+                  <option value="active">{labels.filters.active}</option>
+                  <option value="inactive">{labels.filters.inactive}</option>
+                  <option value="on_duty">{labels.filters.onDuty}</option>
                 </select>
 
                 <button
@@ -132,8 +135,8 @@ const AmbulanceManagement = () => {
                   className="bg-helpmed-blue hover:bg-primary-blue text-white px-3 sm:px-4 py-2 rounded-lg font-exo font-medium transition-colors flex items-center space-x-1 sm:space-x-2 text-sm"
                 >
                   <i className="fas fa-plus"></i>
-                  <span className="hidden sm:inline">Nueva Unidad</span>
-                  <span className="sm:hidden">Nueva</span>
+                  <span className="hidden sm:inline">{labels.buttons.newUnit}</span>
+                  <span className="sm:hidden">{labels.buttons.newUnitShort}</span>
                 </button>
               </>
             )}
@@ -152,7 +155,7 @@ const AmbulanceManagement = () => {
               } font-exo`}
             >
               <i className="fas fa-ambulance mr-2"></i>
-              Unidades ({ambulanceUsers.length})
+              {labels.tabs.units.replace('{count}', ambulanceUsers.length)}
             </button>
             <button
               onClick={() => setActiveTab('assignments')}
@@ -163,7 +166,7 @@ const AmbulanceManagement = () => {
               } font-exo`}
             >
               <i className="fas fa-clipboard-list mr-2"></i>
-              Asignaciones ({MOCK_PENDING_EMERGENCIES?.length || 0})
+              {labels.tabs.assignments.replace('{count}', MOCK_PENDING_EMERGENCIES?.length || 0)}
             </button>
             <button
               onClick={() => setActiveTab('map')}
@@ -174,7 +177,7 @@ const AmbulanceManagement = () => {
               } font-exo`}
             >
               <i className="fas fa-map-marked-alt mr-2"></i>
-              Mapa de Asignaciones
+              {labels.tabs.map}
             </button>
           </nav>
         </div>
@@ -183,7 +186,7 @@ const AmbulanceManagement = () => {
       {/* Tab Content */}
       {renderActiveTab()}
 
-      {/* Modal con Lazy Loading (Regla #5) */}
+      {/* Modal con ${LABELS.admin.ambulanceManagement.comments.lazyLoading} */}
       {showCreateForm && (
         <Suspense fallback={<LoadingSkeleton />}>
           <AmbulanceFormModal

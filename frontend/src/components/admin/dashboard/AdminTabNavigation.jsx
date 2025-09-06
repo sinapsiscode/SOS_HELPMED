@@ -1,27 +1,13 @@
 import React from 'react'
+import { ICON_MAPPINGS } from '../../../config/constants'
 
 /**
  * Componente de navegación por tabs para el dashboard de administrador
  * Renderiza la lista de tabs disponibles y maneja la selección
  */
 const AdminTabNavigation = ({ tabs, activeTab, onTabChange }) => {
-  // Mapeo de iconos usando clases de FontAwesome para evitar problemas
-  const iconMap = {
-    dashboard: 'fas fa-tachometer-alt',
-    users: 'fas fa-users',
-    'clipboard-list': 'fas fa-clipboard-list',
-    'building-office': 'fas fa-building',
-    truck: 'fas fa-truck',
-    'exclamation-triangle': 'fas fa-exclamation-triangle',
-    phone: 'fas fa-phone',
-    cog: 'fas fa-cog',
-    'chart-bar': 'fas fa-chart-bar',
-    'clipboard-check': 'fas fa-clipboard-check',
-    bell: 'fas fa-bell'
-  }
-  
   const getIconClass = (iconName) => {
-    return iconMap[iconName] || 'fas fa-file'
+    return ICON_MAPPINGS[iconName] || ICON_MAPPINGS.default
   }
 
   return (

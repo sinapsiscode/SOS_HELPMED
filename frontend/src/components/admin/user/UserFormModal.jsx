@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import userService from '../../../services/userService'
 import LocationMapModal from './LocationMapModal'
+import LABELS from '../../../config/labels'
 
 /**
- * Modal para creación y edición de usuarios
- * Siguiendo Regla #3: Componente específico <200 líneas
- * Siguiendo Regla #2: Solo presentación y validación básica
+ * ${LABELS.admin.user.userFormModal.comments.title}
+ * ${LABELS.admin.user.userFormModal.comments.rule3}
+ * ${LABELS.admin.user.userFormModal.comments.rule2}
  *
  * @param {Object} props - Props del componente
  * @param {Object|null} props.user - Usuario a editar (null para crear)
@@ -15,6 +16,7 @@ import LocationMapModal from './LocationMapModal'
  * @returns {JSX.Element} Modal de formulario de usuario
  */
 const UserFormModal = ({ user, userType, onClose, onSave }) => {
+  const labels = LABELS.admin.user.userFormModal
   const [formData, setFormData] = useState(user || {})
   const [showPassword, setShowPassword] = useState(false)
 
@@ -75,7 +77,7 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
         <div className="p-6 border-b border-gray-100">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-gray-800">
-              {user ? 'Editar' : 'Crear'} Usuario{' '}
+              {user ? labels.title.edit : labels.title.create} {labels.title.user}{' '}
               {userType.charAt(0).toUpperCase() + userType.slice(1)}
             </h2>
             <button
@@ -92,7 +94,7 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre de Usuario
+                {labels.fields.username}
               </label>
               <input
                 type="text"
@@ -104,14 +106,14 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fields.password}</label>
               <div className="relative">
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password || ''}
                   onChange={(e) => handleChange('password', e.target.value)}
                   placeholder={
-                    !user ? 'Ingrese contraseña' : 'Dejar en blanco para mantener actual'
+                    !user ? labels.fields.passwordPlaceholder.new : labels.fields.passwordPlaceholder.edit
                   }
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
                   required={!user}
@@ -120,14 +122,14 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 px-3 flex items-center text-gray-600 hover:text-gray-800"
-                  title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  title={showPassword ? labels.fields.hidePassword : labels.fields.showPassword}
                 >
                   <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
                 </button>
               </div>
               {user && (
                 <p className="text-xs text-gray-500 mt-1">
-                  Dejar en blanco para mantener la contraseña actual
+                  {labels.fields.passwordNote}
                 </p>
               )}
             </div>
@@ -143,13 +145,13 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
               onClick={onClose}
               className="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors"
             >
-              Cancelar
+              {labels.buttons.cancel}
             </button>
             <button
               type="submit"
               className="flex-1 bg-primary-red hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
             >
-              {user ? 'Actualizar' : 'Crear'} Usuario
+              {user ? labels.buttons.update : labels.buttons.create} {labels.buttons.userSuffix}
             </button>
           </div>
         </form>
@@ -160,6 +162,8 @@ const UserFormModal = ({ user, userType, onClose, onSave }) => {
 
 // Componentes de campos específicos por tipo de usuario
 const FamiliarUserFields = ({ formData, onChange }) => {
+  const labels = LABELS.admin.user.userFormModal.familiar
+  
   const handleDniChange = (e) => {
     const value = e.target.value
     if (/^\d{0,8}$/.test(value)) {
@@ -171,7 +175,7 @@ const FamiliarUserFields = ({ formData, onChange }) => {
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fullName}</label>
           <input
             type="text"
             value={formData.profile?.name || ''}
@@ -181,20 +185,20 @@ const FamiliarUserFields = ({ formData, onChange }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">DNI</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.dni}</label>
           <input
             type="text"
             value={formData.profile?.dni || ''}
             onChange={handleDniChange}
-            placeholder="12345678"
+            placeholder={labels.dniPlaceholder}
             maxLength="8"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
             required
           />
-          <p className="text-xs text-gray-500 mt-1">Debe contener exactamente 8 dígitos</p>
+          <p className="text-xs text-gray-500 mt-1">{labels.dniNote}</p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.email}</label>
           <input
             type="email"
             value={formData.profile?.email || ''}
@@ -204,7 +208,7 @@ const FamiliarUserFields = ({ formData, onChange }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.phone}</label>
           <input
             type="tel"
             value={formData.profile?.phone || ''}
@@ -215,7 +219,7 @@ const FamiliarUserFields = ({ formData, onChange }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Fecha de Nacimiento
+            {labels.birthDate}
           </label>
           <input
             type="date"
@@ -226,27 +230,27 @@ const FamiliarUserFields = ({ formData, onChange }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Plan</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.plan}</label>
           <select
             value={formData.plan?.subtype || ''}
             onChange={(e) => onChange('plan.subtype', e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
             required
           >
-            <option value="">Seleccionar plan...</option>
-            <option value="HELP">Plan Help</option>
-            <option value="BASICO">Plan Básico</option>
-            <option value="VIP">Plan VIP</option>
-            <option value="DORADO">Plan Dorado</option>
+            <option value="">{labels.selectPlan}</option>
+            <option value="HELP">{labels.plans.help}</option>
+            <option value="BASICO">{labels.plans.basic}</option>
+            <option value="VIP">{labels.plans.vip}</option>
+            <option value="DORADO">{labels.plans.gold}</option>
           </select>
         </div>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Dirección</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.address}</label>
         <textarea
           value={formData.profile?.address || ''}
           onChange={(e) => onChange('profile.address', e.target.value)}
-          placeholder="Av. Principal 123, Distrito, Ciudad"
+          placeholder={labels.addressPlaceholder}
           rows="3"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
           required
@@ -257,6 +261,7 @@ const FamiliarUserFields = ({ formData, onChange }) => {
 }
 
 const CorporateUserFields = ({ formData, onChange }) => {
+  const labels = LABELS.admin.user.userFormModal.corporate
   const [sedes, setSedes] = useState(formData.company?.sedes || [])
   const [newSede, setNewSede] = useState('')
   const [showMapModal, setShowMapModal] = useState(false)
@@ -280,7 +285,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Nombre de la Empresa</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.companyName}</label>
           <input
             type="text"
             value={formData.company?.name || ''}
@@ -290,7 +295,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">RUC Empresa</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.ruc}</label>
           <input
             type="text"
             value={formData.company?.rut || ''}
@@ -301,13 +306,13 @@ const CorporateUserFields = ({ formData, onChange }) => {
         </div>
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Dirección Principal de la Empresa <span className="text-red-500">*</span>
+            {labels.mainAddress} <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
             value={formData.company?.address || ''}
             onChange={(e) => onChange('company.address', e.target.value)}
-            placeholder="Ej: Av. Principal 1234, Comuna, Ciudad"
+            placeholder={labels.addressPlaceholder}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
             required
           />
@@ -317,7 +322,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
             <div className="flex items-center justify-between mb-2">
               <label className="text-sm font-medium text-gray-700">
                 <i className="fas fa-map-marker-alt mr-1 text-red-500"></i>
-                Ubicación GPS Exacta
+                {labels.gpsLocation}
               </label>
               <button
                 type="button"
@@ -325,7 +330,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
                 className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors shadow-sm hover:shadow-md"
               >
                 <i className="fas fa-map-marked-alt mr-2"></i>
-                Seleccionar en Mapa
+                {labels.selectOnMap}
               </button>
             </div>
             
@@ -335,14 +340,14 @@ const CorporateUserFields = ({ formData, onChange }) => {
                   <div className="flex-1">
                     <p className="text-sm font-medium text-green-800 mb-1">
                       <i className="fas fa-check-circle mr-1"></i>
-                      Ubicación configurada
+                      {labels.locationConfigured}
                     </p>
                     <p className="text-xs text-gray-700">
-                      <strong>Coordenadas:</strong> {formData.company.coordinates.lat.toFixed(6)}, {formData.company.coordinates.lng.toFixed(6)}
+                      <strong>{labels.coordinates}</strong> {formData.company.coordinates.lat.toFixed(6)}, {formData.company.coordinates.lng.toFixed(6)}
                     </p>
                     {formData.company?.mapAddress && (
                       <p className="text-xs text-gray-600 mt-1">
-                        <strong>Dirección detectada:</strong> {formData.company.mapAddress}
+                        <strong>{labels.detectedAddress}</strong> {formData.company.mapAddress}
                       </p>
                     )}
                   </div>
@@ -351,7 +356,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
                     onClick={() => setShowMapModal(true)}
                     className="text-xs text-blue-600 hover:text-blue-700"
                   >
-                    Cambiar
+                    {labels.change}
                   </button>
                 </div>
               </div>
@@ -359,7 +364,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                 <p className="text-xs text-yellow-800">
                   <i className="fas fa-exclamation-triangle mr-1"></i>
-                  Recomendado: Configure la ubicación GPS para máxima precisión en emergencias
+                  {labels.recommendedGPS}
                 </p>
               </div>
             )}
@@ -385,11 +390,11 @@ const CorporateUserFields = ({ formData, onChange }) => {
           
           <p className="text-xs text-gray-500 mt-2">
             <i className="fas fa-ambulance mr-1 text-red-500"></i>
-            Las coordenadas GPS garantizan que la ambulancia llegue al lugar exacto en emergencias
+            {labels.gpsNote}
           </p>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Contacto Principal</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{labels.mainContact}</label>
           <input
             type="text"
             value={formData.profile?.name || ''}
@@ -400,7 +405,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Servicios Contratados
+            {labels.contractedServices}
           </label>
           <input
             type="number"
@@ -412,7 +417,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            Monto de Contrato
+            {labels.contractAmount}
           </label>
           <input
             type="number"
@@ -429,10 +434,10 @@ const CorporateUserFields = ({ formData, onChange }) => {
       
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Sedes Adicionales (Opcional)
+          {labels.additionalBranches}
         </label>
         <p className="text-xs text-gray-500 mb-2">
-          Agregue otras direcciones donde la empresa tiene operaciones
+          {labels.branchesNote}
         </p>
         <div className="flex gap-2 mb-2">
           <input
@@ -440,7 +445,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
             value={newSede}
             onChange={(e) => setNewSede(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSede())}
-            placeholder="Dirección de la sede (Ej: Av. Sur 5678, Comuna, Ciudad)"
+            placeholder={labels.branchPlaceholder}
             className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
           />
           <button
@@ -448,7 +453,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
             onClick={handleAddSede}
             className="bg-primary-red hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
-            <i className="fas fa-plus mr-2"></i>Agregar
+            <i className="fas fa-plus mr-2"></i>{labels.add}
           </button>
         </div>
         {sedes.length > 0 && (
@@ -468,18 +473,21 @@ const CorporateUserFields = ({ formData, onChange }) => {
           </div>
         )}
         {sedes.length === 0 && (
-          <p className="text-xs text-gray-500 mt-1">No hay sedes agregadas</p>
+          <p className="text-xs text-gray-500 mt-1">{labels.noBranches}</p>
         )}
       </div>
     </div>
   )
 }
 
-const ExternalUserFields = ({ formData, onChange }) => (
+const ExternalUserFields = ({ formData, onChange }) => {
+  const labels = LABELS.admin.user.userFormModal.external
+  
+  return (
   <div className="space-y-4">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fullName}</label>
         <input
           type="text"
           value={formData.profile?.name || ''}
@@ -489,7 +497,7 @@ const ExternalUserFields = ({ formData, onChange }) => (
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Empresa Cliente</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.clientCompany}</label>
         <input
           type="text"
           value={formData.client_company?.name || ''}
@@ -499,20 +507,20 @@ const ExternalUserFields = ({ formData, onChange }) => (
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Plan</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.planType}</label>
         <select
           value={formData.plan?.subtype || ''}
           onChange={(e) => onChange('plan.subtype', e.target.value)}
           className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"
           required
         >
-          <option value="">Seleccionar tipo...</option>
-          <option value="CASO_1">Caso 1 - Sin límites</option>
-          <option value="CASO_2">Caso 2 - Con límites</option>
+          <option value="">{labels.selectType}</option>
+          <option value="CASO_1">{labels.case1}</option>
+          <option value="CASO_2">{labels.case2}</option>
         </select>
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">ID Afiliado</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.affiliateId}</label>
         <input
           type="text"
           value={formData.profile?.affiliate_id || ''}
@@ -523,13 +531,17 @@ const ExternalUserFields = ({ formData, onChange }) => (
       </div>
     </div>
   </div>
-)
+  )
+}
 
-const AdminUserFields = ({ formData, onChange }) => (
+const AdminUserFields = ({ formData, onChange }) => {
+  const labels = LABELS.admin.user.userFormModal.admin
+  
+  return (
   <div className="space-y-4">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Nombre Completo</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.fullName}</label>
         <input
           type="text"
           value={formData.profile?.name || ''}
@@ -539,7 +551,7 @@ const AdminUserFields = ({ formData, onChange }) => (
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Cargo</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.position}</label>
         <input
           type="text"
           value={formData.profile?.position || ''}
@@ -549,7 +561,7 @@ const AdminUserFields = ({ formData, onChange }) => (
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.email}</label>
         <input
           type="email"
           value={formData.profile?.email || ''}
@@ -559,7 +571,7 @@ const AdminUserFields = ({ formData, onChange }) => (
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
+        <label className="block text-sm font-medium text-gray-700 mb-2">{labels.phone}</label>
         <input
           type="tel"
           value={formData.profile?.phone || ''}
@@ -570,6 +582,7 @@ const AdminUserFields = ({ formData, onChange }) => (
       </div>
     </div>
   </div>
-)
+  )
+}
 
 export default UserFormModal

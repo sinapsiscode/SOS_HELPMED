@@ -1,4 +1,5 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
  * Componente de Alertas del Sistema
@@ -6,23 +7,10 @@ import React from 'react'
  * Extraído del AdminDashboard monolítico durante refactorización
  */
 const SystemAlerts = ({ alerts = [] }) => {
+  const labels = LABELS.admin.dashboard.systemAlerts
+  
   // TODO: Conectar con sistema de notificaciones real
-  const mockAlerts = [
-    {
-      id: 1,
-      type: 'warning',
-      title: 'Mantenimiento programado',
-      message: 'Mantenimiento del sistema programado para mañana a las 02:00',
-      time: '1 hour ago'
-    },
-    {
-      id: 2,
-      type: 'info',
-      title: 'Actualización disponible',
-      message: 'Nueva versión del sistema disponible para instalación',
-      time: '3 hours ago'
-    }
-  ]
+  const mockAlerts = labels.mockAlerts
 
   // Usar alertas pasadas como props o las mock si no hay
   const displayAlerts = alerts.length > 0 ? alerts : mockAlerts
@@ -30,7 +18,7 @@ const SystemAlerts = ({ alerts = [] }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
       <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">
-        Alertas del Sistema
+        {labels.title}
       </h3>
       
       <div className="space-y-3">
@@ -38,9 +26,9 @@ const SystemAlerts = ({ alerts = [] }) => {
           <div 
             key={alert.id} 
             className={`border-l-4 p-3 sm:p-4 rounded-r-lg ${
-              alert.type === 'warning' 
-                ? 'border-yellow-500 bg-yellow-50' 
-                : 'border-blue-500 bg-blue-50'
+              alert.type === labels.alertTypes.warning 
+                ? `${labels.colors.warning.border} ${labels.colors.warning.background}` 
+                : `${labels.colors.info.border} ${labels.colors.info.background}`
             }`}
           >
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-1 sm:space-y-0">

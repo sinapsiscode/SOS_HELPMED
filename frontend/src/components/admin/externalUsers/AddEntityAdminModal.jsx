@@ -1,9 +1,10 @@
 import React from 'react'
 import { ENTITY_TYPES } from '../../../mocks/externalUsersData'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Modal para crear nueva entidad externa con administrador
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.externalUsers.addEntityAdminModal.comments.title}
+ * ${LABELS.admin.externalUsers.addEntityAdminModal.comments.approach}
  *
  * @param {boolean} isOpen - Si el modal está abierto
  * @param {Object} entityAdminForm - Formulario de entidad con administrador
@@ -23,41 +24,43 @@ const AddEntityAdminModal = ({
   isLoading,
   isFormValid
 }) => {
+  const labels = LABELS.admin.externalUsers.addEntityAdminModal
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (typeof isOpen !== 'boolean') {
-    console.error('AddEntityAdminModal: isOpen debe ser boolean')
+    console.error(labels.errors.isOpenRequired)
     return null
   }
 
   if (!entityAdminForm || typeof entityAdminForm !== 'object') {
-    console.error('AddEntityAdminModal: entityAdminForm es requerido y debe ser un objeto')
+    console.error(labels.errors.entityAdminFormRequired)
     return null
   }
 
   if (typeof onClose !== 'function') {
-    console.error('AddEntityAdminModal: onClose debe ser una función')
+    console.error(labels.errors.onCloseRequired)
     return null
   }
 
   if (typeof onSubmit !== 'function') {
-    console.error('AddEntityAdminModal: onSubmit debe ser una función')
+    console.error(labels.errors.onSubmitRequired)
     return null
   }
 
   if (typeof updateForm !== 'function') {
-    console.error('AddEntityAdminModal: updateForm debe ser una función')
+    console.error(labels.errors.updateFormRequired)
     return null
   }
 
   if (typeof isLoading !== 'boolean') {
-    console.error('AddEntityAdminModal: isLoading debe ser boolean')
+    console.error(labels.errors.isLoadingRequired)
     return null
   }
 
   if (typeof isFormValid !== 'function') {
-    console.error('AddEntityAdminModal: isFormValid debe ser una función')
+    console.error(labels.errors.isFormValidRequired)
     return null
   }
 
@@ -70,9 +73,9 @@ const AddEntityAdminModal = ({
         <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-white">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-bold text-gray-800">Crear Nueva Entidad Externa</h3>
+              <h3 className="text-xl font-bold text-gray-800">{labels.title}</h3>
               <p className="text-sm text-gray-600 mt-1">
-                La entidad se creará junto con su administrador obligatorio
+                {labels.subtitle}
               </p>
             </div>
             <button
@@ -91,13 +94,13 @@ const AddEntityAdminModal = ({
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <h4 className="font-semibold text-blue-800 mb-3 flex items-center">
               <i className="fas fa-building mr-2"></i>
-              Información de la Entidad
+              {labels.sections.entity.title}
             </h4>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre de la Entidad *
+                  {labels.sections.entity.fields.name.label}
                 </label>
                 <input
                   type="text"
@@ -105,14 +108,14 @@ const AddEntityAdminModal = ({
                   onChange={(e) => updateForm('entityName', e.target.value)}
                   disabled={isLoading}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                  placeholder="Ej: Banco de la Nación"
+                  placeholder={labels.sections.entity.fields.name.placeholder}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Código de Entidad *
+                    {labels.sections.entity.fields.code.label}
                   </label>
                   <input
                     type="text"
@@ -120,14 +123,14 @@ const AddEntityAdminModal = ({
                     onChange={(e) => updateForm('entityCode', e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:bg-gray-100"
-                    placeholder="Ej: BN, BCR, RIMAC"
+                    placeholder={labels.sections.entity.fields.code.placeholder}
                     maxLength="10"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Tipo de Entidad *
+                    {labels.sections.entity.fields.type.label}
                   </label>
                   <select
                     value={entityAdminForm.entityType}
@@ -150,13 +153,13 @@ const AddEntityAdminModal = ({
           <div className="bg-green-50 border border-green-200 rounded-lg p-4">
             <h4 className="font-semibold text-green-800 mb-3 flex items-center">
               <i className="fas fa-user-shield mr-2"></i>
-              Administrador de la Entidad (Obligatorio)
+              {labels.sections.admin.title}
             </h4>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Nombre Completo del Administrador *
+                  {labels.sections.admin.fields.name.label}
                 </label>
                 <input
                   type="text"
@@ -164,14 +167,14 @@ const AddEntityAdminModal = ({
                   onChange={(e) => updateForm('adminName', e.target.value)}
                   disabled={isLoading}
                   className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                  placeholder="Nombre y apellidos del administrador"
+                  placeholder={labels.sections.admin.fields.name.placeholder}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Usuario de Acceso *
+                    {labels.sections.admin.fields.username.label}
                   </label>
                   <input
                     type="text"
@@ -179,13 +182,13 @@ const AddEntityAdminModal = ({
                     onChange={(e) => updateForm('adminUsername', e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                    placeholder="usuario_admin"
+                    placeholder={labels.sections.admin.fields.username.placeholder}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Contraseña *
+                    {labels.sections.admin.fields.password.label}
                   </label>
                   <input
                     type="text"
@@ -193,10 +196,10 @@ const AddEntityAdminModal = ({
                     onChange={(e) => updateForm('adminPassword', e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                    placeholder="Contraseña segura"
+                    placeholder={labels.sections.admin.fields.password.placeholder}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    La contraseña se mostrará al crear el administrador
+                    {labels.sections.admin.fields.password.hint}
                   </p>
                 </div>
               </div>
@@ -204,7 +207,7 @@ const AddEntityAdminModal = ({
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Corporativo *
+                    {labels.sections.admin.fields.email.label}
                   </label>
                   <input
                     type="email"
@@ -212,13 +215,13 @@ const AddEntityAdminModal = ({
                     onChange={(e) => updateForm('adminEmail', e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                    placeholder="admin@entidad.com"
+                    placeholder={labels.sections.admin.fields.email.placeholder}
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Teléfono de Contacto
+                    {labels.sections.admin.fields.phone.label}
                   </label>
                   <input
                     type="tel"
@@ -226,7 +229,7 @@ const AddEntityAdminModal = ({
                     onChange={(e) => updateForm('adminPhone', e.target.value)}
                     disabled={isLoading}
                     className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 disabled:opacity-50 disabled:bg-gray-100"
-                    placeholder="999-999-999"
+                    placeholder={labels.sections.admin.fields.phone.placeholder}
                   />
                 </div>
               </div>
@@ -237,8 +240,7 @@ const AddEntityAdminModal = ({
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
             <p className="text-sm text-yellow-800">
               <i className="fas fa-info-circle mr-1"></i>
-              <strong>Importante:</strong> Una vez creada la entidad con su administrador, el
-              administrador podrá agregar usuarios adicionales desde su panel de control.
+              <strong>{labels.note.title}</strong> {labels.note.text}
             </p>
           </div>
         </div>
@@ -250,7 +252,7 @@ const AddEntityAdminModal = ({
             disabled={isLoading}
             className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
           >
-            Cancelar
+            {labels.buttons.cancel}
           </button>
           <button
             onClick={onSubmit}
@@ -260,12 +262,12 @@ const AddEntityAdminModal = ({
             {isLoading ? (
               <>
                 <i className="fas fa-spinner fa-spin"></i>
-                <span>Creando...</span>
+                <span>{labels.buttons.submitting}</span>
               </>
             ) : (
               <>
                 <i className="fas fa-plus-circle"></i>
-                <span>Crear Entidad y Administrador</span>
+                <span>{labels.buttons.submit}</span>
               </>
             )}
           </button>

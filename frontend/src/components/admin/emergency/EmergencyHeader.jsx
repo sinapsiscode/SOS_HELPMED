@@ -1,9 +1,10 @@
 import React from 'react'
 import EmergencyStats from './EmergencyStats'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Header del seguimiento de emergencias con filtros y estadísticas
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.emergency.emergencyHeader.comments.title}
+ * ${LABELS.admin.emergency.emergencyHeader.comments.approach}
  *
  * @param {Object} stats - Estadísticas de emergencias
  * @param {string} filterPriority - Filtro de prioridad activo
@@ -26,41 +27,43 @@ const EmergencyHeader = ({
   setFilterTimeRange,
   setViewMode
 }) => {
+  const labels = LABELS.admin.emergency.emergencyHeader
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!stats) {
-    console.error('EmergencyHeader: stats es requerido')
+    console.error(labels.errors.statsRequired)
     return null
   }
 
   if (typeof setFilterPriority !== 'function') {
-    console.error('EmergencyHeader: setFilterPriority debe ser una función')
+    console.error(labels.errors.setFilterPriorityRequired)
     return null
   }
 
   if (typeof setFilterStatus !== 'function') {
-    console.error('EmergencyHeader: setFilterStatus debe ser una función')
+    console.error(labels.errors.setFilterStatusRequired)
     return null
   }
 
   if (typeof setFilterTimeRange !== 'function') {
-    console.error('EmergencyHeader: setFilterTimeRange debe ser una función')
+    console.error(labels.errors.setFilterTimeRangeRequired)
     return null
   }
 
   if (typeof setViewMode !== 'function') {
-    console.error('EmergencyHeader: setViewMode debe ser una función')
+    console.error(labels.errors.setViewModeRequired)
     return null
   }
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Seguimiento de Emergencias</h1>
+        <h1 className="text-2xl font-bold text-gray-800">{labels.title}</h1>
         <div className="flex items-center space-x-2">
           <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-sm text-gray-600">Monitoreo en tiempo real</span>
+          <span className="text-sm text-gray-600">{labels.realTimeMonitoring}</span>
         </div>
       </div>
 
@@ -76,11 +79,11 @@ const EmergencyHeader = ({
             onChange={(e) => setFilterPriority(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2"
           >
-            <option value="all">Todas las prioridades</option>
-            <option value="CRITICA">Crítica</option>
-            <option value="ALTA">Alta</option>
-            <option value="MEDIA">Media</option>
-            <option value="BAJA">Baja</option>
+            <option value="all">{labels.filters.priority.all}</option>
+            <option value={labels.priorityValues.critical}>{labels.filters.priority.critical}</option>
+            <option value={labels.priorityValues.high}>{labels.filters.priority.high}</option>
+            <option value={labels.priorityValues.medium}>{labels.filters.priority.medium}</option>
+            <option value={labels.priorityValues.low}>{labels.filters.priority.low}</option>
           </select>
 
           <select
@@ -88,11 +91,11 @@ const EmergencyHeader = ({
             onChange={(e) => setFilterStatus(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2"
           >
-            <option value="all">Todos los estados</option>
-            <option value="PENDIENTE">Pendientes</option>
-            <option value="EN_PROGRESO">En Progreso</option>
-            <option value="EN_RUTA">En Ruta</option>
-            <option value="COMPLETADA">Completadas</option>
+            <option value="all">{labels.filters.status.all}</option>
+            <option value={labels.statusValues.pending}>{labels.filters.status.pending}</option>
+            <option value={labels.statusValues.inProgress}>{labels.filters.status.inProgress}</option>
+            <option value={labels.statusValues.onRoute}>{labels.filters.status.onRoute}</option>
+            <option value={labels.statusValues.completed}>{labels.filters.status.completed}</option>
           </select>
 
           <select
@@ -100,35 +103,35 @@ const EmergencyHeader = ({
             onChange={(e) => setFilterTimeRange(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-2"
           >
-            <option value="today">Hoy</option>
-            <option value="last24h">Últimas 24h</option>
-            <option value="last7days">Últimos 7 días</option>
-            <option value="all">Todas</option>
+            <option value="today">{labels.filters.timeRange.today}</option>
+            <option value="last24h">{labels.filters.timeRange.last24h}</option>
+            <option value="last7days">{labels.filters.timeRange.last7days}</option>
+            <option value="all">{labels.filters.timeRange.all}</option>
           </select>
         </div>
 
         {/* Vista */}
         <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
           <button
-            onClick={() => setViewMode('timeline')}
+            onClick={() => setViewMode(labels.viewModes.timeline)}
             className={`px-3 py-1 rounded transition-colors ${
-              viewMode === 'timeline' ? 'bg-white shadow-sm' : ''
+              viewMode === labels.viewModes.timeline ? 'bg-white shadow-sm' : ''
             }`}
           >
             <i className="fas fa-list-ul"></i>
           </button>
           <button
-            onClick={() => setViewMode('grid')}
+            onClick={() => setViewMode(labels.viewModes.grid)}
             className={`px-3 py-1 rounded transition-colors ${
-              viewMode === 'grid' ? 'bg-white shadow-sm' : ''
+              viewMode === labels.viewModes.grid ? 'bg-white shadow-sm' : ''
             }`}
           >
             <i className="fas fa-th"></i>
           </button>
           <button
-            onClick={() => setViewMode('map')}
+            onClick={() => setViewMode(labels.viewModes.map)}
             className={`px-3 py-1 rounded transition-colors ${
-              viewMode === 'map' ? 'bg-white shadow-sm' : ''
+              viewMode === labels.viewModes.map ? 'bg-white shadow-sm' : ''
             }`}
           >
             <i className="fas fa-map"></i>

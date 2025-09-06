@@ -1,8 +1,9 @@
 import React from 'react'
+import { LABELS } from '../../../config/labels'
 
 /**
- * Lista de entidades externas con vista desktop y móvil
- * ENFOQUE BALANCEADO: Solo presentación con validación de props
+ * ${LABELS.admin.external.entityList.comments.title}
+ * ${LABELS.admin.external.entityList.comments.approach}
  *
  * @param {Array} entities - Lista de entidades
  * @param {Function} onToggleStatus - Función para cambiar estado de entidad
@@ -22,48 +23,50 @@ const EntityList = ({
   getUsagePercentage,
   getUsageColorClass
 }) => {
+  const labels = LABELS.admin.external.entityList
+
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)
   // ============================================
   if (!Array.isArray(entities)) {
-    console.error('EntityList: entities debe ser un array')
+    console.error(labels.errors.entitiesRequired)
     return null
   }
 
   if (typeof onToggleStatus !== 'function') {
-    console.error('EntityList: onToggleStatus debe ser una función')
+    console.error(labels.errors.onToggleStatusRequired)
     return null
   }
 
   if (typeof onOpenAddAdmin !== 'function') {
-    console.error('EntityList: onOpenAddAdmin debe ser una función')
+    console.error(labels.errors.onOpenAddAdminRequired)
     return null
   }
 
   if (typeof getEntityTypeIcon !== 'function') {
-    console.error('EntityList: getEntityTypeIcon debe ser una función')
+    console.error(labels.errors.getEntityTypeIconRequired)
     return null
   }
 
   if (typeof getEntityTypeColor !== 'function') {
-    console.error('EntityList: getEntityTypeColor debe ser una función')
+    console.error(labels.errors.getEntityTypeColorRequired)
     return null
   }
 
   if (typeof getUsagePercentage !== 'function') {
-    console.error('EntityList: getUsagePercentage debe ser una función')
+    console.error(labels.errors.getUsagePercentageRequired)
     return null
   }
 
   if (typeof getUsageColorClass !== 'function') {
-    console.error('EntityList: getUsageColorClass debe ser una función')
+    console.error(labels.errors.getUsageColorClassRequired)
     return null
   }
 
   return (
     <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
       <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-3 sm:mb-4">
-        Entidades Registradas
+        {labels.title}
       </h3>
 
       {/* Vista de escritorio */}
@@ -91,7 +94,7 @@ const EntityList = ({
                       : 'bg-red-100 text-red-700 border border-red-200'
                   }`}
                 >
-                  {entity.active ? 'Activa' : 'Inactiva'}
+                  {entity.active ? labels.status.active : labels.status.inactive}
                 </span>
               </div>
 
@@ -104,22 +107,22 @@ const EntityList = ({
 
               <div className="space-y-2 text-xs md:text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Código:</span>
+                  <span className="text-gray-600">{labels.fields.code}</span>
                   <span className="font-medium text-gray-800 font-mono">{entity.code}</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Usuarios:</span>
+                  <span className="text-gray-600">{labels.fields.users}</span>
                   <span className="font-medium text-gray-800">
-                    {entity.activeUsers} / {entity.maxUsers}
+                    {labels.usersFormat.replace('{active}', entity.activeUsers).replace('{max}', entity.maxUsers)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Admin:</span>
+                  <span className="text-gray-600">{labels.fields.admin}</span>
                   <span className="font-medium text-gray-800 truncate ml-2">
                     {entity.admin ? (
                       <span className="text-green-700">{entity.admin.name}</span>
                     ) : (
-                      <span className="text-red-600">Sin admin</span>
+                      <span className="text-red-600">{labels.fields.noAdmin}</span>
                     )}
                   </span>
                 </div>
@@ -135,7 +138,7 @@ const EntityList = ({
                   }`}
                 >
                   <i className={`fas fa-${entity.active ? 'times' : 'check'} mr-1`}></i>
-                  {entity.active ? 'Desactivar' : 'Activar'}
+                  {entity.active ? labels.buttons.deactivate : labels.buttons.activate}
                 </button>
                 {!entity.admin && (
                   <button
@@ -143,7 +146,7 @@ const EntityList = ({
                     className="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                   >
                     <i className="fas fa-user-plus mr-1"></i>
-                    Crear Admin
+                    {labels.buttons.createAdmin}
                   </button>
                 )}
               </div>
@@ -190,10 +193,10 @@ const EntityList = ({
                         : 'bg-red-100 text-red-700 border border-red-200'
                     }`}
                   >
-                    {entity.active ? 'Activa' : 'Inactiva'}
+                    {entity.active ? labels.status.active : labels.status.inactive}
                   </span>
                   <span className="text-xs text-gray-500">
-                    {entity.admin ? entity.admin.name.split(' ')[0] : 'Sin admin'}
+                    {entity.admin ? entity.admin.name.split(' ')[0] : labels.fields.noAdmin}
                   </span>
                 </div>
               </div>
@@ -202,11 +205,11 @@ const EntityList = ({
               <div className="grid grid-cols-2 gap-3 mb-3 text-xs sm:text-sm">
                 <div className="space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Código:</span>
+                    <span className="text-gray-500">{labels.fields.code}</span>
                     <span className="font-mono font-medium">{entity.code}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Usuarios:</span>
+                    <span className="text-gray-500">{labels.fields.users}</span>
                     <span className="font-medium">
                       {entity.activeUsers}/{entity.maxUsers}
                     </span>
@@ -214,11 +217,11 @@ const EntityList = ({
                 </div>
                 <div className="space-y-1">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Tipo:</span>
+                    <span className="text-gray-500">{labels.fields.type}</span>
                     <span className="font-medium capitalize">{entity.type}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Admin:</span>
+                    <span className="text-gray-500">{labels.fields.admin}</span>
                     <span
                       className={`font-medium ${entity.admin ? 'text-green-700' : 'text-red-600'}`}
                     >
@@ -231,7 +234,7 @@ const EntityList = ({
               {/* Progress bar de uso */}
               <div className="mb-3">
                 <div className="flex items-center justify-between text-xs mb-1">
-                  <span className="text-gray-500">Uso de usuarios</span>
+                  <span className="text-gray-500">{labels.fields.usageLabel}</span>
                   <span className="font-medium">{usagePercentage}%</span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
@@ -270,7 +273,7 @@ const EntityList = ({
                   <div className="flex items-center justify-center sm:justify-end">
                     <div className="bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1">
                       <i className="fas fa-circle text-xs animate-pulse"></i>
-                      <span>Online</span>
+                      <span>{labels.online}</span>
                     </div>
                   </div>
                 )}

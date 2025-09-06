@@ -6,45 +6,48 @@ import ContractsList from './corporate/ContractsList'
 import { showContractDetail } from './corporate/ContractDetailModal'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
-// Lazy loading del modal pesado (Regla #5)
+// ${LABELS.admin.corporateContractManagement.comments.lazyLoading}
 const AddContractModal = lazy(() => import('./corporate/AddContractModal'))
 
 /**
- * Componente principal de gestión de contratos corporativos
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.corporateContractManagement.comments.title}
+ * ${LABELS.admin.corporateContractManagement.comments.approach}
  *
- * Funcionalidades:
- * - Visualización y filtrado de contratos corporativos
- * - Renovación automática de contratos
- * - Gestión de servicios adicionales y consumidos
- * - Subida de contratos PDF
- * - Estadísticas en tiempo real
+ * ${LABELS.admin.corporateContractManagement.comments.features.title}
+ * ${LABELS.admin.corporateContractManagement.comments.features.visualization}
+ * ${LABELS.admin.corporateContractManagement.comments.features.renewal}
+ * ${LABELS.admin.corporateContractManagement.comments.features.services}
+ * ${LABELS.admin.corporateContractManagement.comments.features.upload}
+ * ${LABELS.admin.corporateContractManagement.comments.features.stats}
  *
- * Arquitectura modular:
- * - CorporateHeader: Header con filtros y estadísticas
- * - ContractsList: Lista de contratos con vista responsive
- * - AddContractModal: Modal para subir contratos PDF (lazy loaded)
+ * ${LABELS.admin.corporateContractManagement.comments.architecture.title}
+ * ${LABELS.admin.corporateContractManagement.comments.architecture.header}
+ * ${LABELS.admin.corporateContractManagement.comments.architecture.list}
+ * ${LABELS.admin.corporateContractManagement.comments.architecture.modal}
  *
  * @returns {JSX.Element} Componente de gestión de contratos corporativos
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <CorporateContractManagement />
+ * ${LABELS.admin.corporateContractManagement.comments.example.title}
+ * ${LABELS.admin.corporateContractManagement.comments.example.usage}
+ * ${LABELS.admin.corporateContractManagement.comments.example.component}
  *
- * @see {@link useCorporateContractManagement} Hook que maneja toda la lógica de negocio
+ * ${LABELS.admin.corporateContractManagement.comments.see}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (150 líneas aprox)
- * - Regla #4: Validación de datos y props
- * - Regla #5: Lógica compleja en hook personalizado
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.corporateContractManagement.comments.rules.title}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule3}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule4}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule5}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule6}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule8}
+ * ${LABELS.admin.corporateContractManagement.comments.rules.rule12}
  */
 const CorporateContractManagement = () => {
+  const labels = LABELS.admin.corporateContractManagement
+  
   // ============================================
-  // HOOK - Toda la lógica compleja (Regla #2)
+  // ${LABELS.admin.corporateContractManagement.comments.businessLogic}
   // ============================================
   const {
     // Estado
@@ -73,12 +76,12 @@ const CorporateContractManagement = () => {
   } = useCorporateContractManagement()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.corporateContractManagement.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en gestión de contratos: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.managementError.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -88,25 +91,25 @@ const CorporateContractManagement = () => {
   }
 
   // ============================================
-  // HANDLERS LOCALES SIMPLES (Regla #2)
+  // ${LABELS.admin.corporateContractManagement.comments.localHandlers}
   // ============================================
 
   /**
-   * Maneja la visualización detallada de un contrato
+   * ${LABELS.admin.corporateContractManagement.comments.viewContract}
    */
   const handleViewContract = (contract) => {
     showContractDetail(contract, () => setShowAddForm(true))
   }
 
   /**
-   * Maneja el guardado de contratos PDF
+   * ${LABELS.admin.corporateContractManagement.comments.saveContract}
    */
   const handleSaveContract = (contractData) => {
-    console.log('Contrato subido:', contractData)
+    console.log(labels.logs.contractUploaded.replace('{data}', JSON.stringify(contractData)))
     setShowAddForm(false)
     Swal.fire({
-      title: '¡Contrato Subido!',
-      text: 'El contrato PDF ha sido subido exitosamente',
+      title: labels.alerts.title,
+      text: labels.alerts.message,
       icon: 'success',
       timer: 2000,
       showConfirmButton: false
