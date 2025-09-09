@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import AdditionalPricingModal from './planconfig/AdditionalPricingModal'
 import { LABELS } from '../../config/labels'
@@ -8,76 +8,113 @@ const PlanConfiguration = () => {
   const [activeFilter, setActiveFilter] = useState('all')
   const [showPricingModal, setShowPricingModal] = useState(false)
   const [pricingData, setPricingData] = useState(null)
-  
-  const familiarPlans = [
-    {
-      id: 'help',
-      name: 'Plan Help',
-      description: labels.plans.help.description,
-      price: 650,
-      priceYear: 650,
-      characteristics: 5,
-      activated: '2024-01-15',
-      status: labels.status.active,
-      limits: {
-        emergencias: labels.values.unlimited,
-        medicosDom: 8,
-        urgencias: labels.values.unlimited,
-        traslados: 0
-      }
-    },
-    {
-      id: 'basico',
-      name: 'Plan Básico',
-      description: labels.plans.basic.description,
-      price: 1500,
-      priceYear: 1500,
-      priceMonth: 125,
-      characteristics: 2,
-      activated: '2024-01-10',
-      status: labels.status.active,
-      limits: {
-        emergencias: labels.values.unlimited,
-        medicosDom: 2,
-        urgencias: 3,
-        traslados: 1
-      }
-    },
-    {
-      id: 'vip',
-      name: 'Plan VIP',
-      description: labels.plans.vip.description,
-      price: 2800,
-      priceYear: 2800,
-      priceMonth: 233,
-      characteristics: 4,
-      activated: '2024-01-12',
-      status: labels.status.active,
-      limits: {
-        emergencias: labels.values.unlimited,
-        medicosDom: 4,
-        urgencias: 6,
-        traslados: 3
-      }
-    },
-    {
-      id: 'dorado',
-      name: 'Plan Dorado',
-      description: labels.plans.gold.description,
-      price: 4100,
-      priceYear: 4100,
-      priceMonth: 342,
-      characteristics: 5,
-      activated: '2024-01-08',
-      status: labels.status.active,
-      limits: {
-        emergencias: labels.values.unlimited,
-        medicosDom: 8,
-        urgencias: 10,
-        traslados: 4
+  const [familiarPlans, setFamiliarPlans] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  // Cargar planes desde JSON server
+  useEffect(() => {
+    const loadPlansFromAPI = async () => {
+      try {
+        setLoading(true)
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4001'
+        const response = await fetch(`${apiUrl}/adminPlanConfiguration`)
+        
+        if (response.ok) {
+          const data = await response.json()
+          if (data && data.familiarPlans) {
+            // Transformar datos para compatibilidad con labels
+            const transformedPlans = data.familiarPlans.map(plan => ({
+              ...plan,
+              status: plan.status === 'active' ? labels.status.active : labels.status.inactive,
+              limits: {
+                ...plan.limits,
+                emergencias: plan.limits.emergencias === 'ILIMITADO' ? labels.values.unlimited : plan.limits.emergencias,
+                urgencias: plan.limits.urgencias === 'ILIMITADO' ? labels.values.unlimited : plan.limits.urgencias
+              }
+            }))
+            setFamiliarPlans(transformedPlans)
+            setError(null)
+          }
+        } else {
+          throw new Error('Error al cargar configuración de planes')
+        }
+      } catch (err) {
+        console.warn('Error cargando desde JSON server, usando fallback:', err)
+        setError('No se pudo conectar al servidor')
+        
+        // Fallback con datos estáticos
+        const fallbackPlans = [
+          {
+            id: 'help',
+            name: 'Plan Help',
+            description: 'Plan con límite de servicios de emergencia, urgencia o médico a domicilio',
+            price: 650,
+            priceYear: 650,
+            characteristics: 5,
+            activated: '2024-01-15',
+            status: labels.status.active,
+            limits: {
+              emergencias: labels.values.unlimited,
+              medicosDom: 8,
+              urgencias: labels.values.unlimited,
+              traslados: 0
+            }
+          },
+          {
+            id: 'basico',
+            name: 'Plan Básico',
+            description: 'Plan con servicios específicos por tipo',
+            price: 1500,
+            priceYear: 1500,
+            priceMonth: 125,
+            characteristics: 2,
+            activated: '2024-01-10',
+            status: labels.status.active,
+            limits: {
+              emergencias: labels.values.unlimited,
+              medicosDom: 2,
+              urgencias: 3,
+              traslados: 1
+            }
+          }
+        ]
+        setFamiliarPlans(fallbackPlans)
+      } finally {
+        setLoading(false)
       }
     }
-  ]
+
+    loadPlansFromAPI()
+  }, [])
+
+  const handleRefreshPlans = async () => {
+    setLoading(true)
+    // Recargar datos
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4001'
+    try {
+      const response = await fetch(`${apiUrl}/adminPlanConfiguration`)
+      if (response.ok) {
+        const data = await response.json()
+        if (data && data.familiarPlans) {
+          const transformedPlans = data.familiarPlans.map(plan => ({
+            ...plan,
+            status: plan.status === 'active' ? labels.status.active : labels.status.inactive,
+            limits: {
+              ...plan.limits,
+              emergencias: plan.limits.emergencias === 'ILIMITADO' ? labels.values.unlimited : plan.limits.emergencias,
+              urgencias: plan.limits.urgencias === 'ILIMITADO' ? labels.values.unlimited : plan.limits.urgencias
+            }
+          }))
+          setFamiliarPlans(transformedPlans)
+        }
+      }
+    } catch (err) {
+      console.error('Error refreshing plans:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleEditPlan = (plan) => {
     Swal.fire({

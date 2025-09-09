@@ -1,0 +1,27 @@
+{
+  "name": "sos-helpmed-backend",
+  "version": "1.0.0",
+  "description": "SOS HelpMed Backend API - JSON Server for development and production",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "json-server db.json --watch --host 0.0.0.0 --port 4001",
+    "railway": "json-server db.json --host 0.0.0.0 --port $PORT"
+  },
+  "keywords": [
+    "emergency",
+    "medical",
+    "api",
+    "json-server"
+  ],
+  "author": "SOS HelpMed Team",
+  "license": "MIT",
+  "dependencies": {
+    "json-server": "^0.17.4",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

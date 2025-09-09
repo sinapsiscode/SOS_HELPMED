@@ -1976,6 +1976,140 @@
       "ZONA_PROTEGIDA": 645
     }
   },
+  "adminPlanConfiguration": {
+    "familiarPlans": [
+      {
+        "id": "help",
+        "name": "Plan Help",
+        "description": "Plan con límite de servicios de emergencia, urgencia o médico a domicilio",
+        "price": 650,
+        "priceYear": 650,
+        "priceMonth": 54,
+        "characteristics": 5,
+        "activated": "2024-01-15",
+        "status": "active",
+        "limits": {
+          "emergencias": "ILIMITADO",
+          "medicosDom": 8,
+          "urgencias": "ILIMITADO",
+          "traslados": 0
+        }
+      },
+      {
+        "id": "basico",
+        "name": "Plan Básico",
+        "description": "Plan con servicios específicos por tipo",
+        "price": 1500,
+        "priceYear": 1500,
+        "priceMonth": 125,
+        "characteristics": 2,
+        "activated": "2024-01-10",
+        "status": "active",
+        "limits": {
+          "emergencias": "ILIMITADO",
+          "medicosDom": 2,
+          "urgencias": 3,
+          "traslados": 1
+        }
+      },
+      {
+        "id": "vip",
+        "name": "Plan VIP",
+        "description": "Plan con servicios ampliados y beneficios adicionales",
+        "price": 2800,
+        "priceYear": 2800,
+        "priceMonth": 233,
+        "characteristics": 4,
+        "activated": "2024-01-12",
+        "status": "active",
+        "limits": {
+          "emergencias": "ILIMITADO",
+          "medicosDom": 4,
+          "urgencias": 6,
+          "traslados": 3
+        }
+      },
+      {
+        "id": "dorado",
+        "name": "Plan Dorado",
+        "description": "Plan premium con todos los beneficios incluidos",
+        "price": 4100,
+        "priceYear": 4100,
+        "priceMonth": 342,
+        "characteristics": 5,
+        "activated": "2024-01-08",
+        "status": "active",
+        "limits": {
+          "emergencias": "ILIMITADO",
+          "medicosDom": 8,
+          "urgencias": 10,
+          "traslados": 4
+        }
+      }
+    ],
+    "corporatePlans": [
+      {
+        "id": "area_protegida",
+        "name": "Área Protegida",
+        "description": "Convenio corporativo para atención de emergencias",
+        "price": null,
+        "priceYear": null,
+        "priceMonth": null,
+        "characteristics": 1,
+        "activated": "2024-01-01",
+        "status": "active",
+        "limits": {
+          "emergencias": "VARIABLE",
+          "medicosDom": 0,
+          "urgencias": 0,
+          "traslados": 0
+        }
+      }
+    ],
+    "externalPlans": [
+      {
+        "id": "caso_1",
+        "name": "Afiliados Externos - Caso 1",
+        "description": "Sin límite de servicios, facturación directa al cliente",
+        "price": null,
+        "priceYear": null,
+        "priceMonth": null,
+        "characteristics": 2,
+        "activated": "2024-01-01",
+        "status": "active",
+        "limits": {
+          "emergencias": "ILIMITADO",
+          "medicosDom": "ILIMITADO",
+          "urgencias": 0,
+          "traslados": 0
+        }
+      },
+      {
+        "id": "caso_2",
+        "name": "Afiliados Externos - Caso 2",
+        "description": "Límite de 3 servicios por afiliado, 430 servicios generales",
+        "price": null,
+        "priceYear": null,
+        "priceMonth": null,
+        "characteristics": 3,
+        "activated": "2024-01-01",
+        "status": "active",
+        "limits": {
+          "emergencias": 3,
+          "medicosDom": 3,
+          "urgencias": 0,
+          "traslados": 0,
+          "general_limit": 430
+        }
+      }
+    ],
+    "additionalPrices": {
+      "urgencia": 365,
+      "medico_domicilio": 410,
+      "traslado_programado": 515,
+      "zona_protegida": 645
+    }
+  },
   "billingConfig": {
     "paymentMethodIcons": {
       "credit_card": "fas fa-credit-card",

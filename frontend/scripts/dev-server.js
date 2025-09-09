@@ -2,7 +2,7 @@
 
 /**
  * Script profesional para iniciar el entorno de desarrollo
- * Maneja automáticamente json-server y el servidor de desarrollo
+ * Ahora maneja el backend separado y el servidor de desarrollo
  */
 
 const { spawn } = require('child_process');
@@ -26,111 +26,185 @@ function checkFileExists(filePath) {
   return fs.existsSync(filePath);
 }
 
-async function startJsonServer() {
+async function startBackendServer() {
   return new Promise((resolve, reject) => {
-    log('🚀 Iniciando JSON Server...', 'blue');
-    
-    if (!checkFileExists('db.json')) {
-      log('❌ Error: db.json no encontrado', 'red');
-      reject(new Error('db.json not found'));
+    // Verificar si el backend existe
+    const backendPath = path.join(__dirname, '..', '..', 'backend');
+    if (!checkFileExists(backendPath)) {
+      log('❌ Carpeta backend no encontrada', 'red');
+      log('   Ejecutar: npm run setup:backend', 'yellow');
+      reject(new Error('Backend no encontrado'));
       return;
     }
 
-    const jsonServer = spawn('npx', ['json-server', '--watch', 'db.json', '--port', '4001', '--host', '0.0.0.0'], {
-      stdio: 'inherit',
+    // Verificar si las dependencias del backend están instaladas
+    const backendNodeModules = path.join(backendPath, 'node_modules');
+    if (!checkFileExists(backendNodeModules)) {
+      log('❌ Dependencias del backend no instaladas', 'red');
+      log('   Ejecutar: npm run setup:backend', 'yellow');
+      reject(new Error('Backend dependencies not installed'));
+      return;
+    }
+
+    log('🔄 Iniciando Backend Server...', 'yellow');
+    
+    const backendProcess = spawn('npm', ['run', 'dev'], {
+      cwd: backendPath,
+      stdio: ['pipe', 'pipe', 'pipe'],
       shell: true
     });
 
-    jsonServer.on('error', (err) => {
-      log(`❌ Error iniciando JSON Server: ${err.message}`, 'red');
-      reject(err);
+    let serverReady = false;
+
+    backendProcess.stdout.on('data', (data) => {
+      const output = data.toString();
+      console.log(`Backend: ${output.trim()}`);
+      if (output.includes('Server is running') || output.includes('4001')) {
+        if (!serverReady) {
+          log('✅ Backend Server iniciado en puerto 4001', 'green');
+          serverReady = true;
+          resolve(backendProcess);
+        }
+      }
     });
 
-    // Esperar un poco para que el servidor inicie
+    backendProcess.stderr.on('data', (data) => {
+      const error = data.toString();
+      if (error.includes('EADDRINUSE')) {
+        log('⚠️  Puerto 4001 ya está en uso', 'yellow');
+        log('   El backend ya está ejecutándose', 'yellow');
+        resolve(null); // No es un error crítico
+      } else {
+        console.error(`Backend Error: ${error}`);
+      }
+    });
+
+    backendProcess.on('error', (error) => {
+      log(`Error iniciando Backend: ${error.message}`, 'red');
+      reject(error);
+    });
+
+    // Timeout después de 15 segundos
     setTimeout(() => {
-      log('✅ JSON Server iniciado en http://localhost:4001', 'green');
-      resolve(jsonServer);
-    }, 2000);
+      if (!serverReady) {
+        log('⏰ Timeout iniciando Backend Server', 'yellow');
+        resolve(null);
+      }
+    }, 15000);
   });
 }
 
 async function startViteServer() {
   return new Promise((resolve, reject) => {
-    log('🚀 Iniciando Vite Dev Server...', 'blue');
+    log('🔄 Iniciando Vite Dev Server...', 'blue');
     
-    const viteServer = spawn('npm', ['run', 'dev'], {
-      stdio: 'inherit',
+    const viteProcess = spawn('npm', ['run', 'dev'], {
+      stdio: ['pipe', 'pipe', 'pipe'],
       shell: true
     });
 
-    viteServer.on('error', (err) => {
-      log(`❌ Error iniciando Vite Server: ${err.message}`, 'red');
-      reject(err);
+    let serverReady = false;
+
+    viteProcess.stdout.on('data', (data) => {
+      const output = data.toString();
+      console.log(`Frontend: ${output.trim()}`);
+      if (output.includes('Local:') || output.includes('5173')) {
+        if (!serverReady) {
+          log('✅ Vite Dev Server iniciado', 'green');
+          serverReady = true;
+          resolve(viteProcess);
+        }
+      }
+    });
+
+    viteProcess.stderr.on('data', (data) => {
+      const error = data.toString();
+      if (!error.includes('deprecated')) {
+        console.error(`Frontend Error: ${error}`);
+      }
+    });
+
+    viteProcess.on('error', (error) => {
+      log(`Error iniciando Vite: ${error.message}`, 'red');
+      reject(error);
     });
 
     setTimeout(() => {
-      log('✅ Vite Dev Server iniciado en http://localhost:5173', 'green');
-      resolve(viteServer);
-    }, 3000);
+      if (!serverReady) {
+        log('⏰ Timeout iniciando Vite Server', 'yellow');
+        resolve(null);
+      }
+    }, 10000);
   });
 }
 
 async function main() {
+  log(`${colors.bold}🚀 SOS HelpMed - Iniciando Entorno de Desarrollo${colors.reset}`, 'green');
+  log('', 'reset');
+
+  const processes = [];
+
   try {
-    log('🔧 Iniciando entorno de desarrollo profesional...', 'bold');
-    
-    // Verificar que estamos en el directorio correcto
-    if (!checkFileExists('package.json')) {
-      log('❌ Error: package.json no encontrado. Ejecuta desde el directorio del frontend.', 'red');
-      process.exit(1);
+    // Iniciar Backend Server
+    log('📦 Paso 1: Iniciando Backend...', 'blue');
+    const backendProcess = await startBackendServer();
+    if (backendProcess) {
+      processes.push(backendProcess);
     }
 
-    // Iniciar JSON Server
-    const jsonServer = await startJsonServer();
-    
-    // Pequeña pausa antes de iniciar Vite
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Iniciar Vite Server
-    const viteServer = await startViteServer();
+    // Esperar un poco antes de iniciar el frontend
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
-    log('\n🎉 Entorno de desarrollo iniciado exitosamente!', 'green');
-    log('📡 JSON Server: http://localhost:4001', 'blue');
-    log('🌐 Frontend: http://localhost:5173', 'blue');
-    log('\n⚡ Presiona Ctrl+C para detener ambos servidores\n', 'yellow');
+    // Iniciar Vite
+    log('🎨 Paso 2: Iniciando Frontend...', 'blue');
+    const viteProcess = await startViteServer();
+    if (viteProcess) {
+      processes.push(viteProcess);
+    }
 
-    // Manejar señales de cierre
+    log('', 'reset');
+    log('✅ Entorno de desarrollo iniciado correctamente!', 'green');
+    log('', 'reset');
+    log('🌐 URLs disponibles:', 'bold');
+    log('   Frontend: http://localhost:5173', 'blue');
+    log('   Backend:  http://localhost:4001', 'blue');
+    log('   Health:   http://localhost:4001/health', 'blue');
+    log('', 'reset');
+    log('📝 Para detener: Ctrl+C', 'yellow');
+    log('', 'reset');
+
+    // Manejar Ctrl+C para cerrar todos los procesos
     process.on('SIGINT', () => {
-      log('\n🛑 Deteniendo servidores...', 'yellow');
+      log('', 'reset');
+      log('🛑 Deteniendo servidores...', 'yellow');
       
-      if (jsonServer && !jsonServer.killed) {
-        jsonServer.kill('SIGTERM');
-      }
-      
-      if (viteServer && !viteServer.killed) {
-        viteServer.kill('SIGTERM');
-      }
+      processes.forEach((proc, index) => {
+        if (proc && !proc.killed) {
+          proc.kill('SIGTERM');
+          log(`✅ Proceso ${index + 1} detenido`, 'green');
+        }
+      });
       
       setTimeout(() => {
-        log('✅ Servidores detenidos correctamente', 'green');
+        log('👋 ¡Hasta luego!', 'green');
         process.exit(0);
       }, 1000);
     });
 
-    process.on('SIGTERM', () => {
-      if (jsonServer && !jsonServer.killed) {
-        jsonServer.kill('SIGTERM');
-      }
-      if (viteServer && !viteServer.killed) {
-        viteServer.kill('SIGTERM');
-      }
-      process.exit(0);
-    });
+    // Mantener el proceso principal vivo
+    process.stdin.resume();
 
   } catch (error) {
-    log(`❌ Error crítico: ${error.message}`, 'red');
+    log(`❌ Error: ${error.message}`, 'red');
+    log('', 'reset');
+    log('🔧 Soluciones posibles:', 'yellow');
+    log('   1. npm run setup:backend', 'yellow');
+    log('   2. npm run setup:full', 'yellow');
     process.exit(1);
   }
 }
 
-main();
+main().catch(error => {
+  log(`❌ Error crítico: ${error.message}`, 'red');
+  process.exit(1);
+});
