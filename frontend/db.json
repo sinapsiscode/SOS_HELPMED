@@ -1225,6 +1225,757 @@
       }
     ]
   },
+  "pendingEmergencies": [
+    {
+      "id": "emg_001",
+      "user_id": "fam_dor_001",
+      "userName": "Alejandra Vega",
+      "userType": "Familiar",
+      "planName": "Plan Dorado",
+      "type": "EMERGENCIA",
+      "description": "Dolor de pecho intenso, dificultad para respirar",
+      "location": {
+        "address": "Av. El Bosque 500, San Isidro",
+        "coordinates": {
+          "latitude": -12.083,
+          "longitude": -77.0362
+        }
+      },
+      "affiliateInfo": {
+        "id": "titular",
+        "name": "Alejandra Vega",
+        "relation": "Titular"
+      },
+      "timestamp": "2024-12-09T15:25:00.000Z",
+      "status": "pending",
+      "priority": "alta",
+      "estimatedResponseTime": "8-12 min"
+    },
+    {
+      "id": "emg_002",
+      "user_id": "fam_help_001",
+      "userName": "Ana Rodríguez",
+      "userType": "Familiar",
+      "planName": "Plan Help 12",
+      "type": "URGENCIA",
+      "description": "Caída, posible fractura en brazo izquierdo",
+      "location": {
+        "address": "Av. Javier Prado 1234, San Isidro",
+        "coordinates": {
+          "latitude": -12.0764,
+          "longitude": -77.0279
+        }
+      },
+      "affiliateInfo": {
+        "id": "aff_001_002",
+        "name": "Sofía Rodríguez",
+        "relation": "Hija"
+      },
+      "timestamp": "2024-12-09T15:18:00.000Z",
+      "status": "pending",
+      "priority": "media",
+      "estimatedResponseTime": "15-20 min"
+    },
+    {
+      "id": "emg_003",
+      "user_id": "fam_vip_001",
+      "userName": "Eduardo Silva",
+      "userType": "Familiar",
+      "planName": "Plan VIP",
+      "type": "MEDICO_DOMICILIO",
+      "description": "Control de diabetes, valores alterados de glucemia",
+      "location": {
+        "address": "Av. Salaverry 3000, Jesús María",
+        "coordinates": {
+          "latitude": -12.0642,
+          "longitude": -77.0547
+        }
+      },
+      "affiliateInfo": {
+        "id": "titular",
+        "name": "Eduardo Silva",
+        "relation": "Titular"
+      },
+      "timestamp": "2024-12-09T15:10:00.000Z",
+      "status": "pending",
+      "priority": "baja",
+      "estimatedResponseTime": "30-45 min"
+    }
+  ],
+  "surveyResponses": [
+    {
+      "id": 1,
+      "userId": "user-001",
+      "userName": "Juan Pérez",
+      "userPlan": "premium",
+      "date": "2024-01-15T10:30:00.000Z",
+      "rating": 5,
+      "improvementArea": "Tiempo de respuesta",
+      "comments": "Excelente servicio, muy rápida la atención",
+      "serviceType": "emergency",
+      "completed": true
+    },
+    {
+      "id": 2,
+      "userId": "user-002",
+      "userName": "María García",
+      "userPlan": "basic",
+      "date": "2024-01-14T14:20:00.000Z",
+      "rating": 4,
+      "improvementArea": "Facilidad de uso",
+      "comments": "La app podría ser más intuitiva",
+      "serviceType": "medical_visit",
+      "completed": true
+    },
+    {
+      "id": 3,
+      "userId": "user-003",
+      "userName": "Carlos López",
+      "userPlan": "corporate",
+      "date": "2024-01-13T09:15:00.000Z",
+      "rating": 5,
+      "improvementArea": "Cobertura",
+      "comments": "Necesitan más cobertura en zonas rurales",
+      "serviceType": "telemedicine",
+      "completed": true
+    },
+    {
+      "id": 4,
+      "userId": "user-004",
+      "userName": "Ana Martínez",
+      "userPlan": "premium",
+      "date": "2024-01-12T16:45:00.000Z",
+      "rating": 3,
+      "improvementArea": "Atención del personal",
+      "comments": "El personal podría ser más amable",
+      "serviceType": "emergency",
+      "completed": true
+    },
+    {
+      "id": 5,
+      "userId": "user-005",
+      "userName": "Pedro Rodríguez",
+      "userPlan": "basic",
+      "date": "2024-01-11T11:00:00.000Z",
+      "rating": 4,
+      "improvementArea": "Precios",
+      "comments": "Los precios son un poco elevados para el plan básico",
+      "serviceType": "medical_visit",
+      "completed": true
+    },
+    {
+      "id": 6,
+      "userId": "user-006",
+      "userName": "Laura Sánchez",
+      "userPlan": "corporate",
+      "date": "2024-01-10T13:30:00.000Z",
+      "rating": 5,
+      "improvementArea": "Comunicación",
+      "comments": "Todo perfecto, excelente comunicación",
+      "serviceType": "emergency",
+      "completed": true
+    },
+    {
+      "id": 7,
+      "userId": "user-007",
+      "userName": "Diego Fernández",
+      "userPlan": "premium",
+      "date": "2024-01-09T08:20:00.000Z",
+      "rating": 4,
+      "improvementArea": "Tiempo de respuesta",
+      "comments": "Podrían mejorar los tiempos de espera",
+      "serviceType": "telemedicine",
+      "completed": true
+    },
+    {
+      "id": 8,
+      "userId": "user-008",
+      "userName": "Sofía González",
+      "userPlan": "basic",
+      "date": "2024-01-08T17:10:00.000Z",
+      "rating": 2,
+      "improvementArea": "Atención del personal",
+      "comments": "Mala experiencia con el servicio de atención",
+      "serviceType": "medical_visit",
+      "completed": true
+    },
+    {
+      "id": 9,
+      "userId": "user-009",
+      "userName": "Roberto Díaz",
+      "userPlan": "corporate",
+      "date": "2024-01-07T12:00:00.000Z",
+      "rating": 5,
+      "improvementArea": "Facilidad de uso",
+      "comments": "Muy fácil de usar, interfaz intuitiva",
+      "serviceType": "emergency",
+      "completed": true
+    },
+    {
+      "id": 10,
+      "userId": "user-010",
+      "userName": "Isabel Morales",
+      "userPlan": "premium",
+      "date": "2024-01-06T15:40:00.000Z",
+      "rating": 4,
+      "improvementArea": "Cobertura",
+      "comments": "Buen servicio pero falta cobertura en mi zona",
+      "serviceType": "telemedicine",
+      "completed": true
+    }
+  ],
+  "surveyQuestions": [
+    {
+      "id": 1,
+      "text": "¿Cómo calificarías la calidad del servicio recibido?",
+      "type": "rating",
+      "required": true,
+      "options": ["1", "2", "3", "4", "5"],
+      "order": 1
+    },
+    {
+      "id": 2,
+      "text": "¿Qué aspecto consideras más importante mejorar?",
+      "type": "select",
+      "required": true,
+      "options": [
+        "Tiempo de respuesta",
+        "Atención del personal",
+        "Facilidad de uso de la app",
+        "Comunicación durante el servicio",
+        "Cobertura geográfica",
+        "Precios y planes"
+      ],
+      "order": 2
+    },
+    {
+      "id": 3,
+      "text": "¿Recomendarías nuestro servicio a familiares o amigos?",
+      "type": "rating",
+      "required": true,
+      "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      "order": 3
+    },
+    {
+      "id": 4,
+      "text": "Comentarios y sugerencias para mejorar",
+      "type": "text",
+      "required": false,
+      "maxLength": 500,
+      "order": 4
+    }
+  ],
+  "surveyStats": {
+    "totalSent": 1250,
+    "totalCompleted": 1180,
+    "completionRate": 94.4,
+    "averageRating": 4.2,
+    "npsScore": 45,
+    "monthlyTrend": [
+      { "month": "Ene", "responses": 95, "rating": 4.1 },
+      { "month": "Feb", "responses": 110, "rating": 4.3 },
+      { "month": "Mar", "responses": 120, "rating": 4.2 },
+      { "month": "Abr", "responses": 105, "rating": 4.4 },
+      { "month": "May", "responses": 115, "rating": 4.3 },
+      { "month": "Jun", "responses": 125, "rating": 4.5 }
+    ],
+    "ratingDistribution": {
+      "5": 45,
+      "4": 30,
+      "3": 15,
+      "2": 7,
+      "1": 3
+    },
+    "improvementAreas": {
+      "Tiempo de respuesta": 35,
+      "Atención del personal": 25,
+      "Facilidad de uso": 20,
+      "Cobertura": 10,
+      "Precios": 7,
+      "Comunicación": 3
+    }
+  },
+  "externalEntities": [
+    {
+      "entity": "Banco Central de Reserva",
+      "entityCode": "BCR",
+      "type": "banco",
+      "admin": {
+        "id": "ext_admin_bcr",
+        "username": "bcr_admin",
+        "name": "Carlos Mendoza",
+        "email": "admin@bcr.gob.pe",
+        "phone": "999-888-777",
+        "status": "active",
+        "createdAt": "2024-01-15"
+      },
+      "users": [
+        {
+          "id": "ext_user_bcr_1",
+          "username": "bcr_001",
+          "name": "Ana García",
+          "email": "agarcia@bcr.gob.pe",
+          "employeeCode": "BCR-2024-001",
+          "status": "active",
+          "lastAccess": "2024-12-10",
+          "servicesUsed": 12
+        },
+        {
+          "id": "ext_user_bcr_2",
+          "username": "bcr_002",
+          "name": "Luis Pérez",
+          "email": "lperez@bcr.gob.pe",
+          "employeeCode": "BCR-2024-002",
+          "status": "active",
+          "lastAccess": "2024-12-09",
+          "servicesUsed": 8
+        },
+        {
+          "id": "ext_user_bcr_3",
+          "username": "bcr_003",
+          "name": "María Torres",
+          "email": "mtorres@bcr.gob.pe",
+          "employeeCode": "BCR-2024-003",
+          "status": "inactive",
+          "lastAccess": "2024-11-20",
+          "servicesUsed": 5
+        }
+      ],
+      "stats": {
+        "totalUsers": 45,
+        "activeUsers": 42,
+        "monthlyServices": 156,
+        "totalServices": 1234
+      }
+    },
+    {
+      "entity": "Rimac Seguros",
+      "entityCode": "RIMAC",
+      "type": "aseguradora",
+      "admin": {
+        "id": "ext_admin_rimac",
+        "username": "rimac_admin",
+        "name": "Patricia Vega",
+        "email": "pvega@rimac.com.pe",
+        "phone": "999-777-666",
+        "status": "active",
+        "createdAt": "2024-02-20"
+      },
+      "users": [
+        {
+          "id": "ext_user_rimac_1",
+          "username": "rimac_001",
+          "name": "Roberto Silva",
+          "email": "rsilva@rimac.com.pe",
+          "employeeCode": "RIM-2024-001",
+          "status": "active",
+          "lastAccess": "2024-12-10",
+          "servicesUsed": 15
+        },
+        {
+          "id": "ext_user_rimac_2",
+          "username": "rimac_002",
+          "name": "Carmen López",
+          "email": "clopez@rimac.com.pe",
+          "employeeCode": "RIM-2024-002",
+          "status": "active",
+          "lastAccess": "2024-12-08",
+          "servicesUsed": 10
+        }
+      ],
+      "stats": {
+        "totalUsers": 23,
+        "activeUsers": 20,
+        "monthlyServices": 89,
+        "totalServices": 567
+      }
+    },
+    {
+      "entity": "Banco de Crédito del Perú",
+      "entityCode": "BCP",
+      "type": "banco",
+      "admin": {
+        "id": "ext_admin_bcp",
+        "username": "bcp_admin",
+        "name": "Jorge Ramírez",
+        "email": "admin@viabcp.com",
+        "phone": "999-666-555",
+        "status": "active",
+        "createdAt": "2024-03-10"
+      },
+      "users": [
+        {
+          "id": "ext_user_bcp_1",
+          "username": "bcp_001",
+          "name": "Sandra Morales",
+          "email": "smorales@viabcp.com",
+          "employeeCode": "BCP-2024-001",
+          "status": "active",
+          "lastAccess": "2024-12-09",
+          "servicesUsed": 20
+        },
+        {
+          "id": "ext_user_bcp_2",
+          "username": "bcp_002",
+          "name": "Miguel Castillo",
+          "email": "mcastillo@viabcp.com",
+          "employeeCode": "BCP-2024-002",
+          "status": "active",
+          "lastAccess": "2024-12-08",
+          "servicesUsed": 18
+        },
+        {
+          "id": "ext_user_bcp_3",
+          "username": "bcp_003",
+          "name": "Elena Vargas",
+          "email": "evargas@viabcp.com",
+          "employeeCode": "BCP-2024-003",
+          "status": "inactive",
+          "lastAccess": "2024-11-15",
+          "servicesUsed": 3
+        }
+      ],
+      "stats": {
+        "totalUsers": 67,
+        "activeUsers": 61,
+        "monthlyServices": 234,
+        "totalServices": 1876
+      }
+    },
+    {
+      "entity": "Pacífico Seguros",
+      "entityCode": "PACIFICO",
+      "type": "aseguradora",
+      "admin": {
+        "id": "ext_admin_pacifico",
+        "username": "pacifico_admin",
+        "name": "Rosa Jiménez",
+        "email": "admin@pacifico.com.pe",
+        "phone": "999-555-444",
+        "status": "active",
+        "createdAt": "2024-02-28"
+      },
+      "users": [
+        {
+          "id": "ext_user_pacifico_1",
+          "username": "pacifico_001",
+          "name": "Carlos Mendez",
+          "email": "cmendez@pacifico.com.pe",
+          "employeeCode": "PAC-2024-001",
+          "status": "active",
+          "lastAccess": "2024-12-10",
+          "servicesUsed": 7
+        }
+      ],
+      "stats": {
+        "totalUsers": 34,
+        "activeUsers": 31,
+        "monthlyServices": 98,
+        "totalServices": 456
+      }
+    }
+  ],
+  "entityTypes": [
+    { "value": "empresa", "label": "Empresa", "icon": "fas fa-building", "color": "purple" },
+    { "value": "banco", "label": "Banco", "icon": "fas fa-university", "color": "blue" },
+    { "value": "aseguradora", "label": "Aseguradora", "icon": "fas fa-shield-alt", "color": "green" },
+    { "value": "gobierno", "label": "Entidad Gubernamental", "icon": "fas fa-landmark", "color": "red" },
+    { "value": "educacion", "label": "Institución Educativa", "icon": "fas fa-graduation-cap", "color": "indigo" },
+    { "value": "otro", "label": "Otro", "icon": "fas fa-handshake", "color": "gray" }
+  ],
+  "planConfiguration": {
+    "PLAN_TYPES": {
+      "FAMILIAR": "FAMILIAR",
+      "CORPORATIVO": "CORPORATIVO",
+      "EXTERNO": "EXTERNO"
+    },
+    "FAMILIAR_SUBTYPES": {
+      "HELP": "HELP",
+      "BASICO": "BASICO",
+      "VIP": "VIP",
+      "DORADO": "DORADO"
+    },
+    "EXTERNO_SUBTYPES": {
+      "CASO_1": "CASO_1",
+      "CASO_2": "CASO_2"
+    },
+    "SERVICE_TYPES": {
+      "EMERGENCIA": "EMERGENCIA",
+      "URGENCIA": "URGENCIA",
+      "MEDICO_DOMICILIO": "MEDICO_DOMICILIO",
+      "TRASLADO_PROGRAMADO": "TRASLADO_PROGRAMADO",
+      "ZONA_PROTEGIDA": "ZONA_PROTEGIDA",
+      "ORIENTACION_TELEFONICA": "ORIENTACION_TELEFONICA",
+      "EXAMENES_LABORATORIO": "EXAMENES_LABORATORIO"
+    },
+    "PLAN_CONFIGURATIONS": {
+      "FAMILIAR": {
+        "HELP": {
+          "name": "Plan Help",
+          "description": "Plan con límite de servicios de emergencia, urgencia o médico a domicilio",
+          "variants": [
+            { "services": 8, "name": "Help 8" },
+            { "services": 12, "name": "Help 12" },
+            { "services": 16, "name": "Help 16" }
+          ],
+          "limits": {
+            "EMERGENCIA": "FLEXIBLE",
+            "URGENCIA": "FLEXIBLE",
+            "MEDICO_DOMICILIO": "FLEXIBLE",
+            "ORIENTACION_TELEFONICA": "ILIMITADO"
+          },
+          "benefits": {
+            "emergencias_ilimitadas": {
+              "active": false,
+              "title": "Emergencias Ilimitadas",
+              "description": "Atención de emergencias médicas sin límite de servicios",
+              "icon": "fas fa-ambulance"
+            },
+            "orientacion_telefonica": {
+              "active": true,
+              "title": "Orientación Médica Telefónica",
+              "description": "Consultas telefónicas 24/7 con profesionales médicos",
+              "icon": "fas fa-phone-alt"
+            },
+            "zona_protegida": {
+              "active": false,
+              "title": "Zona Protegida",
+              "description": "Emergencia/urgencia médica para terceros en tu dirección registrada",
+              "icon": "fas fa-shield-alt"
+            },
+            "seguro_accidentes": {
+              "active": false,
+              "title": "Seguro contra Accidentes",
+              "description": "Cobertura contra accidentes personales 24/7",
+              "icon": "fas fa-shield-alt",
+              "details": {
+                "provider": "Chubb",
+                "maxAge": 79,
+                "coverage": ["Accidentes personales 24/7"],
+                "validity": "24/7 - 365 días"
+              }
+            },
+            "examenes_laboratorio": {
+              "active": false,
+              "title": "Exámenes de Laboratorio",
+              "description": "Análisis clínicos básicos incluidos en el plan",
+              "icon": "fas fa-flask"
+            }
+          },
+          "color": "blue"
+        },
+        "BASICO": {
+          "name": "Plan Básico",
+          "description": "Plan con servicios específicos por tipo",
+          "limits": {
+            "EMERGENCIA": "ILIMITADO",
+            "URGENCIA": 3,
+            "MEDICO_DOMICILIO": 4,
+            "TRASLADO_PROGRAMADO": 1,
+            "ORIENTACION_TELEFONICA": "ILIMITADO"
+          },
+          "benefits": {
+            "emergencias_ilimitadas": {
+              "active": true,
+              "title": "Emergencias Ilimitadas",
+              "description": "Atención de emergencias médicas sin límite de servicios",
+              "icon": "fas fa-ambulance"
+            },
+            "orientacion_telefonica": {
+              "active": true,
+              "title": "Orientación Médica Telefónica",
+              "description": "Consultas telefónicas 24/7 con profesionales médicos",
+              "icon": "fas fa-phone-alt"
+            },
+            "zona_protegida": {
+              "active": false,
+              "title": "Zona Protegida",
+              "description": "Emergencia/urgencia médica para terceros en tu dirección registrada",
+              "icon": "fas fa-shield-alt"
+            },
+            "seguro_accidentes": {
+              "active": false,
+              "title": "Seguro contra Accidentes",
+              "description": "Cobertura contra accidentes personales 24/7",
+              "icon": "fas fa-shield-alt",
+              "details": {
+                "provider": "Chubb",
+                "maxAge": 79,
+                "coverage": ["Accidentes personales 24/7"],
+                "validity": "24/7 - 365 días"
+              }
+            },
+            "examenes_laboratorio": {
+              "active": false,
+              "title": "Exámenes de Laboratorio",
+              "description": "Análisis clínicos básicos incluidos en el plan",
+              "icon": "fas fa-flask"
+            }
+          },
+          "color": "green"
+        },
+        "VIP": {
+          "name": "Plan VIP",
+          "description": "Plan con servicios ampliados y beneficios adicionales",
+          "limits": {
+            "EMERGENCIA": "ILIMITADO",
+            "URGENCIA": 6,
+            "MEDICO_DOMICILIO": 6,
+            "TRASLADO_PROGRAMADO": 1,
+            "ZONA_PROTEGIDA": 1,
+            "ORIENTACION_TELEFONICA": "ILIMITADO"
+          },
+          "benefits": {
+            "emergencias_ilimitadas": {
+              "active": true,
+              "title": "Emergencias Ilimitadas",
+              "description": "Atención de emergencias médicas sin límite de servicios",
+              "icon": "fas fa-ambulance"
+            },
+            "orientacion_telefonica": {
+              "active": true,
+              "title": "Orientación Médica Telefónica",
+              "description": "Consultas telefónicas 24/7 con profesionales médicos",
+              "icon": "fas fa-phone-alt"
+            },
+            "zona_protegida": {
+              "active": true,
+              "title": "Zona Protegida",
+              "description": "Emergencia/urgencia médica para terceros en tu dirección registrada",
+              "icon": "fas fa-shield-alt"
+            },
+            "seguro_accidentes": {
+              "active": true,
+              "title": "Seguro contra Accidentes",
+              "description": "Cobertura contra accidentes personales 24/7",
+              "icon": "fas fa-shield-alt",
+              "details": {
+                "provider": "Chubb",
+                "maxAge": 79,
+                "coverage": ["Accidentes personales 24/7"],
+                "validity": "24/7 - 365 días"
+              }
+            },
+            "examenes_laboratorio": {
+              "active": false,
+              "title": "Exámenes de Laboratorio",
+              "description": "Análisis clínicos básicos incluidos en el plan",
+              "icon": "fas fa-flask"
+            }
+          },
+          "color": "purple"
+        },
+        "DORADO": {
+          "name": "Plan Dorado",
+          "description": "Plan premium con todos los beneficios incluidos",
+          "limits": {
+            "EMERGENCIA": "ILIMITADO",
+            "URGENCIA": 10,
+            "MEDICO_DOMICILIO": 10,
+            "TRASLADO_PROGRAMADO": 1,
+            "ZONA_PROTEGIDA": 2,
+            "ORIENTACION_TELEFONICA": "ILIMITADO",
+            "EXAMENES_LABORATORIO": "ILIMITADO"
+          },
+          "benefits": {
+            "emergencias_ilimitadas": {
+              "active": true,
+              "title": "Emergencias Ilimitadas",
+              "description": "Atención de emergencias médicas sin límite de servicios",
+              "icon": "fas fa-ambulance"
+            },
+            "orientacion_telefonica": {
+              "active": true,
+              "title": "Orientación Médica Telefónica",
+              "description": "Consultas telefónicas 24/7 con profesionales médicos",
+              "icon": "fas fa-phone-alt"
+            },
+            "zona_protegida": {
+              "active": true,
+              "title": "Zona Protegida",
+              "description": "Emergencia/urgencia médica para terceros en tu dirección registrada",
+              "icon": "fas fa-shield-alt"
+            },
+            "seguro_accidentes": {
+              "active": true,
+              "title": "Seguro contra Accidentes",
+              "description": "Cobertura contra accidentes personales 24/7",
+              "icon": "fas fa-shield-alt",
+              "details": {
+                "provider": "Chubb",
+                "maxAge": 79,
+                "coverage": ["Accidentes personales 24/7"],
+                "validity": "24/7 - 365 días"
+              }
+            },
+            "examenes_laboratorio": {
+              "active": true,
+              "title": "Exámenes de Laboratorio",
+              "description": "Análisis clínicos básicos incluidos en el plan",
+              "icon": "fas fa-flask",
+              "details": {
+                "tests": ["Examen de orina", "Examen de heces", "Hemograma completo"],
+                "network": "Disponible en laboratorios de la red Help MED"
+              }
+            }
+          },
+          "color": "yellow"
+        }
+      },
+      "CORPORATIVO": {
+        "AREA_PROTEGIDA": {
+          "name": "Área Protegida",
+          "description": "Convenio corporativo para atención de emergencias",
+          "limits": {
+            "EMERGENCIA": "VARIABLE"
+          },
+          "benefits": {
+            "solo_emergencias": true,
+            "multiple_users": true,
+            "corporate_billing": true
+          },
+          "color": "red"
+        }
+      },
+      "EXTERNO": {
+        "CASO_1": {
+          "name": "Afiliados Externos - Caso 1",
+          "description": "Sin límite de servicios, facturación directa al cliente",
+          "limits": {
+            "EMERGENCIA": "ILIMITADO",
+            "MEDICO_DOMICILIO": "ILIMITADO"
+          },
+          "benefits": {
+            "facturacion_directa": true,
+            "sin_limites": true
+          },
+          "color": "indigo"
+        },
+        "CASO_2": {
+          "name": "Afiliados Externos - Caso 2",
+          "description": "Límite de 3 servicios por afiliado, 430 servicios generales",
+          "limits": {
+            "EMERGENCIA": 3,
+            "MEDICO_DOMICILIO": 3,
+            "general_limit": 430
+          },
+          "benefits": {
+            "limite_individual": true,
+            "limite_general": true,
+            "pago_adicional": true,
+            "aprox_clients": 500
+          },
+          "color": "teal"
+        }
+      }
+    },
+    "ADDITIONAL_PRICES": {
+      "URGENCIA": 365,
+      "MEDICO_DOMICILIO": 410,
+      "TRASLADO_PROGRAMADO": 515,
+      "ZONA_PROTEGIDA": 645
+    }
+  },
   "billingConfig": {
     "paymentMethodIcons": {
       "credit_card": "fas fa-credit-card",

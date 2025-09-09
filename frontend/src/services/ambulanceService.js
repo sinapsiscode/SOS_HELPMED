@@ -47,53 +47,68 @@ class AmbulanceService {
   }
 
   /**
-   * Obtener alertas de emergencia activas
+   * Obtener alertas de emergencia activas desde JSON server
    * @returns {Promise<Array>} Lista de alertas
    */
   async getEmergencyAlerts() {
     try {
-      // Simulación de datos para desarrollo
-      return [
-        {
-          id: 'emergency_001',
-          patientName: 'Juan Pérez Martínez',
-          emergencyType: 'cardiac',
-          priority: 'critical',
-          location: 'Av. Arequipa 2450, Lince',
-          coordinates: { lat: -12.0831, lng: -77.0364 },
-          status: 'active',
-          timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
-          notes: 'Paciente con dolor en el pecho severo',
-          estimatedTime: '8 min'
-        },
-        {
-          id: 'emergency_002',
-          patientName: 'María González Ruiz',
-          emergencyType: 'accident',
-          priority: 'high',
-          location: 'Jr. Lampa 545, Cercado de Lima',
-          coordinates: { lat: -12.0464, lng: -77.0428 },
-          status: 'active',
-          timestamp: new Date(Date.now() - 25 * 60000).toISOString(),
-          notes: 'Accidente vehicular con heridas menores',
-          estimatedTime: '12 min'
-        },
-        {
-          id: 'emergency_003',
-          patientName: 'Carlos Rodríguez Silva',
-          emergencyType: 'respiratory',
-          priority: 'medium',
-          location: 'Av. Brasil 1245, Magdalena',
-          coordinates: { lat: -12.0932, lng: -77.0648 },
-          status: 'responding',
-          timestamp: new Date(Date.now() - 35 * 60000).toISOString(),
-          notes: 'Dificultad respiratoria leve',
-          estimatedTime: '15 min'
-        }
-      ]
+      // Intentar obtener desde JSON server
+      const response = await fetch(`${this.baseURL}/pendingEmergencies`)
+      if (response.ok) {
+        const emergencies = await response.json()
+        // Transformar datos del JSON al formato esperado por el modal
+        return emergencies.map(emergency => ({
+          id: emergency.id,
+          patientName: emergency.affiliateInfo?.name || emergency.userName,
+          emergencyType: emergency.type.toLowerCase(),
+          priority: emergency.priority === 'alta' ? 'critical' : emergency.priority === 'media' ? 'high' : 'medium',
+          location: emergency.location.address,
+          coordinates: emergency.location.coordinates,
+          status: emergency.status === 'pending' ? 'active' : emergency.status,
+          timestamp: emergency.timestamp,
+          notes: emergency.description,
+          estimatedTime: emergency.estimatedResponseTime,
+          // Datos adicionales para el modal
+          code: emergency.id.toUpperCase(),
+          distance: '5.2 km', // Calcular después
+          eta: emergency.estimatedResponseTime,
+          patient: {
+            name: emergency.affiliateInfo?.name || emergency.userName,
+            age: '35 años', // Agregar edad en JSON después
+            phone: '+51 999 888 777' // Agregar teléfono en JSON después
+          },
+          symptoms: emergency.description
+        }))
+      }
     } catch (error) {
-      throw new Error('Error al cargar alertas de emergencia')
+      console.warn('JSON server no disponible, usando datos de fallback:', error)
     }
+
+    // Fallback con datos estáticos si JSON server no está disponible
+    return [
+      {
+        id: 'emergency_001',
+        patientName: 'Juan Pérez Martínez',
+        emergencyType: 'cardiac',
+        priority: 'critical',
+        location: 'Av. Arequipa 2450, Lince',
+        coordinates: { lat: -12.0831, lng: -77.0364 },
+        status: 'active',
+        timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
+        notes: 'Paciente con dolor en el pecho severo',
+        estimatedTime: '8 min',
+        // Datos adicionales para el modal
+        code: 'EMG-001',
+        distance: '5.2 km',
+        eta: '8 min',
+        patient: {
+          name: 'Juan Pérez Martínez',
+          age: '45 años',
+          phone: '+51 999 888 777'
+        },
+        symptoms: 'Paciente con dolor en el pecho severo'
+      }
+    ]
   }
 
   /**
@@ -154,19 +169,44 @@ class AmbulanceService {
   async createEmergency(emergencyData) {
     try {
       const newEmergency = {
-        ...emergencyData,
-        coordinates: await this.geocodeAddress(emergencyData.location),
-        estimatedTime: this.calculateEstimatedTime(),
-        createdAt: new Date().toISOString()
+        id: `emg_${Date.now()}`,
+        user_id: `user_${emergencyData.ambulanceId || 'unknown'}`,
+        userName: emergencyData.patientName,
+        userType: 'Familiar',
+        planName: 'Plan Simulado',
+        type: 'EMERGENCIA',
+        description: emergencyData.notes || 'Emergencia simulada desde dashboard de ambulancia',
+        location: {
+          address: emergencyData.location || 'Ubicación simulada, Lima',
+          coordinates: await this.geocodeAddress(emergencyData.location)
+        },
+        affiliateInfo: {
+          id: 'titular',
+          name: emergencyData.patientName,
+          relation: 'Titular'
+        },
+        timestamp: new Date().toISOString(),
+        status: 'pending',
+        priority: emergencyData.priority === 'high' ? 'alta' : emergencyData.priority === 'medium' ? 'media' : 'baja',
+        estimatedResponseTime: this.calculateEstimatedTime()
       }
 
-      // En producción, aquí se haría la llamada a la API
-      // const response = await fetch(`${this.baseURL}/emergencies`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(newEmergency)
-      // })
+      // Intentar crear en JSON server
+      try {
+        const response = await fetch(`${this.baseURL}/pendingEmergencies`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newEmergency)
+        })
+        
+        if (response.ok) {
+          return await response.json()
+        }
+      } catch (error) {
+        console.warn('No se pudo crear en JSON server:', error)
+      }
 
+      // Retornar emergencia creada localmente
       return newEmergency
     } catch (error) {
       throw new Error('Error al crear emergencia')

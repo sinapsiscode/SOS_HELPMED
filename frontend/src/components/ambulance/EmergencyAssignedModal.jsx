@@ -13,27 +13,71 @@ const EmergencyAssignedModal = ({ isOpen, onClose, onNavigationStart, emergencyI
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (isOpen && emergencyId) {
+    if (isOpen) {
       fetchEmergencyData()
-    } else if (isOpen && !emergencyId) {
-      // Usar datos mock si no hay ID
-      setEmergencyData(MOCK_DATA.emergencyExample)
     }
   }, [isOpen, emergencyId])
 
   const fetchEmergencyData = async () => {
     setLoading(true)
     try {
-      // TODO: Implementar llamada real a la API
-      // const response = await fetch(API_ENDPOINTS.emergencies.get(emergencyId))
-      // const data = await response.json()
-      // setEmergencyData(data)
+      // Intentar obtener desde JSON server primero
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:4001'
+      const response = await fetch(`${apiUrl}/pendingEmergencies`)
       
-      // Por ahora usar datos mock
-      setEmergencyData(MOCK_DATA.emergencyExample)
+      if (response.ok) {
+        const emergencies = await response.json()
+        if (emergencies && emergencies.length > 0) {
+          // Usar la primera emergencia disponible
+          const emergency = emergencies[0]
+          
+          // Transformar datos al formato esperado por el modal
+          const transformedData = {
+            id: emergency.id,
+            code: emergency.id.toUpperCase(),
+            distance: '5.2 km', // Calcular después
+            eta: emergency.estimatedResponseTime,
+            patient: {
+              name: emergency.affiliateInfo?.name || emergency.userName,
+              age: '35 años', // Agregar edad en JSON después
+              phone: '+51 999 888 777' // Agregar teléfono en JSON después
+            },
+            symptoms: emergency.description,
+            location: {
+              address: emergency.location.address,
+              distance: '5.2 km',
+              coordinates: emergency.location.coordinates
+            }
+          }
+          
+          setEmergencyData(transformedData)
+          return
+        }
+      }
+      
+      throw new Error('No hay emergencias disponibles')
     } catch (error) {
-      console.error('Error fetching emergency data:', error)
-      setEmergencyData(MOCK_DATA.emergencyExample)
+      console.warn('Error obteniendo emergencias del JSON server:', error)
+      
+      // Fallback con datos simulados
+      const fallbackData = {
+        id: 'emg_fallback',
+        code: 'EMG-FALLBACK',
+        distance: '5.2 km',
+        eta: '8-12 min',
+        patient: {
+          name: 'Paciente Simulado',
+          age: '35 años',
+          phone: '+51 999 888 777'
+        },
+        symptoms: 'Emergencia simulada para pruebas del sistema',
+        location: {
+          address: 'Av. Ejemplo 123, Lima',
+          distance: '5.2 km'
+        }
+      }
+      
+      setEmergencyData(fallbackData)
     } finally {
       setLoading(false)
     }
