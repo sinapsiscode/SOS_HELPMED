@@ -16,7 +16,9 @@
     "test:coverage": "jest --coverage",
     "prepare": "husky",
     "json-server": "json-server --watch db.json --port 4001",
-    "dev:all": "concurrently \"npm run dev\" \"npm run json-server\""
+    "dev:all": "concurrently \"npm run dev\" \"npm run json-server\"",
+    "dev:pro": "node scripts/dev-server.js",
+    "setup:dev": "npm install && npm run dev:pro"
   },
   "lint-staged": {
     "*.{js,jsx}": [

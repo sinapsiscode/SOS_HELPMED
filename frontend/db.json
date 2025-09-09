@@ -475,13 +475,36 @@
         "total_services": 16,
         "start_date": "2024-01-15",
         "renewal_date": "2025-01-15",
-        "status": "active"
+        "status": "active",
+        "limits": {
+          "monthly_emergencies": "FLEXIBLE",
+          "monthly_urgencies": "FLEXIBLE", 
+          "monthly_consultations": "FLEXIBLE",
+          "monthly_transfers": 0,
+          "monthly_protected_zone": 0
+        },
+        "benefits": {
+          "orientacion_telefonica": true,
+          "emergencias_ilimitadas": false,
+          "zona_protegida": false,
+          "seguro_accidentes": false,
+          "examenes_laboratorio": false
+        }
       },
       "service_usage": {
-        "used_services": 7,
-        "remaining_services": 9,
-        "total_limit": 16,
-        "usage_percentage": 44
+        "current_period": {
+          "used_services": 7,
+          "remaining_services": 9,
+          "breakdown": {
+            "emergencies": { "used": 2, "limit": "FLEXIBLE" },
+            "urgencies": { "used": 3, "limit": "FLEXIBLE" },
+            "medical_consultations": { "used": 2, "limit": "FLEXIBLE" },
+            "programmed_transfers": { "used": 0, "limit": 0 },
+            "protected_zone": { "used": 0, "limit": 0 },
+            "phone_consultations": { "used": 8, "limit": "ILIMITADO" }
+          }
+        },
+        "reset_date": "2025-01-15T00:00:00Z"
       },
       "billing": {
         "monthly_cost": 195,
@@ -527,15 +550,34 @@
         "name": "Plan Básico",
         "start_date": "2024-02-01",
         "renewal_date": "2025-02-01",
-        "status": "active"
+        "status": "active",
+        "limits": {
+          "monthly_emergencies": "ILIMITADO",
+          "monthly_urgencies": 3,
+          "monthly_consultations": 4,
+          "monthly_transfers": 1,
+          "monthly_protected_zone": 0
+        },
+        "benefits": {
+          "orientacion_telefonica": true,
+          "emergencias_ilimitadas": true,
+          "zona_protegida": false,
+          "seguro_accidentes": false,
+          "examenes_laboratorio": false
+        }
       },
       "service_usage": {
-        "breakdown": {
-          "emergencias": "ILIMITADO",
-          "urgencias": { "used": 1, "limit": 3 },
-          "medico_domicilio": { "used": 2, "limit": 4 },
-          "traslados": { "used": 0, "limit": 1 }
-        }
+        "current_period": {
+          "breakdown": {
+            "emergencies": { "used": 2, "limit": "ILIMITADO" },
+            "urgencies": { "used": 1, "limit": 3 },
+            "medical_consultations": { "used": 2, "limit": 4 },
+            "programmed_transfers": { "used": 0, "limit": 1 },
+            "protected_zone": { "used": 0, "limit": 0 },
+            "phone_consultations": { "used": 12, "limit": "ILIMITADO" }
+          }
+        },
+        "reset_date": "2025-02-01T00:00:00Z"
       },
       "billing": {
         "monthly_cost": 280,
@@ -564,16 +606,34 @@
         "name": "Plan VIP",
         "start_date": "2024-01-01",
         "renewal_date": "2025-01-01",
-        "status": "active"
+        "status": "active",
+        "limits": {
+          "monthly_emergencies": "ILIMITADO",
+          "monthly_urgencies": 6,
+          "monthly_consultations": 6,
+          "monthly_transfers": 1,
+          "monthly_protected_zone": 1
+        },
+        "benefits": {
+          "orientacion_telefonica": true,
+          "emergencias_ilimitadas": true,
+          "zona_protegida": true,
+          "seguro_accidentes": true,
+          "examenes_laboratorio": false
+        }
       },
       "service_usage": {
-        "breakdown": {
-          "emergencias": "ILIMITADO",
-          "urgencias": { "used": 4, "limit": 6 },
-          "medico_domicilio": { "used": 3, "limit": 6 },
-          "traslados": { "used": 1, "limit": 1 },
-          "zona_protegida": { "used": 0, "limit": 1 }
-        }
+        "current_period": {
+          "breakdown": {
+            "emergencies": { "used": 3, "limit": "ILIMITADO" },
+            "urgencies": { "used": 4, "limit": 6 },
+            "medical_consultations": { "used": 3, "limit": 6 },
+            "programmed_transfers": { "used": 1, "limit": 1 },
+            "protected_zone": { "used": 0, "limit": 1 },
+            "phone_consultations": { "used": 15, "limit": "ILIMITADO" }
+          }
+        },
+        "reset_date": "2025-01-01T00:00:00Z"
       },
       "billing": {
         "monthly_cost": 410,
@@ -609,17 +669,35 @@
         "name": "Plan Dorado",
         "start_date": "2024-01-01",
         "renewal_date": "2025-01-01",
-        "status": "active"
+        "status": "active",
+        "limits": {
+          "monthly_emergencies": "ILIMITADO",
+          "monthly_urgencies": 10,
+          "monthly_consultations": 10,
+          "monthly_transfers": 1,
+          "monthly_protected_zone": 2
+        },
+        "benefits": {
+          "orientacion_telefonica": true,
+          "emergencias_ilimitadas": true,
+          "zona_protegida": true,
+          "seguro_accidentes": true,
+          "examenes_laboratorio": true
+        }
       },
       "service_usage": {
-        "breakdown": {
-          "emergencias": "ILIMITADO",
-          "urgencias": { "used": 2, "limit": 10 },
-          "medico_domicilio": { "used": 5, "limit": 10 },
-          "traslados": { "used": 0, "limit": 1 },
-          "zona_protegida": { "used": 1, "limit": 2 },
-          "examenes_laboratorio": "ILIMITADO"
-        }
+        "current_period": {
+          "breakdown": {
+            "emergencies": { "used": 1, "limit": "ILIMITADO" },
+            "urgencies": { "used": 2, "limit": 10 },
+            "medical_consultations": { "used": 5, "limit": 10 },
+            "programmed_transfers": { "used": 0, "limit": 1 },
+            "protected_zone": { "used": 1, "limit": 2 },
+            "phone_consultations": { "used": 8, "limit": "ILIMITADO" },
+            "laboratory_exams": { "used": 3, "limit": "ILIMITADO" }
+          }
+        },
+        "reset_date": "2025-01-01T00:00:00Z"
       },
       "billing": {
         "monthly_cost": 625,
