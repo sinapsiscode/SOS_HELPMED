@@ -332,7 +332,418 @@ export const LABELS = {
         emergenciesCount: 'Emergencias ({count})'
       }
     },
+    externalEntityManagement: {
+      comments: {
+        title: 'Sistema de gestión de entidades externas',
+        approach: 'ENFOQUE BALANCEADO: Estructura en componente, lógica en hook',
+        features: {
+          title: 'Funcionalidades:',
+          crud: '- Gestión CRUD de entidades externas (bancos, aseguradoras, empresas)',
+          adminCreation: '- Creación de administradores externos con credenciales',
+          responsive: '- Vista responsive con estadísticas en tiempo real',
+          confirmations: '- Modales de confirmación para todas las operaciones',
+          validation: '- Validación de formularios y manejo de errores'
+        },
+        architecture: {
+          title: 'Arquitectura modular:',
+          header: '- EntityHeader: Header con estadísticas y botones de acción',
+          list: '- EntityList: Lista de entidades con vistas desktop y móvil',
+          addEntityModal: '- AddEntityModal: Modal para crear nuevas entidades (lazy)',
+          addAdminModal: '- AddAdminModal: Modal para crear administradores (lazy)'
+        },
+        example: {
+          title: '@example',
+          usage: '// Uso básico en dashboard administrativo',
+          component: '<ExternalEntityManagement />'
+        },
+        see: {
+          hook: '@see {@link useExternalEntityManagement} Hook que maneja toda la lógica de negocio',
+          mockData: '@see {@link MOCK_EXTERNAL_ENTITIES} Datos mock de entidades'
+        },
+        rules: {
+          title: 'Cumple reglas de refactorización:',
+          rule3: '- Regla #3: <200 líneas (176 líneas aprox)',
+          rule4: '- Regla #4: Validación de datos y props',
+          rule5: '- Regla #5: Lógica compleja en hook personalizado + lazy loading',
+          rule6: '- Regla #6: Componentes modulares y reutilizables',
+          rule8: '- Regla #8: Manejo consistente de errores',
+          rule12: '- Regla #12: Documentación JSDoc completa'
+        },
+        lazyLoading: 'Lazy loading de modales pesados (Regla #5)',
+        businessLogic: 'HOOK - Toda la lógica compleja (Regla #5)',
+        errorHandling: 'MANEJO DE ERRORES (Regla #8)'
+      },
+      errors: {
+        managementError: 'Error en gestión de entidades: {error}'
+      },
+      header: {
+        emergenciesCount: 'Emergencias activas ({count})'
+      },
+      logs: {
+        contractUploaded: 'Contrato cargado: {data}'
+      },
+      alerts: {
+        title: 'Éxito',
+        message: 'Contrato agregado correctamente'
+      }
+    },
+    externalUsersManagement: {
+      comments: {
+        title: 'Sistema de gestión de usuarios de entidades externas',
+        approach: 'ENFOQUE BALANCEADO: Estructura en componente, lógica en hook',
+        features: {
+          title: 'Funcionalidades:',
+          hierarchy: '- Gestión jerárquica: Entidades -> Administradores -> Usuarios',
+          entityCreation: '- Creación de entidades con administrador obligatorio',
+          expandableView: '- Vista expandible/colapsable de entidades',
+          filtering: '- Filtrado y búsqueda avanzada de usuarios',
+          activation: '- Activación/desactivación de usuarios externos',
+          stats: '- Estadísticas globales del sistema'
+        },
+        architecture: {
+          title: 'Arquitectura modular:',
+          header: '- UsersHeader: Header con estadísticas, búsqueda y controles',
+          hierarchicalView: '- HierarchicalView: Vista jerárquica expandible de entidades',
+          addEntityAdminModal: '- AddEntityAdminModal: Modal para crear entidad con admin (lazy)'
+        },
+        notes: {
+          title: 'Notas importantes:',
+          registration: '- Los usuarios externos se registran desde el aplicativo móvil',
+          adminRequired: '- Cada entidad debe tener un administrador obligatorio',
+          viewOnly: '- Solo se permite vista jerárquica para mejor comprensión'
+        },
+        example: {
+          title: '@example',
+          usage: '// Uso básico en dashboard administrativo',
+          component: '<ExternalUsersManagement />'
+        },
+        see: {
+          hook: '@see {@link useExternalUsersManagement} Hook que maneja toda la lógica de negocio',
+          mockData: '@see {@link MOCK_EXTERNAL_STRUCTURE} Datos mock de estructura jerárquica'
+        },
+        rules: {
+          title: 'Cumple reglas de refactorización:',
+          rule3: '- Regla #3: <200 líneas (145 líneas aprox)',
+          rule4: '- Regla #4: Validación de datos y props',
+          rule5: '- Regla #5: Lógica compleja en hook personalizado + lazy loading',
+          rule6: '- Regla #6: Componentes modulares y reutilizables',
+          rule8: '- Regla #8: Manejo consistente de errores',
+          rule12: '- Regla #12: Documentación JSDoc completa'
+        },
+        lazyLoading: 'Lazy loading de modal pesado (Regla #5)',
+        businessLogic: 'HOOK - Toda la lógica compleja (Regla #5)',
+        errorHandling: 'MANEJO DE ERRORES (Regla #8)'
+      },
+      errors: {
+        managementError: 'Error en gestión de usuarios externos: {error}'
+      },
+      search: {
+        noResults: 'No se encontraron resultados',
+        noMatchesFor: 'No hay entidades, administradores o usuarios que coincidan con "{searchTerm}"',
+        clearSearch: 'Limpiar búsqueda'
+      }
+    },
+    notificationSystem: {
+      comments: {
+        title: 'Sistema de notificaciones y alertas automáticas',
+        approach: 'ENFOQUE BALANCEADO: Estructura en componente, lógica en hook',
+        features: {
+          title: 'Funcionalidades:',
+          autoAlerts: '- Alertas automáticas de emergencias con popups y sonidos',
+          silenceSystem: '- Sistema de silenciado temporal de alertas por tipo',
+          configBehavior: '- Configuración de comportamiento de notificaciones',
+          alertsView: '- Vista de alertas activas y historial de notificaciones',
+          statsPanel: '- Panel de estadísticas resumidas del sistema',
+          autoSounds: '- Reproducción automática de sonidos según tipo de emergencia'
+        },
+        architecture: {
+          title: 'Arquitectura modular:',
+          header: '- NotificationsHeader: Header con tabs y contador de alertas',
+          alertsView: '- AlertsView: Vista de alertas con controles de silencio',
+          configView: '- ConfigView: Formulario de configuración de notificaciones',
+          summaryStats: '- SummaryStats: Panel de estadísticas resumidas'
+        },
+        specialFeatures: {
+          title: 'Características especiales:',
+          autoPopups: '- Popups automáticos para emergencias SOS (nunca se cierran solos)',
+          soundSystem: '- Sistema de sonidos diferenciados por tipo de emergencia',
+          notificationModes: '- Modos de notificación: silencioso, normal, detallado',
+          globalSync: '- Sincronización con configuración global del sistema'
+        },
+        example: {
+          title: '@example',
+          usage: '// Uso básico en dashboard administrativo',
+          component: '<NotificationSystem />'
+        },
+        see: {
+          hook: '@see {@link useNotificationSystem} Hook que maneja toda la lógica de negocio',
+          config: '@see {@link INITIAL_NOTIFICATION_CONFIG} Configuración inicial'
+        },
+        rules: {
+          title: 'Cumple reglas de refactorización:',
+          rule3: '- Regla #3: <200 líneas (142 líneas aprox)',
+          rule4: '- Regla #4: Validación de datos y props',
+          rule5: '- Regla #5: Lógica compleja en hook personalizado',
+          rule6: '- Regla #6: Componentes modulares y reutilizables',
+          rule8: '- Regla #8: Manejo consistente de errores',
+          rule12: '- Regla #12: Documentación JSDoc completa'
+        },
+        businessLogic: 'HOOK - Toda la lógica compleja (Regla #5)',
+        errorHandling: 'MANEJO DE ERRORES (Regla #8)'
+      },
+      errors: {
+        systemError: 'Error en sistema de notificaciones: {error}'
+      }
+    },
+    /**
+     * Panel de configuración de métodos de pago para administrador
+     * @description Permite editar toda la información de los métodos de pago alternativos
+     */
+    paymentMethodsConfig: {
+      title: 'Configuración de Métodos de Pago',
+      subtitle: 'Configure los métodos de pago disponibles para servicios particulares',
+      sections: {
+        enabledMethods: 'Métodos Habilitados',
+        yapeConfig: 'Configuración de Yape',
+        plinConfig: 'Configuración de Plin',
+        bankTransferConfig: 'Configuración de Transferencia Bancaria',
+        generalConfig: 'Configuración General'
+      },
+      methods: {
+        yape: 'Yape',
+        plin: 'Plin',
+        transfer: 'Transferencia'
+      },
+      fields: {
+        yapeNumber: 'Número de Yape',
+        plinNumber: 'Número de Plin',
+        ownerName: 'Nombre del Titular',
+        accountHolder: 'Titular de la Cuenta',
+        additionalInstructions: 'Instrucciones adicionales',
+        bankName: 'Banco',
+        accountNumber: 'Número de Cuenta',
+        cciCode: 'CCI (Código Interbancario)',
+        accountType: 'Tipo de Cuenta',
+        maxFileSize: 'Tamaño máximo de archivo (MB)',
+        allowedFormats: 'Formatos permitidos',
+        confirmationMessage: 'Mensaje de confirmación'
+      },
+      options: {
+        banks: {
+          bcp: 'Banco de Crédito del Perú (BCP)',
+          bbva: 'BBVA Continental',
+          interbank: 'Interbank',
+          scotiabank: 'Scotiabank',
+          nacion: 'Banco de la Nación',
+          pichincha: 'Banco Pichincha'
+        },
+        accountTypes: {
+          ahorros: 'Cuenta de Ahorros',
+          corriente: 'Cuenta Corriente'
+        }
+      },
+      placeholders: {
+        yapeNumber: '999888777',
+        plinNumber: '998877666',
+        accountNumber: '123-456789-0-12',
+        cciCode: '00212300456789012',
+        ownerName: 'Nombre o razón social',
+        additionalInstructions: 'Instrucciones para el usuario...',
+        confirmationMessage: 'Mensaje que verá el usuario después de enviar el pago...'
+      },
+      defaultValues: {
+        yapeInstructions: 'Enviar captura del voucher después de realizar el pago',
+        plinInstructions: 'Usar el código QR o número para realizar el pago',
+        transferInstructions: 'Enviar voucher a administracion@helpmed.com después de la transferencia',
+        confirmationMessage: 'Su pago ha sido registrado y será verificado en las próximas 2 horas',
+        ownerName: 'HELPMED S.A.C.',
+        bankName: 'Banco de Crédito del Perú',
+        accountType: 'corriente',
+        formats: ['jpg', 'jpeg', 'png', 'pdf']
+      },
+      buttons: {
+        cancel: 'Cancelar',
+        save: 'Guardar Cambios',
+        saving: 'Guardando...'
+      },
+      messages: {
+        saveSuccess: 'Configuración guardada exitosamente',
+        saveError: 'Error al guardar la configuración'
+      }
+    },
+    /**
+     * Panel de configuración de planes para administrador
+     * @description Permite editar y gestionar todos los planes disponibles
+     */
+    planConfiguration: {
+      title: 'Configuración de Planes',
+      subtitle: 'Planes Familiares (4)',
+      counters: {
+        totalPlans: 'Total Planes',
+        familiar: 'Familiares',
+        corporate: 'Corporativos',
+        external: 'Externos'
+      },
+      buttons: {
+        additionalPrices: 'Precios Adicionales',
+        export: 'Exportar',
+        newPlan: 'Nuevo Plan',
+        edit: 'Editar',
+        pause: 'Pausar',
+        delete: 'Eliminar',
+        saveChanges: 'Guardar Cambios',
+        cancel: 'Cancelar',
+        yesPause: 'Sí, pausar',
+        yesDelete: 'Sí, eliminar',
+        createPlan: 'Crear Plan'
+      },
+      plans: {
+        help: {
+          name: 'Plan Help',
+          description: 'Plan básico de emergencias médicas'
+        },
+        basic: {
+          name: 'Plan Básico',
+          description: 'Plan familiar con servicios esenciales'
+        },
+        vip: {
+          name: 'Plan VIP',
+          description: 'Plan premium con beneficios adicionales'
+        },
+        gold: {
+          name: 'Plan Dorado',
+          description: 'Plan de lujo con todos los beneficios'
+        }
+      },
+      status: {
+        active: 'Activo'
+      },
+      fields: {
+        price: 'Precio:',
+        characteristics: 'Características:',
+        updated: 'Actualizado:',
+        mainLimits: 'Límites Principales:',
+        emergencies: 'Emergencias:',
+        urgencies: 'Urgencias:',
+        medicalDom: 'Médico Dom:',
+        transfers: 'Traslados:',
+        planName: 'Nombre del Plan',
+        annualPrice: 'Precio Anual',
+        homeDoctorShort: 'Médico Dom.',
+        planType: 'Tipo de Plan',
+        description: 'Descripción',
+        annualPriceFull: 'Precio Anual (S/)'
+      },
+      values: {
+        unlimited: 'ILIMITADO'
+      },
+      formats: {
+        year: '/año',
+        month: '/mes',
+        currency: 'S/'
+      },
+      modals: {
+        editPlan: {
+          title: 'Editar {planName}',
+          fields: {
+            planName: 'Nombre del Plan',
+            annualPrice: 'Precio Anual',
+            monthlyPrice: 'Precio Mensual (S/)',
+            planLimits: 'Límites del Plan',
+            emergencies: 'Emergencias',
+            medicalDom: 'Médico Dom.',
+            urgencies: 'Urgencias',
+            transfers: 'Traslados'
+          },
+          buttons: {
+            save: 'Guardar Cambios',
+            cancel: 'Cancelar'
+          }
+        },
+        pausePlan: {
+          title: '¿Pausar plan?',
+          message: '¿Deseas pausar el {planName}? Los usuarios no podrán suscribirse mientras esté pausado.',
+          buttons: {
+            confirm: 'Sí, pausar',
+            cancel: 'Cancelar'
+          }
+        },
+        deletePlan: {
+          title: '¿Eliminar plan?',
+          message: '¿Estás seguro de eliminar el {planName}? Esta acción no se puede deshacer.',
+          buttons: {
+            confirm: 'Sí, eliminar',
+            cancel: 'Cancelar'
+          }
+        },
+        addPlan: {
+          title: 'Agregar Nuevo Plan',
+          fields: {
+            planName: 'Nombre del Plan',
+            description: 'Descripción',
+            monthlyPrice: 'Precio Mensual (S/)',
+            annualPrice: 'Precio Anual (S/)',
+            planType: 'Tipo de Plan'
+          },
+          placeholders: {
+            planName: 'Ej: Plan Premium',
+            description: 'Descripción del plan',
+            price: '0.00'
+          },
+          options: {
+            familiar: 'Familiar',
+            corporate: 'Corporativo',
+            external: 'Externo'
+          },
+          buttons: {
+            create: 'Crear Plan',
+            cancel: 'Cancelar'
+          }
+        },
+        export: {
+          title: 'Exportando',
+          message: 'Los planes se están exportando a Excel...'
+        },
+        saved: {
+          title: 'Configuración guardada',
+          message: 'Los precios adicionales han sido actualizados correctamente'
+        }
+      },
+      options: {
+        planTypes: {
+          familiar: 'Familiar',
+          corporate: 'Corporativo',
+          external: 'Externo'
+        }
+      },
+      placeholders: {
+        planName: 'Ej: Plan Premium',
+        description: 'Descripción del plan',
+        price: '0.00'
+      },
+      console: {
+        pricesSaved: 'Datos de precios guardados:'
+      }
+    },
     ambulance: {
+      stats: {
+        active: 'Activas',
+        available: 'Disponibles',
+        inService: 'En Servicio',
+        maintenance: 'Mantenimiento',
+        total: 'Total Unidades'
+      },
+      errors: {
+        ambulancesRequired: 'UnitsTab: ambulances es requerido',
+        filteredRequired: 'UnitsTab: filteredAmbulances es requerido',
+        onEditRequired: 'UnitsTab: onEdit debe ser una función',
+        onDeleteRequired: 'UnitsTab: onDelete debe ser una función'
+      },
+      titleWithCount: 'Lista de Unidades ({count})',
+      empty: {
+        title: 'No hay unidades registradas',
+        description: 'Agrega nuevas unidades de ambulancia para comenzar'
+      },
       form: {
         title: {
           new: 'Nueva Unidad',
@@ -3234,7 +3645,11 @@ export const LABELS = {
           editUser: 'Editar usuario',
           deleteUser: 'Eliminar usuario',
           registerUseShort: 'Registrar uso',
-          addServicesShort: '+ Servicios'
+          addServicesShort: '+ Servicios',
+          addServicesMobile: 'Agregar servicios adicionales',
+          manageAffiliatesMobile: 'Gestionar afiliados del plan familiar',
+          toggleStatusMobile: 'Activar/Desactivar usuario',
+          deleteUserMobile: 'Eliminar usuario del sistema'
         },
         icons: {
           familiar: 'fas fa-user',
@@ -3307,6 +3722,7 @@ export const LABELS = {
           mainContact: 'Contacto Principal',
           contractedServices: 'Servicios Contratados',
           contractAmount: 'Monto de Contrato',
+          amountPlaceholder: '0.00',
           additionalBranches: 'Sedes Adicionales (Opcional)',
           branchesNote: 'Agregue otras direcciones donde la empresa tiene operaciones',
           branchPlaceholder: 'Dirección de la sede (Ej: Av. Sur 5678, Comuna, Ciudad)',
@@ -3823,6 +4239,321 @@ export const LABELS = {
           activateServices: 'Activar Servicios'
         }
       }
+    },
+    registrationManagement: {
+      comments: {
+        title: 'Componente principal para gestión de solicitudes de registro',
+        refactored: 'REFACTORIZADO siguiendo TODAS las reglas:',
+        rules: {
+          rule2: '✅ Regla #2: Solo presentación, lógica compleja en hook',
+          rule3: '✅ Regla #3: <200 líneas (actualmente ~140 líneas)',
+          rule8: '✅ Regla #8: Manejo de errores delegado al hook',
+          rule10: '✅ Regla #10: Arquitectura modular - componentes separados'
+        }
+      },
+      errors: {
+        managementError: 'Error en gestión de solicitudes: {error}'
+      },
+      header: {
+        title: 'Gestión de Solicitudes de Registro',
+        subtitle: 'Administra las solicitudes de nuevos clientes'
+      },
+      filters: {
+        label: 'Filtrar por estado:',
+        options: {
+          all: 'Todas',
+          pending: 'Pendientes',
+          approved: 'Aprobadas',
+          rejected: 'Rechazadas'
+        }
+      },
+      list: {
+        title: 'Solicitudes ({count})',
+        loading: {
+          title: 'Cargando...',
+          message: 'Obteniendo solicitudes de registro'
+        },
+        empty: {
+          title: 'No hay solicitudes',
+          message: 'No se encontraron solicitudes con los filtros seleccionados.'
+        }
+      }
+    },
+    reportsAnalytics: {
+      comments: {
+        title: 'Sistema completo de reportes y analytics para administradores'
+      },
+      header: {
+        title: 'Reportes y Analytics'
+      },
+      dateFilters: {
+        startDateLabel: 'Fecha de inicio',
+        endDateLabel: 'Fecha de fin',
+        last30Days: 'Últimos 30 días'
+      },
+      exportButtons: {
+        pdf: 'PDF',
+        excel: 'Excel'
+      },
+      exportMessages: {
+        pdfReady: {
+          title: 'PDF Preparado',
+          text: 'Se ha abierto una nueva ventana. Presiona Ctrl+P para imprimir o guardar como PDF'
+        },
+        excelGenerated: {
+          title: 'Excel Generado',
+          text: 'El archivo Excel ha sido descargado exitosamente'
+        }
+      },
+      reportTitles: {
+        overview: 'Resumen General',
+        users: 'Usuarios',
+        services: 'Servicios',
+        performance: 'Performance',
+        geography: 'Geografía',
+        finanzas: 'Finanzas',
+        surveys: 'Encuestas de Calidad',
+        default: 'Reporte'
+      },
+      tabs: [
+        { id: 'overview', label: 'Resumen General', icon: 'fas fa-chart-pie', short: 'Resumen' },
+        { id: 'users', label: 'Usuarios', icon: 'fas fa-users', short: 'Usuarios' },
+        { id: 'services', label: 'Servicios', icon: 'fas fa-ambulance', short: 'Servicios' },
+        { id: 'performance', label: 'Performance', icon: 'fas fa-tachometer-alt', short: 'Performance' },
+        { id: 'geography', label: 'Geografía', icon: 'fas fa-map-marked-alt', short: 'Geografía' },
+        { id: 'finanzas', label: 'Finanzas', icon: 'fas fa-coins', short: 'Finanzas' },
+        { id: 'surveys', label: 'Encuestas de Calidad', icon: 'fas fa-poll', short: 'Encuestas' }
+      ],
+      dateRange: {
+        selectPeriod: 'Seleccionar período'
+      },
+      overview: {
+        mainMetrics: 'Métricas Principales',
+        userDistribution: 'Distribución de Usuarios por Plan',
+        metrics: {
+          totalUsers: 'Total Usuarios',
+          completedServices: 'Servicios Completados', 
+          totalRevenue: 'Ingresos Totales',
+          avgResponseTime: 'Tiempo Promedio Respuesta'
+        }
+      },
+      users: {
+        userAnalysis: 'Análisis de Usuarios',
+        usersByType: 'Usuarios por Tipo'
+      },
+      services: {
+        serviceAnalysis: 'Análisis de Servicios',
+        servicesByType: 'Servicios por Tipo'
+      },
+      geography: {
+        geographicAnalysis: 'Análisis Geográfico',
+        executiveSummary: 'Resumen Ejecutivo',
+        leaderDistrict: 'Distrito Líder',
+        fastestResponse: 'Respuesta Más Rápida', 
+        opportunity: 'Oportunidad'
+      },
+      performance: {
+        responseTime: 'Tiempo Respuesta',
+        unitAvailability: 'Disponibilidad Unidades',
+        satisfaction: 'Satisfacción',
+        serviceTrends: 'Tendencia de Servicios',
+        serviceTypes: {
+          emergencies: 'Emergencias',
+          urgencies: 'Urgencias',
+          home: 'Domicilio',
+          transfers: 'Traslados'
+        }
+      },
+      cards: {
+        totalUsers: 'Total Usuarios',
+        activeEmergencies: 'Emergencias Activas',
+        totalRevenue: 'Ingresos Totales',
+        clientSatisfaction: 'Satisfacción Cliente',
+        emergencies: 'Emergencias',
+        homeService: 'Médico a Domicilio',
+        urgencies: 'Urgencias',
+        transfers: 'Traslados'
+      },
+      userFilters: {
+        title: 'Filtros de Usuario'
+      }
+    },
+    revenueManagement: {
+      comments: {
+        title: 'Componente principal para gestión financiera y de ingresos',
+        refactored: 'REFACTORIZADO siguiendo TODAS las reglas:',
+        rules: {
+          rule2: '✅ Regla #2: Solo presentación, lógica compleja en hook useRevenueManagement',
+          rule3: '✅ Regla #3: <200 líneas (actualmente ~190 líneas)',
+          rule8: '✅ Regla #8: Manejo de errores delegado al hook',
+          rule10: '✅ Regla #10: Arquitectura modular - componentes separados',
+          rule4: '✅ Regla #4: Validación completa en formularios'
+        }
+      },
+      errors: {
+        managementError: 'Error en gestión financiera: {error}'
+      },
+      header: {
+        title: 'Gestión Financiera',
+        subtitle: 'Control de ingresos, transacciones y reportes financieros'
+      },
+      buttons: {
+        newTransaction: 'Nueva Transacción',
+        pdf: 'PDF',
+        excel: 'Excel',
+        clearFilters: 'Limpiar Filtros'
+      },
+      tabs: {
+        dashboard: 'Panel Financiero',
+        transactions: 'Transacciones',
+        reports: 'Reportes'
+      },
+      filters: {
+        dateRange: 'Rango de fechas:',
+        transactionType: 'Tipo de transacción:',
+        status: 'Estado:',
+        all: 'Todos',
+        income: 'Ingresos', 
+        expense: 'Gastos',
+        pending: 'Pendiente',
+        completed: 'Completado',
+        cancelled: 'Cancelado'
+      },
+      loading: {
+        message: 'Cargando datos financieros...'
+      },
+      empty: {
+        noTransactions: 'No hay transacciones disponibles',
+        noFilteredTransactions: 'No se encontraron transacciones con los filtros aplicados',
+        title: 'Sin Transacciones Registradas',
+        description: 'Comienza registrando tu primera transacción para ver métricas y reportes financieros.',
+        registerFirst: 'Registrar Primera Transacción'
+      },
+      dashboard: {
+        title: 'Dashboard',
+        subtitle: 'KPIs y métricas principales'
+      },
+      transactions: {
+        title: 'Transacciones',
+        subtitle: 'Lista detallada con filtros'
+      },
+      footer: {
+        systemInfo: 'Sistema financiero HelpMED - Actualizado en tiempo real',
+        totalShown: 'Total mostrado:'
+      },
+      tooltips: {
+        download: 'Descargar reporte',
+        expand: 'Expandir vista completa'
+      }
+    },
+    surveyManagement: {
+      errors: {
+        loadModule: 'Error al cargar el módulo de encuestas'
+      },
+      header: {
+        title: 'Gestión de Encuestas de Satisfacción',
+        subtitle: 'Configura preguntas y revisa resultados de satisfacción del cliente',
+        systemEvaluation: 'Sistema de evaluación 1-5 estrellas'
+      },
+      tabs: {
+        configure: 'Configurar Preguntas',
+        results: 'Ver Resultados'
+      },
+      editModal: {
+        title: 'Editar Preguntas',
+        question: 'Pregunta {number}',
+        category: 'Categoría',
+        categories: {
+          quality: 'Calidad',
+          personal: 'Personal',
+          communication: 'Comunicación',
+          recommendation: 'Recomendación',
+          time: 'Tiempo'
+        },
+        active: 'Activa',
+        saveChanges: 'Guardar Cambios',
+        cancel: 'Cancelar',
+        success: {
+          title: 'Cambios guardados',
+          message: 'Las preguntas se han actualizado correctamente'
+        }
+      },
+      survey: {
+        incomplete: {
+          title: 'Encuesta incompleta',
+          message: 'Por favor califique todas las preguntas antes de enviar'
+        },
+        submitted: {
+          title: 'Encuesta enviada',
+          message: 'Gracias por sus respuestas. Su opinión es muy importante para nosotros.'
+        },
+        systemEvaluation: {
+          title: 'Evaluación del Sistema',
+          message: 'El sistema ha evaluado automáticamente basándose en métricas del servicio'
+        }
+      },
+      export: {
+        title: 'Exportando datos',
+        message: 'El archivo se descargará en breve...',
+        reportButton: 'Exportar Reporte'
+      },
+      metrics: {
+        totalResponses: 'Total Respuestas',
+        averageRating: 'Calificación Promedio',
+        npsScore: 'NPS Score',
+        todayResponses: 'Respuestas Hoy',
+        responseRate: 'Tasa Respuesta'
+      }
+    },
+    systemConfiguration: {
+      header: {
+        title: 'Configuración del Sistema',
+        subtitle: 'Configura alertas, notificaciones y métodos de pago'
+      },
+      tabs: {
+        alerts: 'Alertas y Notificaciones',
+        payments: 'Métodos de Pago'
+      },
+      save: {
+        title: 'Guardado',
+        message: 'Configuración de {type} actualizada correctamente'
+      },
+      preview: {
+        title: 'Vista Previa de Alerta',
+        defaultMessage: 'Vista previa de la alerta seleccionada'
+      },
+      serviceAlerts: {
+        title: 'Alertas de Servicios Agotándose',
+        corporateClients: 'Clientes Corporativos',
+        familiarClients: 'Clientes Familiares',
+        thresholdLabel: 'Umbral de Alerta (servicios restantes)',
+        servicesUnit: 'servicios',
+        remainingMessage: 'Te quedan solo {count} servicios restantes',
+        viewAlert: 'Ver Alerta',
+        corporateThresholdInfo: 'Los corporativos serán una alerta cuando tengan {count} o menos servicios restantes',
+        familiarThresholdInfo: 'Los familiares serán una alerta cuando tengan {count} o menos servicios restantes'
+      },
+      contractAlerts: {
+        title: 'Alertas de Vencimiento de Contratos',
+        corporateContracts: 'Contratos Corporativos',
+        daysBeforeLabel: 'Días antes del vencimiento para alertar',
+        daysUnit: 'días',
+        previewTitle: 'Vista Previa de la Alerta',
+        contractNotifications: 'Notificaciones de contratos por vencer:',
+        daysRemaining: '{days} días restantes',
+        contractExpiringMessage: 'Tu contrato corporativo vence próximamente'
+      },
+      notifications: {
+        title: 'Configuración de Notificaciones',
+        email: {
+          title: 'Recordatorios por Email Automáticos',
+          description: 'Enviar emails automáticos cuando los servicios estén por agotarse'
+        },
+        sms: {
+          title: 'Notificaciones SMS',
+          description: 'Enviar mensajes de texto para alertas críticas'
+        }
+      }
     }
   },
   
@@ -3888,3 +4619,5 @@ export const LABELS = {
     }
   }
 }
+// Exportación por defecto para compatibilidad
+export default LABELS

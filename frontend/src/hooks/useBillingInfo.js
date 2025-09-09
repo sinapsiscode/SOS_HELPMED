@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState } from 'react'
+import { useMemo, useCallback, useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import logger from '../utils/logger'
@@ -23,6 +23,48 @@ const MySwal = withReactContent(Swal)
 const useBillingInfo = (user, additionalServices = []) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [billingConfig, setBillingConfig] = useState({})
+
+  // Cargar configuración de facturación desde db.json
+  useEffect(() => {
+    const loadBillingConfig = async () => {
+      try {
+        const response = await fetch('http://localhost:4001/billingConfig')
+        if (response.ok) {
+          const config = await response.json()
+          setBillingConfig(config)
+        } else {
+          throw new Error('Failed to fetch billing config')
+        }
+      } catch (error) {
+        console.error('Error loading billing config:', error)
+        console.warn('Using fallback billing configuration')
+        
+        // Configuración de fallback
+        setBillingConfig({
+          paymentMethodIcons: {
+            credit_card: 'fas fa-credit-card',
+            bank_transfer: 'fas fa-university',
+            invoice: 'fas fa-file-invoice',
+            debit_card: 'fas fa-credit-card'
+          },
+          paymentMethodNames: {
+            credit_card: 'Tarjeta de Crédito',
+            bank_transfer: 'Transferencia Bancaria',
+            invoice: 'Facturación Empresarial',
+            debit_card: 'Tarjeta de Débito'
+          },
+          planUpgradeOptions: [
+            { id: 'help', name: 'Plan HELP', description: 'Servicios generales' },
+            { id: 'med', name: 'Plan MED', description: 'Servicios médicos completos' },
+            { id: 'med_plus', name: 'Plan MED+', description: 'Servicios premium' }
+          ]
+        })
+      }
+    }
+
+    loadBillingConfig()
+  }, [])
 
   /**
    * Calcula el total a pagar
@@ -51,27 +93,15 @@ const useBillingInfo = (user, additionalServices = []) => {
    * Obtiene el ícono del método de pago
    */
   const getPaymentMethodIcon = useCallback((method) => {
-    const icons = {
-      credit_card: 'fas fa-credit-card',
-      bank_transfer: 'fas fa-university',
-      invoice: 'fas fa-file-invoice',
-      debit_card: 'fas fa-credit-card'
-    }
-    return icons[method] || 'fas fa-money-bill'
-  }, [])
+    return billingConfig.paymentMethodIcons?.[method] || 'fas fa-money-bill'
+  }, [billingConfig.paymentMethodIcons])
 
   /**
    * Obtiene el nombre del método de pago
    */
   const getPaymentMethodName = useCallback((method) => {
-    const names = {
-      credit_card: 'Tarjeta de Crédito',
-      bank_transfer: 'Transferencia Bancaria',
-      invoice: 'Facturación Empresarial',
-      debit_card: 'Tarjeta de Débito'
-    }
-    return names[method] || 'Método de Pago'
-  }, [])
+    return billingConfig.paymentMethodNames?.[method] || 'Método de Pago'
+  }, [billingConfig.paymentMethodNames])
 
   /**
    * Calcula la próxima fecha de facturación

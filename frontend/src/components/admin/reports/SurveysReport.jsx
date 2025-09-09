@@ -1,25 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import useAppStore from '../../../stores/useAppStore'
 
 const SurveysReport = ({ dateRange }) => {
-  const { surveys = [], allUsers = {} } = useAppStore()
+  const store = useAppStore()
+  const surveys = useMemo(() => store.surveyResponses || [], [store.surveyResponses])
+  const allUsers = useMemo(() => store.allUsers || {}, [store.allUsers])
   
-  // Calcular métricas
-  const [metrics, setMetrics] = useState({
-    totalSurveys: 0,
-    averageRating: 0,
-    positiveRatings: 0,
-    mentionedAreas: 0
-  })
-  
-  // Distribución de calificaciones
-  const [ratingsDistribution, setRatingsDistribution] = useState([
-    { rating: 5, count: 2, percentage: 33.3 },
-    { rating: 4, count: 2, percentage: 33.3 },
-    { rating: 3, count: 1, percentage: 16.7 },
-    { rating: 2, count: 1, percentage: 16.7 },
-    { rating: 1, count: 0, percentage: 0 }
-  ])
   
   // Distribución por tipo de usuario
   const [userTypeDistribution, setUserTypeDistribution] = useState([
@@ -37,22 +23,33 @@ const SurveysReport = ({ dateRange }) => {
     { area: 'Comunicación con la empresa', icon: 'fas fa-phone', count: 1, percentage: 16.7, color: 'red' }
   ])
   
-  useEffect(() => {
-    // Calcular métricas desde surveys si existen
+  // Calcular métricas usando useMemo en lugar de useEffect
+  const calculatedMetrics = useMemo(() => {
     if (surveys && surveys.length > 0) {
       const total = surveys.length
       const avgRating = surveys.reduce((sum, s) => sum + (s.rating || 0), 0) / total
       const positive = surveys.filter(s => s.rating >= 4).length
       const areas = new Set(surveys.map(s => s.improvementArea).filter(Boolean)).size
       
-      setMetrics({
+      return {
         totalSurveys: total,
         averageRating: avgRating.toFixed(1),
         positiveRatings: positive,
         mentionedAreas: areas || 1
-      })
-      
-      // Calcular distribución real de calificaciones
+      }
+    } else {
+      return {
+        totalSurveys: 6,
+        averageRating: 3.8,
+        positiveRatings: 4,
+        mentionedAreas: 1
+      }
+    }
+  }, [surveys])
+  
+  const calculatedDistribution = useMemo(() => {
+    if (surveys && surveys.length > 0) {
+      const total = surveys.length
       const ratingCounts = [0, 0, 0, 0, 0]
       surveys.forEach(s => {
         if (s.rating >= 1 && s.rating <= 5) {
@@ -60,21 +57,19 @@ const SurveysReport = ({ dateRange }) => {
         }
       })
       
-      const newDistribution = ratingCounts.map((count, index) => ({
+      return ratingCounts.map((count, index) => ({
         rating: 5 - index,
         count: ratingCounts[4 - index],
         percentage: total > 0 ? (ratingCounts[4 - index] / total * 100).toFixed(1) : 0
       }))
-      
-      setRatingsDistribution(newDistribution)
     } else {
-      // Usar datos de ejemplo si no hay encuestas
-      setMetrics({
-        totalSurveys: 6,
-        averageRating: 3.8,
-        positiveRatings: 4,
-        mentionedAreas: 1
-      })
+      return [
+        { rating: 5, count: 2, percentage: 33.3 },
+        { rating: 4, count: 2, percentage: 33.3 },
+        { rating: 3, count: 1, percentage: 16.7 },
+        { rating: 2, count: 1, percentage: 16.7 },
+        { rating: 1, count: 0, percentage: 0 }
+      ]
     }
   }, [surveys])
   
@@ -89,7 +84,7 @@ const SurveysReport = ({ dateRange }) => {
   
   // Función para obtener el ancho máximo de la barra
   const getBarWidth = (percentage) => {
-    const maxPercentage = Math.max(...ratingsDistribution.map(r => parseFloat(r.percentage)))
+    const maxPercentage = Math.max(...calculatedDistribution.map(r => parseFloat(r.percentage)))
     return maxPercentage > 0 ? (percentage / maxPercentage) * 100 : 0
   }
 
@@ -100,7 +95,7 @@ const SurveysReport = ({ dateRange }) => {
         {/* Total de Encuestas */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex flex-col">
-            <p className="text-3xl font-bold text-blue-600 mb-2">{metrics.totalSurveys}</p>
+            <p className="text-3xl font-bold text-blue-600 mb-2">{calculatedMetrics.totalSurveys}</p>
             <p className="text-sm text-gray-600">Total de Encuestas</p>
             <div className="mt-3">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -114,7 +109,7 @@ const SurveysReport = ({ dateRange }) => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex flex-col">
             <div className="flex items-baseline gap-2">
-              <p className="text-3xl font-bold text-yellow-600">{metrics.averageRating}</p>
+              <p className="text-3xl font-bold text-yellow-600">{calculatedMetrics.averageRating}</p>
               <i className="fas fa-star text-yellow-500 text-xl"></i>
             </div>
             <p className="text-sm text-gray-600">Calificación Promedio</p>
@@ -127,7 +122,7 @@ const SurveysReport = ({ dateRange }) => {
         {/* Calificaciones Positivas */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex flex-col">
-            <p className="text-3xl font-bold text-green-600 mb-2">{metrics.positiveRatings}</p>
+            <p className="text-3xl font-bold text-green-600 mb-2">{calculatedMetrics.positiveRatings}</p>
             <p className="text-sm text-gray-600">Calificaciones Positivas</p>
             <p className="text-xs text-gray-500 mt-1">(4-5 estrellas)</p>
             <div className="mt-3">
@@ -139,7 +134,7 @@ const SurveysReport = ({ dateRange }) => {
         {/* Área Más Mencionada */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
           <div className="flex flex-col">
-            <p className="text-3xl font-bold text-purple-600 mb-2">{metrics.mentionedAreas}</p>
+            <p className="text-3xl font-bold text-purple-600 mb-2">{calculatedMetrics.mentionedAreas}</p>
             <p className="text-sm text-gray-600">Área Más Mencionada</p>
             <p className="text-xs text-orange-600 mt-1">
               <i className="fas fa-exclamation-triangle mr-1"></i>
@@ -164,7 +159,7 @@ const SurveysReport = ({ dateRange }) => {
           </h3>
           
           <div className="space-y-3">
-            {ratingsDistribution.map((item) => (
+            {calculatedDistribution.map((item) => (
               <div key={item.rating} className="flex items-center gap-3">
                 <div className="flex items-center gap-1 w-12">
                   <span className="text-sm font-medium text-gray-700">{item.rating}</span>

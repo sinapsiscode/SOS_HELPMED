@@ -146,7 +146,7 @@ const FamiliarHeader = ({ user }) => {
               <span className="text-xs font-medium text-green-700">Plan Activo</span>
             </div>
             <div className="text-xs text-gray-500">
-              Renueva: {new Date(user.plan.renewal_date).toLocaleDateString('es-CL')}
+              Renueva: {user?.plan?.renewal_date ? new Date(user.plan.renewal_date).toLocaleDateString('es-CL') : 'No disponible'}
             </div>
           </div>
         </div>

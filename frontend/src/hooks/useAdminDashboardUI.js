@@ -148,7 +148,7 @@ export const useAdminDashboardUI = () => {
    */
   const headerProps = useMemo(
     () => ({
-      user: user || { name: 'Administrador', email: 'admin@helpmed.com' },
+      user: user || { name: '', email: '' },
       visible: accessControl.hasAccess
     }),
     [user, accessControl.hasAccess]

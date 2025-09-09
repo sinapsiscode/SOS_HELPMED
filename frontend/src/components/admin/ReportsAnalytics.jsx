@@ -1,11 +1,13 @@
-// Sistema completo de reportes y analytics para administradores
+// ${LABELS.admin.reportsAnalytics.comments.title}
 
 import { useState, useEffect } from 'react'
+import { LABELS } from '../../config/labels'
 import useAppStore from '../../stores/useAppStore'
 import RevenueManagement from './RevenueManagement'
 import Swal from 'sweetalert2'
 
 const ReportsAnalytics = () => {
+  const labels = LABELS.admin.reportsAnalytics
   const { revenueSummary, transactions } = useAppStore()
   const [selectedReport, setSelectedReport] = useState('overview')
   const [startDate, setStartDate] = useState('')
@@ -72,7 +74,7 @@ const ReportsAnalytics = () => {
           
           <div class="no-print" style="text-align: center; margin: 20px 0;">
             <button onclick="window.print()" style="background: #d32f2f; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-              🖨️ Imprimir/Guardar como PDF
+${labels.printButton}
             </button>
             <button onclick="window.close()" style="background: #666; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px;">
               ❌ Cerrar
@@ -88,8 +90,8 @@ const ReportsAnalytics = () => {
     printWindow.document.close()
 
     Swal.fire({
-      title: 'PDF Preparado',
-      text: 'Se ha abierto una nueva ventana. Presiona Ctrl+P para imprimir o guardar como PDF',
+      title: labels.exportMessages.pdfReady.title,
+      text: labels.exportMessages.pdfReady.text,
       icon: 'info',
       timer: 3000,
       showConfirmButton: false
@@ -133,8 +135,8 @@ const ReportsAnalytics = () => {
     URL.revokeObjectURL(url)
 
     Swal.fire({
-      title: 'Excel Generado',
-      text: 'El archivo Excel ha sido descargado exitosamente',
+      title: labels.exportMessages.excelGenerated.title,
+      text: labels.exportMessages.excelGenerated.text,
       icon: 'success',
       timer: 2000,
       showConfirmButton: false
@@ -142,23 +144,14 @@ const ReportsAnalytics = () => {
   }
 
   const getReportTitle = () => {
-    const titles = {
-      'overview': 'Resumen General',
-      'users': 'Usuarios',
-      'services': 'Servicios',
-      'performance': 'Performance',
-      'geography': 'Geografía',
-      'finanzas': 'Finanzas',
-      'surveys': 'Encuestas de Calidad'
-    }
-    return titles[selectedReport] || 'Reporte'
+    return labels.reportTitles[selectedReport] || labels.reportTitles.default
   }
 
   const getDateRangeText = () => {
     if (startDate && endDate) {
       return `${new Date(startDate).toLocaleDateString('es-PE')} - ${new Date(endDate).toLocaleDateString('es-PE')}`
     }
-    return 'Seleccionar período'
+    return labels.dateRange.selectPeriod
   }
 
   const getReportData = () => {
@@ -166,33 +159,33 @@ const ReportsAnalytics = () => {
     const baseData = {
       overview: {
         metrics: [
-          { label: 'Total Usuarios', value: '2,847', change: '+12%' },
-          { label: 'Servicios Completados', value: '1,234', change: '+8%' },
-          { label: 'Ingresos Totales', value: 'S/ 45,680', change: '+15%' },
-          { label: 'Tiempo Promedio Respuesta', value: '8.5 min', change: '-5%' }
+          { label: labels.overview.metrics.totalUsers, value: '2,847', change: '+12%' },
+          { label: labels.overview.metrics.completedServices, value: '1,234', change: '+8%' },
+          { label: labels.overview.metrics.totalRevenue, value: 'S/ 45,680', change: '+15%' },
+          { label: labels.overview.metrics.avgResponseTime, value: '8.5 min', change: '-5%' }
         ],
         content: `
-          <h2>Métricas Principales</h2>
+          <h2>${labels.overview.mainMetrics}</h2>
           <div>
             <div class="metric-card">
               <div class="metric-value">2,847</div>
-              <div class="metric-label">Total Usuarios (+12%)</div>
+              <div class="metric-label">${labels.overview.metrics.totalUsers} (+12%)</div>
             </div>
             <div class="metric-card">
               <div class="metric-value">1,234</div>
-              <div class="metric-label">Servicios Completados (+8%)</div>
+              <div class="metric-label">${labels.overview.metrics.completedServices} (+8%)</div>
             </div>
             <div class="metric-card">
               <div class="metric-value">S/ 45,680</div>
-              <div class="metric-label">Ingresos Totales (+15%)</div>
+              <div class="metric-label">${labels.overview.metrics.totalRevenue} (+15%)</div>
             </div>
             <div class="metric-card">
               <div class="metric-value">8.5 min</div>
-              <div class="metric-label">Tiempo Promedio Respuesta (-5%)</div>
+              <div class="metric-label">${labels.overview.metrics.avgResponseTime} (-5%)</div>
             </div>
           </div>
           
-          <h2>Distribución de Usuarios por Plan</h2>
+          <h2>${labels.overview.userDistribution}</h2>
           <table>
             <tr><th>Plan</th><th>Usuarios</th><th>Porcentaje</th><th>Ingresos</th></tr>
             <tr><td>Plan Help</td><td>1,245</td><td>43.7%</td><td>S/ 15,680</td></tr>
@@ -225,7 +218,7 @@ const ReportsAnalytics = () => {
       },
       users: {
         content: `
-          <h2>Análisis de Usuarios</h2>
+          <h2>${labels.users.userAnalysis}</h2>
           <div>
             <div class="metric-card">
               <div class="metric-value">2,847</div>
@@ -241,7 +234,7 @@ const ReportsAnalytics = () => {
             </div>
           </div>
           
-          <h2>Usuarios por Tipo</h2>
+          <h2>${labels.users.usersByType}</h2>
           <table>
             <tr><th>Tipo</th><th>Cantidad</th><th>Porcentaje</th><th>Estado</th></tr>
             <tr><td>Familiares</td><td>2,156</td><td>75.7%</td><td class="status-active">Activo</td></tr>
@@ -251,7 +244,7 @@ const ReportsAnalytics = () => {
         `,
         tables: `
           <table>
-            <tr class="header"><td colspan="4">Análisis de Usuarios</td></tr>
+            <tr class="header"><td colspan="4">${labels.users.userAnalysis}</td></tr>
             <tr><th>Tipo</th><th>Cantidad</th><th>Porcentaje</th><th>Estado</th></tr>
             <tr><td>Familiares</td><td>2,156</td><td>75.7%</td><td>Activo</td></tr>
             <tr><td>Corporativos</td><td>468</td><td>16.4%</td><td>Activo</td></tr>
@@ -261,7 +254,7 @@ const ReportsAnalytics = () => {
       },
       services: {
         content: `
-          <h2>Análisis de Servicios</h2>
+          <h2>${labels.services.serviceAnalysis}</h2>
           <div>
             <div class="metric-card">
               <div class="metric-value">1,234</div>
@@ -277,7 +270,7 @@ const ReportsAnalytics = () => {
             </div>
           </div>
           
-          <h2>Servicios por Tipo</h2>
+          <h2>${labels.services.servicesByType}</h2>
           <table>
             <tr><th>Tipo de Servicio</th><th>Cantidad</th><th>Tiempo Promedio</th><th>Satisfacción</th></tr>
             <tr><td>Emergencias</td><td>567</td><td>7.2 min</td><td>4.8/5</td></tr>
@@ -288,7 +281,7 @@ const ReportsAnalytics = () => {
         `,
         tables: `
           <table>
-            <tr class="header"><td colspan="4">Análisis de Servicios</td></tr>
+            <tr class="header"><td colspan="4">${labels.services.serviceAnalysis}</td></tr>
             <tr><th>Tipo de Servicio</th><th>Cantidad</th><th>Tiempo Promedio</th><th>Satisfacción</th></tr>
             <tr><td>Emergencias</td><td>567</td><td>7.2 min</td><td>4.8/5</td></tr>
             <tr><td>Urgencias</td><td>445</td><td>12.4 min</td><td>4.6/5</td></tr>
@@ -330,11 +323,11 @@ const ReportsAnalytics = () => {
       {/* Header y Controles */}
       <div className="bg-white rounded-xl shadow-medium p-4 sm:p-6">
         <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between mb-6">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">Reportes y Analytics</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">{labels.header.title}</h1>
           <div className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-end sm:space-x-3">
             <div className="flex flex-col sm:flex-row sm:items-end space-y-2 sm:space-y-0 sm:space-x-3">
               <div className="flex flex-col">
-                <label className="text-xs text-gray-600 mb-1">Fecha de inicio</label>
+                <label className="text-xs text-gray-600 mb-1">{labels.dateFilters.startDateLabel}</label>
                 <input
                   type="date"
                   value={startDate}
@@ -343,7 +336,7 @@ const ReportsAnalytics = () => {
                 />
               </div>
               <div className="flex flex-col">
-                <label className="text-xs text-gray-600 mb-1">Fecha de fin</label>
+                <label className="text-xs text-gray-600 mb-1">{labels.dateFilters.endDateLabel}</label>
                 <input
                   type="date"
                   value={endDate}
@@ -361,7 +354,7 @@ const ReportsAnalytics = () => {
                 }}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm transition-colors whitespace-nowrap"
               >
-                Últimos 30 días
+                {labels.dateFilters.last30Days}
               </button>
             </div>
             
@@ -370,13 +363,13 @@ const ReportsAnalytics = () => {
                 onClick={() => handleExportReport('pdf')}
                 className="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm flex items-center justify-center flex-1 sm:flex-none"
               >
-                <i className="fas fa-file-pdf mr-1 sm:mr-2"></i>PDF
+                <i className="fas fa-file-pdf mr-1 sm:mr-2"></i>{labels.exportButtons.pdf}
               </button>
               <button
                 onClick={() => handleExportReport('excel')}
                 className="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded-lg transition-colors text-sm flex items-center justify-center flex-1 sm:flex-none"
               >
-                <i className="fas fa-file-excel mr-1 sm:mr-2"></i>Excel
+                <i className="fas fa-file-excel mr-1 sm:mr-2"></i>{labels.exportButtons.excel}
               </button>
             </div>
           </div>
@@ -384,15 +377,7 @@ const ReportsAnalytics = () => {
 
         {/* Navigation Tabs */}
         <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 overflow-x-auto scrollbar-hide">
-          {[
-            { id: 'overview', label: 'Resumen General', icon: 'fas fa-chart-pie', short: 'Resumen' },
-            { id: 'users', label: 'Usuarios', icon: 'fas fa-users', short: 'Usuarios' },
-            { id: 'services', label: 'Servicios', icon: 'fas fa-ambulance', short: 'Servicios' },
-            { id: 'performance', label: 'Performance', icon: 'fas fa-tachometer-alt', short: 'Performance' },
-            { id: 'geography', label: 'Geografía', icon: 'fas fa-map-marked-alt', short: 'Geografía' },
-            { id: 'finanzas', label: 'Finanzas', icon: 'fas fa-coins', short: 'Finanzas' },
-            { id: 'surveys', label: 'Encuestas de Calidad', icon: 'fas fa-poll', short: 'Encuestas' }
-          ].map((tab) => (
+          {labels.tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setSelectedReport(tab.id)}
@@ -467,28 +452,28 @@ const OverviewReport = ({ dateRange, revenueSummary }) => {
       {/* KPIs Principales */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <KPICard
-          title="Total Usuarios"
+          title={labels.cards.totalUsers}
           value={metrics.totalUsers.toLocaleString()}
           change=""
           icon="fas fa-users"
           color="blue"
         />
         <KPICard
-          title="Emergencias Activas"
+          title={labels.cards.activeEmergencies}
           value={metrics.activeEmergencies.toString()}
           change=""
           icon="fas fa-exclamation-triangle"
           color="red"
         />
         <KPICard
-          title="Ingresos Totales"
+          title={labels.cards.totalRevenue}
           value={`S/ ${metrics.revenue.toLocaleString()}`}
           change=""
           icon="fas fa-dollar-sign"
           color="purple"
         />
         <KPICard
-          title="Satisfacción Cliente"
+          title={labels.cards.clientSatisfaction}
           value={metrics.satisfaction > 0 ? `${metrics.satisfaction} ⭐` : 'Sin datos'}
           change=""
           icon="fas fa-star"
@@ -540,7 +525,7 @@ const UsersReport = ({ dateRange, filterType }) => {
       {/* Filtros adicionales */}
       <div className="bg-white rounded-xl shadow-medium p-6">
         <div className="flex items-center space-x-4 mb-4">
-          <h3 className="text-lg font-bold text-gray-800">Filtros de Usuario</h3>
+          <h3 className="text-lg font-bold text-gray-800">{labels.userFilters.title}</h3>
           <select
             value={filterType}
             onChange={(e) => setFilterType(e.target.value)}
@@ -648,7 +633,7 @@ const ServicesReport = ({ dateRange }) => {
       {/* ✅ MÉTRICAS DE SERVICIOS REALES */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <ServiceMetricCard
-          title="Emergencias"
+          title={labels.cards.emergencies}
           total={serviceMetrics.emergencias?.total || 0}
           completed={serviceMetrics.emergencias?.completed || 0}
           inProgress={serviceMetrics.emergencias?.inProgress || 0}
@@ -656,7 +641,7 @@ const ServicesReport = ({ dateRange }) => {
           color="red"
         />
         <ServiceMetricCard
-          title="Médico a Domicilio"
+          title={labels.cards.homeService}
           total={serviceMetrics.domicilio?.total || 0}
           completed={serviceMetrics.domicilio?.completed || 0}
           inProgress={serviceMetrics.domicilio?.inProgress || 0}
@@ -664,7 +649,7 @@ const ServicesReport = ({ dateRange }) => {
           color="blue"
         />
         <ServiceMetricCard
-          title="Urgencias"
+          title={labels.cards.urgencies}
           total={serviceMetrics.urgencias?.total || 0}
           completed={serviceMetrics.urgencias?.completed || 0}
           inProgress={serviceMetrics.urgencias?.inProgress || 0}
@@ -672,7 +657,7 @@ const ServicesReport = ({ dateRange }) => {
           color="orange"
         />
         <ServiceMetricCard
-          title="Traslados"
+          title={labels.cards.transfers}
           total={serviceMetrics.traslados?.total || 0}
           completed={serviceMetrics.traslados?.completed || 0}
           inProgress={serviceMetrics.traslados?.inProgress || 0}
@@ -789,21 +774,21 @@ const PerformanceReport = ({ dateRange }) => {
       {/* Métricas de rendimiento */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <PerformanceMetric
-          title="Tiempo Respuesta"
+          title={labels.performance.responseTime}
           value={responseTime.value}
           target="< 10 min"
           status={responseTime.status}
           subtitle={responseTime.count ? `Basado en ${responseTime.count} servicios` : 'Sin datos disponibles'}
         />
         <PerformanceMetric
-          title="Disponibilidad Unidades"
+          title={labels.performance.unitAvailability}
           value={unitUtilization.value}
           target="> 90%"
           status={unitUtilization.status}
           subtitle={`${unitUtilization.activeUnits}/${unitUtilization.totalUnits} unidades activas`}
         />
         <PerformanceMetric
-          title="Satisfacción"
+          title={labels.performance.satisfaction}
           value={satisfaction.value}
           target="> 90%"
           status={satisfaction.status}
@@ -874,7 +859,7 @@ const GeographyReport = ({ dateRange }) => {
       <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-white">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Análisis Geográfico</h2>
+            <h2 className="text-2xl font-bold mb-2">{labels.geography.geographicAnalysis}</h2>
             <p className="text-blue-100 text-sm">
               Distribución de servicios y cobertura por zonas de Lima Metropolitana
             </p>
@@ -972,7 +957,7 @@ const GeographyReport = ({ dateRange }) => {
               <i className="fas fa-chart-line text-blue-600"></i>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">Resumen Ejecutivo</h3>
+              <h3 className="text-lg font-semibold text-gray-900">{labels.geography.executiveSummary}</h3>
               <p className="text-sm text-gray-600">Principales métricas y tendencias geográficas</p>
             </div>
           </div>
@@ -980,21 +965,21 @@ const GeographyReport = ({ dateRange }) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-green-50 to-green-100 rounded-lg border border-green-200">
               <i className="fas fa-trophy text-green-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-green-800 text-sm sm:text-base">Distrito Líder</h4>
+              <h4 className="font-semibold text-green-800 text-sm sm:text-base">{labels.geography.leaderDistrict}</h4>
               <p className="text-xs sm:text-sm text-green-700">Surco con {Math.floor(kpis.totalUsers * 0.18)} usuarios</p>
               <p className="text-xs text-green-600 mt-1">18% del total</p>
             </div>
             
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-blue-50 to-blue-100 rounded-lg border border-blue-200">
               <i className="fas fa-zap text-blue-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-blue-800 text-sm sm:text-base">Respuesta Más Rápida</h4>
+              <h4 className="font-semibold text-blue-800 text-sm sm:text-base">{labels.geography.fastestResponse}</h4>
               <p className="text-xs sm:text-sm text-blue-700">Miraflores: 7 min promedio</p>
               <p className="text-xs text-blue-600 mt-1">25% bajo objetivo</p>
             </div>
             
             <div className="text-center p-3 sm:p-4 bg-gradient-to-b from-purple-50 to-purple-100 rounded-lg border border-purple-200">
               <i className="fas fa-bullseye text-purple-600 text-xl sm:text-2xl mb-2"></i>
-              <h4 className="font-semibold text-purple-800 text-sm sm:text-base">Oportunidad</h4>
+              <h4 className="font-semibold text-purple-800 text-sm sm:text-base">{labels.geography.opportunity}</h4>
               <p className="text-xs sm:text-sm text-purple-700">Callao necesita refuerzo</p>
               <p className="text-xs text-purple-600 mt-1">18 min promedio</p>
             </div>
@@ -1056,23 +1041,23 @@ const ServicesTrendChart = ({ dateRange }) => {
   return (
     <div className="bg-white rounded-xl shadow-medium p-6">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-bold text-gray-800">Tendencia de Servicios</h3>
+        <h3 className="text-lg font-bold text-gray-800">{labels.performance.serviceTrends}</h3>
         <div className="flex items-center space-x-4 text-xs">
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span>Emergencias</span>
+            <span>{labels.performance.serviceTypes.emergencies}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-            <span>Urgencias</span>
+            <span>{labels.performance.serviceTypes.urgencies}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-            <span>Domicilio</span>
+            <span>{labels.performance.serviceTypes.home}</span>
           </div>
           <div className="flex items-center space-x-1">
             <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            <span>Traslados</span>
+            <span>{labels.performance.serviceTypes.transfers}</span>
           </div>
         </div>
       </div>
@@ -2536,10 +2521,10 @@ const UnifiedDistrictAnalysis = ({ dateRange }) => {
           </p>
         </div>
         <div className="flex items-center space-x-2 flex-shrink-0">
-          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Descargar">
+          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title={LABELS.admin.reports.tooltips.download}>
             <i className="fas fa-download text-sm sm:text-base"></i>
           </button>
-          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Expandir">
+          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title={LABELS.admin.reports.tooltips.expand}
             <i className="fas fa-expand text-sm sm:text-base"></i>
           </button>
         </div>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { LABELS } from '../../config/labels'
 import Swal from 'sweetalert2'
 import PaymentMethodsConfig from './PaymentMethodsConfig'
 
 const SystemConfiguration = () => {
+  const labels = LABELS.admin.systemConfiguration
   const [activeSection, setActiveSection] = useState('alerts') // 'alerts' o 'payments'
   const [emailNotifications, setEmailNotifications] = useState(true)
   const [smsNotifications, setSmsNotifications] = useState(true)
@@ -23,8 +25,8 @@ const SystemConfiguration = () => {
   const handleSaveAlerts = (type) => {
     Swal.fire({
       icon: 'success',
-      title: 'Guardado',
-      text: `Configuración de ${type} actualizada correctamente`,
+      title: labels.save.title,
+      text: labels.save.message.replace('{type}', type),
       timer: 2000,
       showConfirmButton: false
     })
@@ -36,8 +38,8 @@ const SystemConfiguration = () => {
       familiar: '1 servicio familiar restante para 3 clientes'
     }
     Swal.fire({
-      title: 'Vista Previa de Alerta',
-      text: alerts[view] || 'Vista previa de la alerta seleccionada',
+      title: labels.preview.title,
+      text: alerts[view] || labels.preview.defaultMessage,
       icon: 'info',
       confirmButtonColor: '#3b82f6'
     })
@@ -47,8 +49,8 @@ const SystemConfiguration = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Configuración del Sistema</h2>
-        <p className="text-sm text-gray-600">Configura alertas, notificaciones y métodos de pago</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">{labels.header.title}</h2>
+        <p className="text-sm text-gray-600">{labels.header.subtitle}</p>
         
         {/* Tabs de navegación */}
         <div className="flex space-x-4 mt-6 border-b">
@@ -61,7 +63,7 @@ const SystemConfiguration = () => {
             }`}
           >
             <i className="fas fa-bell mr-2"></i>
-            Alertas y Notificaciones
+            {labels.tabs.alerts}
           </button>
           <button
             onClick={() => setActiveSection('payments')}
@@ -72,7 +74,7 @@ const SystemConfiguration = () => {
             }`}
           >
             <i className="fas fa-credit-card mr-2"></i>
-            Métodos de Pago
+            {labels.tabs.payments}
           </button>
         </div>
       </div>
@@ -85,26 +87,26 @@ const SystemConfiguration = () => {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center mb-4">
           <div className="w-2 h-6 bg-orange-500 rounded-full mr-3"></div>
-          <h3 className="text-lg font-semibold text-gray-800">Alertas de Servicios Agotándose</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{labels.serviceAlerts.title}</h3>
         </div>
 
         {/* Clientes Corporativos */}
         <div className="bg-purple-50 rounded-lg p-4 mb-4">
           <div className="flex items-center mb-3">
             <i className="fas fa-building text-purple-600 mr-2"></i>
-            <h4 className="font-medium text-gray-800">Clientes Corporativos</h4>
+            <h4 className="font-medium text-gray-800">{labels.serviceAlerts.corporateClients}</h4>
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <label className="text-sm text-gray-600">Umbral de Alerta (servicios restantes)</label>
+              <label className="text-sm text-gray-600">{labels.serviceAlerts.thresholdLabel}</label>
               <input
                 type="number"
                 value={corporateAlerts.clients}
                 onChange={(e) => setCorporateAlerts({...corporateAlerts, clients: e.target.value})}
                 className="w-16 px-2 py-1 border rounded text-center"
               />
-              <span className="text-sm text-gray-500">servicios</span>
+              <span className="text-sm text-gray-500">{labels.serviceAlerts.servicesUnit}</span>
             </div>
             <button
               onClick={() => handleViewAlert('corporate')}
@@ -129,19 +131,19 @@ const SystemConfiguration = () => {
         <div className="bg-blue-50 rounded-lg p-4">
           <div className="flex items-center mb-3">
             <i className="fas fa-home text-blue-600 mr-2"></i>
-            <h4 className="font-medium text-gray-800">Clientes Familiares</h4>
+            <h4 className="font-medium text-gray-800">{labels.serviceAlerts.familiarClients}</h4>
           </div>
           
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <label className="text-sm text-gray-600">Umbral de Alerta (servicios restantes)</label>
+              <label className="text-sm text-gray-600">{labels.serviceAlerts.thresholdLabel}</label>
               <input
                 type="number"
                 value={corporateAlerts.familiarClients}
                 onChange={(e) => setCorporateAlerts({...corporateAlerts, familiarClients: e.target.value})}
                 className="w-16 px-2 py-1 border rounded text-center"
               />
-              <span className="text-sm text-gray-500">servicios</span>
+              <span className="text-sm text-gray-500">{labels.serviceAlerts.servicesUnit}</span>
             </div>
             <button
               onClick={() => handleViewAlert('familiar')}
@@ -167,25 +169,25 @@ const SystemConfiguration = () => {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center mb-4">
           <div className="w-2 h-6 bg-blue-500 rounded-full mr-3"></div>
-          <h3 className="text-lg font-semibold text-gray-800">Alertas de Vencimiento de Contratos</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{labels.contractAlerts.title}</h3>
         </div>
 
         <div className="bg-green-50 rounded-lg p-4">
           <div className="flex items-center mb-3">
             <i className="fas fa-file-contract text-green-600 mr-2"></i>
-            <h4 className="font-medium text-gray-800">Contratos Corporativos</h4>
+            <h4 className="font-medium text-gray-800">{labels.contractAlerts.corporateContracts}</h4>
           </div>
           
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
-              <label className="text-sm text-gray-600">Días antes del vencimiento para alertar</label>
+              <label className="text-sm text-gray-600">{labels.contractAlerts.daysBeforeLabel}</label>
               <input
                 type="number"
                 value={corporateAlerts.contractDays}
                 onChange={(e) => setCorporateAlerts({...corporateAlerts, contractDays: e.target.value})}
                 className="w-16 px-2 py-1 border rounded text-center"
               />
-              <span className="text-sm text-gray-500">días</span>
+              <span className="text-sm text-gray-500">{labels.contractAlerts.daysUnit}</span>
             </div>
             <button
               onClick={() => handleSaveAlerts('contratos')}
@@ -269,7 +271,7 @@ const SystemConfiguration = () => {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center mb-4">
           <i className="fas fa-bell text-blue-500 mr-3"></i>
-          <h3 className="text-lg font-semibold text-gray-800">Configuración de Notificaciones</h3>
+          <h3 className="text-lg font-semibold text-gray-800">{labels.notifications.title}</h3>
         </div>
 
         <div className="space-y-4">

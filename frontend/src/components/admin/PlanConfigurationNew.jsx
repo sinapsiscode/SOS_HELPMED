@@ -1,34 +1,36 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
+import { LABELS } from '../../config/labels'
 
 const PlanConfigurationNew = () => {
+  const labels = LABELS.admin.planConfiguration
   const [plans] = useState({
     familiar: [
       {
         id: 'help',
-        name: 'Plan Help',
-        description: 'Plan básico de emergencias médicas',
+        name: labels.plans.help.name,
+        description: labels.plans.help.description,
         price: 650,
         characteristics: 2,
         activated: '2024-01-15',
-        status: 'Activo',
+        status: labels.status.active,
         limits: {
-          emergencias: 'ILIMITADO',
+          emergencias: labels.values.unlimited,
           medicosDom: 8,
-          urgencias: 'ILIMITADO',
+          urgencias: labels.values.unlimited,
           traslados: 6
         }
       },
       {
         id: 'basico',
-        name: 'Plan Básico',
-        description: 'Plan familiar con servicios esenciales',
+        name: labels.plans.basic.name,
+        description: labels.plans.basic.description,
         price: 1500,
         characteristics: 2,
         activated: '2024-01-10',
-        status: 'Activo',
+        status: labels.status.active,
         limits: {
-          emergencias: 'ILIMITADO',
+          emergencias: labels.values.unlimited,
           medicosDom: 2,
           urgencias: 3,
           traslados: 1
@@ -36,14 +38,14 @@ const PlanConfigurationNew = () => {
       },
       {
         id: 'vip',
-        name: 'Plan VIP',
-        description: 'Plan premium con beneficios adicionales',
+        name: labels.plans.vip.name,
+        description: labels.plans.vip.description,
         price: 2800,
         characteristics: 4,
         activated: '2024-01-12',
-        status: 'Activo',
+        status: labels.status.active,
         limits: {
-          emergencias: 'ILIMITADO',
+          emergencias: labels.values.unlimited,
           medicosDom: 4,
           urgencias: 5,
           traslados: 3
@@ -51,14 +53,14 @@ const PlanConfigurationNew = () => {
       },
       {
         id: 'dorado',
-        name: 'Plan Dorado',
-        description: 'Plan de lujo con todos los beneficios',
+        name: labels.plans.gold.name,
+        description: labels.plans.gold.description,
         price: 4100,
         characteristics: 5,
         activated: '2024-01-08',
-        status: 'Activo',
+        status: labels.status.active,
         limits: {
-          emergencias: 'ILIMITADO',
+          emergencias: labels.values.unlimited,
           medicosDom: 6,
           urgencias: 10,
           traslados: 4
@@ -71,34 +73,34 @@ const PlanConfigurationNew = () => {
 
   const handleAddPlan = () => {
     Swal.fire({
-      title: 'Agregar Nuevo Plan',
+      title: labels.modals.addPlan.title,
       html: `
         <div class="text-left space-y-3">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Plan</label>
-            <input id="plan-name" class="w-full px-3 py-2 border rounded-lg" placeholder="Ej: Plan Premium">
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.addPlan.fields.planName}</label>
+            <input id="plan-name" class="w-full px-3 py-2 border rounded-lg" placeholder="${labels.modals.addPlan.placeholders.planName}">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
-            <textarea id="plan-desc" class="w-full px-3 py-2 border rounded-lg" rows="2" placeholder="Descripción del plan"></textarea>
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.addPlan.fields.description}</label>
+            <textarea id="plan-desc" class="w-full px-3 py-2 border rounded-lg" rows="2" placeholder="${labels.modals.addPlan.placeholders.description}"></textarea>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Precio Mensual (S/)</label>
-            <input id="plan-price" type="number" class="w-full px-3 py-2 border rounded-lg" placeholder="0.00">
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.addPlan.fields.monthlyPrice}</label>
+            <input id="plan-price" type="number" class="w-full px-3 py-2 border rounded-lg" placeholder="${labels.modals.addPlan.placeholders.price}">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de Plan</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.addPlan.fields.planType}</label>
             <select id="plan-type" class="w-full px-3 py-2 border rounded-lg">
-              <option value="familiar">Familiar</option>
-              <option value="corporativo">Corporativo</option>
-              <option value="externo">Externo</option>
+              <option value="familiar">${labels.modals.addPlan.options.familiar}</option>
+              <option value="corporativo">${labels.modals.addPlan.options.corporate}</option>
+              <option value="externo">${labels.modals.addPlan.options.external}</option>
             </select>
           </div>
         </div>
       `,
       showCancelButton: true,
-      confirmButtonText: 'Crear Plan',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.modals.addPlan.buttons.create,
+      cancelButtonText: labels.modals.addPlan.buttons.cancel,
       confirmButtonColor: '#3b82f6',
       width: '500px'
     })
@@ -107,8 +109,8 @@ const PlanConfigurationNew = () => {
   const handleExport = () => {
     Swal.fire({
       icon: 'success',
-      title: 'Exportando',
-      text: 'Los planes se están exportando a Excel...',
+      title: labels.modals.export.title,
+      text: labels.modals.export.message,
       timer: 2000,
       showConfirmButton: false
     })
@@ -116,34 +118,34 @@ const PlanConfigurationNew = () => {
 
   const handleEditPlan = (plan) => {
     Swal.fire({
-      title: `Editar ${plan.name}`,
+      title: labels.modals.editPlan.title.replace('{planName}', plan.name),
       html: `
         <div class="text-left space-y-3">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Nombre del Plan</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.editPlan.fields.planName}</label>
             <input id="plan-name" class="w-full px-3 py-2 border rounded-lg" value="${plan.name}">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Precio Mensual (S/)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.editPlan.fields.monthlyPrice}</label>
             <input id="plan-price" type="number" class="w-full px-3 py-2 border rounded-lg" value="${plan.price}">
           </div>
           <div class="border-t pt-3">
-            <h4 class="font-medium text-gray-700 mb-2">Límites del Plan</h4>
+            <h4 class="font-medium text-gray-700 mb-2">${labels.modals.editPlan.fields.planLimits}</h4>
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="text-xs text-gray-600">Emergencias</label>
+                <label class="text-xs text-gray-600">${labels.modals.editPlan.fields.emergencies}</label>
                 <input class="w-full px-2 py-1 border rounded text-sm" value="${plan.limits.emergencias}">
               </div>
               <div>
-                <label class="text-xs text-gray-600">Médico Dom.</label>
+                <label class="text-xs text-gray-600">${labels.modals.editPlan.fields.medicalDom}</label>
                 <input class="w-full px-2 py-1 border rounded text-sm" value="${plan.limits.medicosDom}">
               </div>
               <div>
-                <label class="text-xs text-gray-600">Urgencias</label>
+                <label class="text-xs text-gray-600">${labels.modals.editPlan.fields.urgencies}</label>
                 <input class="w-full px-2 py-1 border rounded text-sm" value="${plan.limits.urgencias}">
               </div>
               <div>
-                <label class="text-xs text-gray-600">Traslados</label>
+                <label class="text-xs text-gray-600">${labels.modals.editPlan.fields.transfers}</label>
                 <input class="w-full px-2 py-1 border rounded text-sm" value="${plan.limits.traslados}">
               </div>
             </div>
@@ -151,8 +153,8 @@ const PlanConfigurationNew = () => {
         </div>
       `,
       showCancelButton: true,
-      confirmButtonText: 'Guardar Cambios',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.modals.editPlan.buttons.save,
+      cancelButtonText: labels.modals.editPlan.buttons.cancel,
       confirmButtonColor: '#3b82f6',
       width: '500px'
     })
@@ -160,24 +162,24 @@ const PlanConfigurationNew = () => {
 
   const handlePausePlan = (plan) => {
     Swal.fire({
-      title: '¿Pausar plan?',
-      text: `¿Deseas pausar el ${plan.name}? Los usuarios no podrán suscribirse mientras esté pausado.`,
+      title: labels.modals.pausePlan.title,
+      text: labels.modals.pausePlan.message.replace('{planName}', plan.name),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, pausar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.modals.pausePlan.buttons.confirm,
+      cancelButtonText: labels.modals.pausePlan.buttons.cancel,
       confirmButtonColor: '#ef4444'
     })
   }
 
   const handleDeletePlan = (plan) => {
     Swal.fire({
-      title: '¿Eliminar plan?',
-      text: `¿Estás seguro de eliminar el ${plan.name}? Esta acción no se puede deshacer.`,
+      title: labels.modals.deletePlan.title,
+      text: labels.modals.deletePlan.message.replace('{planName}', plan.name),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.modals.deletePlan.buttons.confirm,
+      cancelButtonText: labels.modals.deletePlan.buttons.cancel,
       confirmButtonColor: '#dc2626'
     })
   }
@@ -187,28 +189,28 @@ const PlanConfigurationNew = () => {
       {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Configuración de Planes</h2>
+          <h2 className="text-2xl font-bold text-gray-800">{labels.title}</h2>
           <div className="flex gap-2">
             <button
               onClick={handleAddPlan}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
             >
               <i className="fas fa-dollar-sign"></i>
-              Precios Adicionales
+              {labels.buttons.additionalPrices}
             </button>
             <button
               onClick={handleExport}
               className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
             >
               <i className="fas fa-file-export"></i>
-              Exportar
+              {labels.buttons.export}
             </button>
             <button
               onClick={handleAddPlan}
               className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-medium flex items-center gap-2"
             >
               <i className="fas fa-plus"></i>
-              Nuevo Plan
+              {labels.buttons.newPlan}
             </button>
           </div>
         </div>
@@ -217,22 +219,22 @@ const PlanConfigurationNew = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div className="bg-blue-50 rounded-lg p-4 text-center">
             <div className="text-3xl font-bold text-blue-600">8</div>
-            <div className="text-sm text-gray-600 mt-1">Total Planes</div>
+            <div className="text-sm text-gray-600 mt-1">{labels.counters.totalPlans}</div>
             <i className="fas fa-list text-blue-400 text-xl mt-2"></i>
           </div>
           <div className="bg-green-50 rounded-lg p-4 text-center">
             <div className="text-3xl font-bold text-green-600">4</div>
-            <div className="text-sm text-gray-600 mt-1">Familiares</div>
+            <div className="text-sm text-gray-600 mt-1">{labels.counters.familiar}</div>
             <i className="fas fa-users text-green-400 text-xl mt-2"></i>
           </div>
           <div className="bg-purple-50 rounded-lg p-4 text-center">
             <div className="text-3xl font-bold text-purple-600">2</div>
-            <div className="text-sm text-gray-600 mt-1">Corporativos</div>
+            <div className="text-sm text-gray-600 mt-1">{labels.counters.corporate}</div>
             <i className="fas fa-building text-purple-400 text-xl mt-2"></i>
           </div>
           <div className="bg-orange-50 rounded-lg p-4 text-center">
             <div className="text-3xl font-bold text-orange-600">2</div>
-            <div className="text-sm text-gray-600 mt-1">Externos</div>
+            <div className="text-sm text-gray-600 mt-1">{labels.counters.external}</div>
             <i className="fas fa-handshake text-orange-400 text-xl mt-2"></i>
           </div>
         </div>
@@ -242,11 +244,11 @@ const PlanConfigurationNew = () => {
       <div className="bg-white rounded-xl shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-800">
-            Planes Familiares ({plans.familiar.length})
+            {labels.subtitle} ({plans.familiar.length})
           </h3>
           <button className="text-sm text-blue-600 hover:text-blue-700">
             <i className="fas fa-users mr-1"></i>
-            Planes Familiares
+            {labels.subtitle}
           </button>
         </div>
 
@@ -265,42 +267,42 @@ const PlanConfigurationNew = () => {
 
               <div className="space-y-2 text-sm">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Precio:</span>
+                  <span className="text-gray-600">{labels.fields.price}</span>
                   <span className="font-bold text-lg text-gray-900">
-                    S/ {plan.price.toLocaleString()}/año
+                    {labels.formats.currency} {plan.price.toLocaleString()}{labels.formats.year}
                   </span>
                 </div>
                 <div className="text-xs text-gray-500 text-right">
-                  S/ {Math.round(plan.price/12)}/mes
+                  {labels.formats.currency} {Math.round(plan.price/12)}{labels.formats.month}
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-gray-600">Características:</span>
+                  <span className="text-gray-600">{labels.fields.characteristics}</span>
                   <span className="font-medium">{plan.characteristics}</span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Actualizado:</span>
+                  <span className="text-gray-600">{labels.fields.updated}</span>
                   <span className="text-gray-700">{plan.activated}</span>
                 </div>
 
                 <div className="border-t pt-3 mt-3">
-                  <div className="text-xs font-medium text-gray-700 mb-2">Límites Principales:</div>
+                  <div className="text-xs font-medium text-gray-700 mb-2">{labels.fields.mainLimits}</div>
                   <div className="grid grid-cols-2 gap-1 text-xs">
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Emergencias:</span>
+                      <span className="text-gray-600">{labels.fields.emergencies}</span>
                       <span className="font-medium">{plan.limits.emergencias}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Urgencias:</span>
+                      <span className="text-gray-600">{labels.fields.urgencies}</span>
                       <span className="font-medium">{plan.limits.urgencias}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Médico Dom:</span>
+                      <span className="text-gray-600">{labels.fields.medicalDom}</span>
                       <span className="font-medium">{plan.limits.medicosDom}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Traslados:</span>
+                      <span className="text-gray-600">{labels.fields.transfers}</span>
                       <span className="font-medium">{plan.limits.traslados}</span>
                     </div>
                   </div>
@@ -313,14 +315,14 @@ const PlanConfigurationNew = () => {
                   className="flex-1 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm font-medium flex items-center justify-center gap-1"
                 >
                   <i className="fas fa-edit text-xs"></i>
-                  Editar
+                  {labels.buttons.edit}
                 </button>
                 <button
                   onClick={() => handlePausePlan(plan)}
                   className="flex-1 px-3 py-1.5 bg-yellow-600 hover:bg-yellow-700 text-white rounded text-sm font-medium flex items-center justify-center gap-1"
                 >
                   <i className="fas fa-pause text-xs"></i>
-                  Pausar
+                  {labels.buttons.pause}
                 </button>
                 <button
                   onClick={() => handleDeletePlan(plan)}

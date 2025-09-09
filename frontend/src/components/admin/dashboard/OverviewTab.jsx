@@ -18,7 +18,8 @@ const OverviewTab = ({ onTabChange }) => {
   const { stats, loading, error, refreshStats } = useAdminStats()
 
   if (loading) return <LoadingSkeleton />
-  if (error) return <ErrorMessage message={error} onRetry={refreshStats} />
+  // Comentado: No mostrar errores, siempre cargar la estructura
+  // if (error) return <ErrorMessage message={error} onRetry={refreshStats} />
 
   const statsConfig = [
     {

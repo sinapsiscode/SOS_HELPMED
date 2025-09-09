@@ -78,7 +78,7 @@ const BillingInfo = ({ user, additionalServices = [] }) => {
 
 BillingInfo.propTypes = {
   user: PropTypes.shape({
-    id: PropTypes.string,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     role: PropTypes.string.isRequired,
     billing: PropTypes.shape({
       monthly_cost: PropTypes.number.isRequired,

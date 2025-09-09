@@ -1,15 +1,5 @@
 import { create } from 'zustand'
-import { authenticateUser, getSystemStats } from '../mockdata/index.js'
-import {
-  FAMILIAR_USERS,
-  CORPORATE_USERS,
-  EXTERNAL_USERS,
-  EXTERNAL_ADMIN_USERS,
-  ADMIN_USERS,
-  AMBULANCE_USERS,
-  SYSTEM_METRICS,
-  SYSTEM_ALERTS
-} from '../mockdata/index.js'
+import apiService from '../services/api'
 
 const useAppStore = create((set, get) => {
   const store = {
@@ -32,7 +22,7 @@ const useAppStore = create((set, get) => {
     pendingSurveys: [],
 
     // ========== USUARIOS AMBULANCIA ==========
-    ambulanceUsers: AMBULANCE_USERS,
+    ambulanceUsers: [],
 
     // ========== ESTADO DE EMERGENCIAS ==========
     currentEmergency: null,
@@ -42,113 +32,7 @@ const useAppStore = create((set, get) => {
     trackingInterval: null,
     sosTimer: null,
     estimatedArrivalTime: null, // Tiempo estimado de llegada (manual por admin)
-    activeEmergencies: [
-      // Mock data de emergencias completadas para análisis de tiempos de respuesta
-      {
-        id: 'emg_001',
-        user_id: 'fam_001',
-        type: 'sos',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 86400000 * 2).toISOString(), // Hace 2 días
-        requestTime: new Date(Date.now() - 86400000 * 2).toISOString(),
-        assignmentTime: new Date(Date.now() - 86400000 * 2 + 240000).toISOString(), // 4 min después
-        completionTime: new Date(Date.now() - 86400000 * 2 + 1800000).toISOString(), // 30 min después
-        responseTimeMinutes: 4,
-        location: { address: 'Av. Larco 1500, Miraflores' },
-        assignedUnit: { id: 'AMB-001', name: 'Ambulancia 001' }
-      },
-      {
-        id: 'emg_002',
-        user_id: 'corp_001',
-        type: 'medical',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 86400000 * 1).toISOString(), // Hace 1 día
-        requestTime: new Date(Date.now() - 86400000 * 1).toISOString(),
-        assignmentTime: new Date(Date.now() - 86400000 * 1 + 420000).toISOString(), // 7 min después
-        completionTime: new Date(Date.now() - 86400000 * 1 + 2400000).toISOString(), // 40 min después
-        responseTimeMinutes: 7,
-        location: { address: 'Av. Industrial 1500, Callao' },
-        assignedUnit: { id: 'AMB-002', name: 'Ambulancia 002' }
-      },
-      {
-        id: 'emg_003',
-        user_id: 'fam_002',
-        type: 'urgency',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 86400000 * 1).toISOString(),
-        requestTime: new Date(Date.now() - 86400000 * 1).toISOString(),
-        assignmentTime: new Date(Date.now() - 86400000 * 1 + 660000).toISOString(), // 11 min después
-        completionTime: new Date(Date.now() - 86400000 * 1 + 3000000).toISOString(), // 50 min después
-        responseTimeMinutes: 11,
-        location: { address: 'Av. Javier Prado 2000, San Isidro' },
-        assignedUnit: { id: 'AMB-001', name: 'Ambulancia 001' }
-      },
-      {
-        id: 'emg_004',
-        user_id: 'corp_002',
-        type: 'medical',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 43200000).toISOString(), // Hace 12 horas
-        requestTime: new Date(Date.now() - 43200000).toISOString(),
-        assignmentTime: new Date(Date.now() - 43200000 + 300000).toISOString(), // 5 min después
-        completionTime: new Date(Date.now() - 43200000 + 1800000).toISOString(), // 30 min después
-        responseTimeMinutes: 5,
-        location: { address: 'Av. Arequipa 1800, Lince' },
-        assignedUnit: { id: 'MED-003', name: 'Unidad Médica 003' }
-      },
-      {
-        id: 'emg_005',
-        user_id: 'fam_003',
-        type: 'sos',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 21600000).toISOString(), // Hace 6 horas
-        requestTime: new Date(Date.now() - 21600000).toISOString(),
-        assignmentTime: new Date(Date.now() - 21600000 + 180000).toISOString(), // 3 min después
-        completionTime: new Date(Date.now() - 21600000 + 1500000).toISOString(), // 25 min después
-        responseTimeMinutes: 3,
-        location: { address: 'Av. Benavides 3500, Surco' },
-        assignedUnit: { id: 'AMB-002', name: 'Ambulancia 002' }
-      },
-      {
-        id: 'emg_006',
-        user_id: 'corp_001',
-        type: 'urgency',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 10800000).toISOString(), // Hace 3 horas
-        requestTime: new Date(Date.now() - 10800000).toISOString(),
-        assignmentTime: new Date(Date.now() - 10800000 + 900000).toISOString(), // 15 min después
-        completionTime: new Date(Date.now() - 10800000 + 2700000).toISOString(), // 45 min después
-        responseTimeMinutes: 15,
-        location: { address: 'Plaza de Armas 100, Lima Centro' },
-        assignedUnit: { id: 'AMB-001', name: 'Ambulancia 001' }
-      },
-      {
-        id: 'emg_007',
-        user_id: 'fam_001',
-        type: 'medical',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 7200000).toISOString(), // Hace 2 horas
-        requestTime: new Date(Date.now() - 7200000).toISOString(),
-        assignmentTime: new Date(Date.now() - 7200000 + 540000).toISOString(), // 9 min después
-        completionTime: new Date(Date.now() - 7200000 + 2100000).toISOString(), // 35 min después
-        responseTimeMinutes: 9,
-        location: { address: 'Av. La Marina 2000, San Miguel' },
-        assignedUnit: { id: 'MED-003', name: 'Unidad Médica 003' }
-      },
-      {
-        id: 'emg_008',
-        user_id: 'fam_002',
-        type: 'sos',
-        status: 'completed',
-        timestamp: new Date(Date.now() - 3600000).toISOString(), // Hace 1 hora
-        requestTime: new Date(Date.now() - 3600000).toISOString(),
-        assignmentTime: new Date(Date.now() - 3600000 + 360000).toISOString(), // 6 min después
-        completionTime: new Date(Date.now() - 3600000 + 1800000).toISOString(), // 30 min después
-        responseTimeMinutes: 6,
-        location: { address: 'Av. Brasil 2500, Magdalena' },
-        assignedUnit: { id: 'AMB-002', name: 'Ambulancia 002' }
-      }
-    ], // Lista de emergencias activas y completadas para el admin
+    activeEmergencies: [], // Lista vacía - cargar desde API
 
     // ========== NOTIFICACIONES ==========
     notifications: [],
@@ -207,7 +91,20 @@ const useAppStore = create((set, get) => {
       // Simular delay de autenticación
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      const user = authenticateUser(username, password)
+      // Autenticación contra la API usando el servicio
+      let user = null
+      try {
+        const users = await apiService.getUsers()
+        console.log('Users from API:', users)
+        console.log('Looking for:', { username, password })
+        
+        user = users.find(u => u.username === username && u.password === password)
+        console.log('Found user:', user)
+      } catch (error) {
+        console.error('Error conectando con API:', error)
+        set({ isLoading: false })
+        return { success: false, error: 'Error de conexión con el servidor' }
+      }
 
       if (user) {
         // Bloquear también si el usuario encontrado es externo2
@@ -221,6 +118,8 @@ const useAppStore = create((set, get) => {
 
         // Determinar la pantalla según el rol
         let targetScreen = 'dashboard'
+        console.log('User role:', user.role)
+        
         if (user.role === 'ADMIN') {
           targetScreen = 'admin'
         } else if (user.role === 'CORPORATIVO') {
@@ -233,12 +132,16 @@ const useAppStore = create((set, get) => {
           targetScreen = 'ambulance'
         }
 
+        console.log('Target screen:', targetScreen)
+
         set({
           currentUser: user,
           isLoggedIn: true,
           currentScreen: targetScreen,
           isLoading: false
         })
+
+        console.log('Store updated, currentScreen:', targetScreen)
 
         // Cargar datos específicos según el tipo de usuario
         get().loadUserSpecificData(user)
@@ -527,45 +430,11 @@ const useAppStore = create((set, get) => {
 
     // ========== FUNCIONES AUXILIARES ==========
     getAvailableUnit: (location) => {
-      // Simular selección de unidad más cercana con información completa
-      const units = [
-        {
-          id: 'AMB-001',
-          name: 'Ambulancia 001',
-          type: 'Ambulancia',
-          location: 'Base Central',
-          equipment: 'Completo',
-          crew: ['Dr. Juan Pérez', 'Enf. María García', 'Conductor Luis Torres'],
-          eta: '12 min',
-          distance: '4.5 km',
-          status: 'available'
-        },
-        {
-          id: 'AMB-002',
-          name: 'Ambulancia 002',
-          type: 'Ambulancia',
-          location: 'Base Norte',
-          equipment: 'Completo',
-          crew: ['Dr. Ana López', 'Param. Carlos Ruiz', 'Conductor Pedro Silva'],
-          eta: '8 min',
-          distance: '2.8 km',
-          status: 'available'
-        },
-        {
-          id: 'MED-003',
-          name: 'Unidad Médica 003',
-          type: 'Unidad Médica',
-          location: 'Base Sur',
-          equipment: 'Básico',
-          crew: ['Dr. Roberto Sánchez', 'Conductor Miguel Ángel'],
-          eta: '15 min',
-          distance: '6.2 km',
-          status: 'available'
-        }
-      ]
+      // Sin unidades disponibles - cargar desde API
+      const units = []
 
-      // Simular selección basada en distancia/tiempo
-      const selectedUnit = units[Math.floor(Math.random() * units.length)]
+      // Sin unidades disponibles
+      const selectedUnit = null
 
       // Actualizar el estado de la emergencia para incluir la unidad asignada
       setTimeout(() => {
@@ -618,23 +487,23 @@ const useAppStore = create((set, get) => {
     loadAllUsersData: () => {
       set({
         allUsers: {
-          admin: ADMIN_USERS,
-          familiar: FAMILIAR_USERS,
-          corporativo: CORPORATE_USERS,
-          externo: EXTERNAL_USERS
+          admin: [],
+          familiar: [],
+          corporativo: [],
+          externo: []
         }
       })
     },
 
     loadAdminData: () => {
       set({
-        systemMetrics: SYSTEM_METRICS,
-        systemAlerts: SYSTEM_ALERTS,
+        systemMetrics: null, // Cargar desde API
+        systemAlerts: [],
         allUsers: {
-          admin: ADMIN_USERS,
-          familiar: FAMILIAR_USERS,
-          corporativo: CORPORATE_USERS,
-          externo: EXTERNAL_USERS
+          admin: [],
+          familiar: [],
+          corporativo: [],
+          externo: []
         }
       })
     },
@@ -658,18 +527,8 @@ const useAppStore = create((set, get) => {
     },
 
     getUserHistory: (userId) => {
-      // Simular carga de historial
-      return [
-        {
-          id: 1,
-          date: '2024-12-15',
-          time: '14:30',
-          type: 'Emergencia Médica',
-          status: 'completed',
-          unit: 'AMB-001',
-          location: 'Av. Providencia 2594, Providencia'
-        }
-      ]
+      // Retornar historial vacío - cargar desde API
+      return []
     },
 
     // ========== NOTIFICACIONES ==========
@@ -926,16 +785,16 @@ const useAppStore = create((set, get) => {
     getPlanName: (planType, planSubtype) => {
       const planNames = {
         familiar: {
-          help: 'Plan Help',
-          basico: 'Plan Básico',
-          vip: 'Plan VIP',
-          dorado: 'Plan Dorado'
+          help: '',
+          basico: '',
+          vip: '',
+          dorado: ''
         },
         corporativo: {
           area_protegida: 'Área Protegida'
         }
       }
-      return planNames[planType]?.[planSubtype] || 'Plan Personalizado'
+      return planNames[planType]?.[planSubtype] || ''
     },
 
     initializeServiceUsage: (planType, planSubtype) => {
@@ -988,7 +847,7 @@ const useAppStore = create((set, get) => {
       }
 
       return {
-        monthly_cost: costs[planType]?.[planSubtype] || 89000,
+        monthly_cost: 0,
         next_billing_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
         payment_method: 'pending',
         status: 'active'
@@ -1019,22 +878,22 @@ const useAppStore = create((set, get) => {
         currentEmergency: {
           id: emergencyId,
           type: 'medical',
-          title: 'Emergencia Médica',
-          description: 'Paciente con síntomas cardíacos',
+          title: '',
+          description: '',
           timestamp: new Date().toISOString(),
           location: {
-            address: 'Av. Javier Prado 123, San Isidro',
-            latitude: -12.095,
-            longitude: -77.0365
+            address: '',
+            latitude: 0,
+            longitude: 0
           },
           patient: {
-            name: 'Juan Pérez',
-            age: 45,
-            condition: 'Consciente'
+            name: '',
+            age: 0,
+            condition: ''
           },
           contact: {
-            phone: '+51 987 123 456',
-            name: 'María Pérez'
+            phone: '',
+            name: ''
           },
           priority: 'Alta',
           assignedAmbulance: ambulanceId
@@ -2007,14 +1866,14 @@ const useAppStore = create((set, get) => {
       // Mock de configuración de planes - debería venir de PlanConfiguration
       const configs = {
         familiar: {
-          HELP: { name: 'Plan Help', pricing: { annually: 650 } },
-          BASICO: { name: 'Plan Básico', pricing: { annually: 1500 } },
-          VIP: { name: 'Plan VIP', pricing: { annually: 2800 } },
-          DORADO: { name: 'Plan Dorado', pricing: { annually: 4100 } }
+          HELP: { name: '', pricing: { annually: 0 } },
+          BASICO: { name: '', pricing: { annually: 0 } },
+          VIP: { name: '', pricing: { annually: 0 } },
+          DORADO: { name: '', pricing: { annually: 0 } }
         },
         corporativo: {
-          EMPRESARIAL_BASICO: { name: 'Plan Empresarial Básico', pricing: { per_employee: 108 } },
-          EMPRESARIAL_PREMIUM: { name: 'Plan Empresarial Premium', pricing: { per_employee: 151 } }
+          EMPRESARIAL_BASICO: { name: '', pricing: { per_employee: 0 } },
+          EMPRESARIAL_PREMIUM: { name: '', pricing: { per_employee: 0 } }
         }
       }
       return configs[planType]?.[planSubtype] || null

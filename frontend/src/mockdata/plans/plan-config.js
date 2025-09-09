@@ -45,11 +45,42 @@ export const PLAN_CONFIGURATIONS = {
         [SERVICE_TYPES.ORIENTACION_TELEFONICA]: 'ILIMITADO'
       },
       benefits: {
-        emergencias_ilimitadas: false, // No tiene emergencias ilimitadas
-        orientacion_telefonica: true,
-        zona_protegida: false,
-        seguro_accidentes: false,
-        examenes_laboratorio: false
+        emergencias_ilimitadas: {
+          active: false,
+          title: 'Emergencias Ilimitadas',
+          description: 'Atención de emergencias médicas sin límite de servicios',
+          icon: 'fas fa-ambulance'
+        },
+        orientacion_telefonica: {
+          active: true,
+          title: 'Orientación Médica Telefónica',
+          description: 'Consultas telefónicas 24/7 con profesionales médicos',
+          icon: 'fas fa-phone-alt'
+        },
+        zona_protegida: {
+          active: false,
+          title: 'Zona Protegida',
+          description: 'Emergencia/urgencia médica para terceros en tu dirección registrada',
+          icon: 'fas fa-shield-alt'
+        },
+        seguro_accidentes: {
+          active: false,
+          title: 'Seguro contra Accidentes',
+          description: 'Cobertura contra accidentes personales 24/7',
+          icon: 'fas fa-shield-alt',
+          details: {
+            provider: 'Chubb',
+            maxAge: 79,
+            coverage: ['Accidentes personales 24/7'],
+            validity: '24/7 - 365 días'
+          }
+        },
+        examenes_laboratorio: {
+          active: false,
+          title: 'Exámenes de Laboratorio',
+          description: 'Análisis clínicos básicos incluidos en el plan',
+          icon: 'fas fa-flask'
+        }
       },
       color: 'blue'
     },
@@ -64,11 +95,42 @@ export const PLAN_CONFIGURATIONS = {
         [SERVICE_TYPES.ORIENTACION_TELEFONICA]: 'ILIMITADO'
       },
       benefits: {
-        emergencias_ilimitadas: true,
-        orientacion_telefonica: true,
-        zona_protegida: false,
-        seguro_accidentes: false,
-        examenes_laboratorio: false
+        emergencias_ilimitadas: {
+          active: true,
+          title: 'Emergencias Ilimitadas',
+          description: 'Atención de emergencias médicas sin límite de servicios',
+          icon: 'fas fa-ambulance'
+        },
+        orientacion_telefonica: {
+          active: true,
+          title: 'Orientación Médica Telefónica',
+          description: 'Consultas telefónicas 24/7 con profesionales médicos',
+          icon: 'fas fa-phone-alt'
+        },
+        zona_protegida: {
+          active: false,
+          title: 'Zona Protegida',
+          description: 'Emergencia/urgencia médica para terceros en tu dirección registrada',
+          icon: 'fas fa-shield-alt'
+        },
+        seguro_accidentes: {
+          active: false,
+          title: 'Seguro contra Accidentes',
+          description: 'Cobertura contra accidentes personales 24/7',
+          icon: 'fas fa-shield-alt',
+          details: {
+            provider: 'Chubb',
+            maxAge: 79,
+            coverage: ['Accidentes personales 24/7'],
+            validity: '24/7 - 365 días'
+          }
+        },
+        examenes_laboratorio: {
+          active: false,
+          title: 'Exámenes de Laboratorio',
+          description: 'Análisis clínicos básicos incluidos en el plan',
+          icon: 'fas fa-flask'
+        }
       },
       color: 'green'
     },
@@ -84,12 +146,42 @@ export const PLAN_CONFIGURATIONS = {
         [SERVICE_TYPES.ORIENTACION_TELEFONICA]: 'ILIMITADO'
       },
       benefits: {
-        emergencias_ilimitadas: true,
-        orientacion_telefonica: true,
-        zona_protegida: true,
-        seguro_accidentes: true,
-        seguro_max_age: 79,
-        examenes_laboratorio: false
+        emergencias_ilimitadas: {
+          active: true,
+          title: 'Emergencias Ilimitadas',
+          description: 'Atención de emergencias médicas sin límite de servicios',
+          icon: 'fas fa-ambulance'
+        },
+        orientacion_telefonica: {
+          active: true,
+          title: 'Orientación Médica Telefónica',
+          description: 'Consultas telefónicas 24/7 con profesionales médicos',
+          icon: 'fas fa-phone-alt'
+        },
+        zona_protegida: {
+          active: true,
+          title: 'Zona Protegida',
+          description: 'Emergencia/urgencia médica para terceros en tu dirección registrada',
+          icon: 'fas fa-shield-alt'
+        },
+        seguro_accidentes: {
+          active: true,
+          title: 'Seguro contra Accidentes',
+          description: 'Cobertura contra accidentes personales 24/7',
+          icon: 'fas fa-shield-alt',
+          details: {
+            provider: 'Chubb',
+            maxAge: 79,
+            coverage: ['Accidentes personales 24/7'],
+            validity: '24/7 - 365 días'
+          }
+        },
+        examenes_laboratorio: {
+          active: false,
+          title: 'Exámenes de Laboratorio',
+          description: 'Análisis clínicos básicos incluidos en el plan',
+          icon: 'fas fa-flask'
+        }
       },
       color: 'purple'
     },
@@ -106,12 +198,46 @@ export const PLAN_CONFIGURATIONS = {
         [SERVICE_TYPES.EXAMENES_LABORATORIO]: 'ILIMITADO'
       },
       benefits: {
-        emergencias_ilimitadas: true,
-        orientacion_telefonica: true,
-        zona_protegida: true,
-        seguro_accidentes: true,
-        seguro_max_age: 79,
-        examenes_laboratorio: true
+        emergencias_ilimitadas: {
+          active: true,
+          title: 'Emergencias Ilimitadas',
+          description: 'Atención de emergencias médicas sin límite de servicios',
+          icon: 'fas fa-ambulance'
+        },
+        orientacion_telefonica: {
+          active: true,
+          title: 'Orientación Médica Telefónica',
+          description: 'Consultas telefónicas 24/7 con profesionales médicos',
+          icon: 'fas fa-phone-alt'
+        },
+        zona_protegida: {
+          active: true,
+          title: 'Zona Protegida',
+          description: 'Emergencia/urgencia médica para terceros en tu dirección registrada',
+          icon: 'fas fa-shield-alt'
+        },
+        seguro_accidentes: {
+          active: true,
+          title: 'Seguro contra Accidentes',
+          description: 'Cobertura contra accidentes personales 24/7',
+          icon: 'fas fa-shield-alt',
+          details: {
+            provider: 'Chubb',
+            maxAge: 79,
+            coverage: ['Accidentes personales 24/7'],
+            validity: '24/7 - 365 días'
+          }
+        },
+        examenes_laboratorio: {
+          active: true,
+          title: 'Exámenes de Laboratorio',
+          description: 'Análisis clínicos básicos incluidos en el plan',
+          icon: 'fas fa-flask',
+          details: {
+            tests: ['Examen de orina', 'Examen de heces', 'Hemograma completo'],
+            network: 'Disponible en laboratorios de la red Help MED'
+          }
+        }
       },
       color: 'yellow'
     }

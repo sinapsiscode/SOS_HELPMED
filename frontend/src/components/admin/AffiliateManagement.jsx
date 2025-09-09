@@ -5,7 +5,7 @@ import { AffiliatesList } from './affiliates'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
 import logger from '../../utils/logger'
-import LABELS from '../../config/labels'
+import { LABELS } from '../../config/labels'
 
 // Lazy loading de modales para optimizar bundle (Regla #5)
 const AddAffiliateModal = lazy(() => import('./affiliates/AddAffiliateModal'))

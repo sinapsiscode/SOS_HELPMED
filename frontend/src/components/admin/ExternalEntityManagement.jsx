@@ -3,48 +3,51 @@ import useExternalEntityManagement from '../../hooks/useExternalEntityManagement
 import { EntityHeader, EntityList } from './external'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
-// Lazy loading de modales pesados (Regla #5)
+// ${LABELS.admin.externalEntityManagement.comments.lazyLoading}
 const AddEntityModal = lazy(() => import('./external/AddEntityModal'))
 const AddAdminModal = lazy(() => import('./external/AddAdminModal'))
 
 /**
- * Sistema de gestión de entidades externas
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.externalEntityManagement.comments.title}
+ * ${LABELS.admin.externalEntityManagement.comments.approach}
  *
- * Funcionalidades:
- * - Gestión CRUD de entidades externas (bancos, aseguradoras, empresas)
- * - Creación de administradores externos con credenciales
- * - Vista responsive con estadísticas en tiempo real
- * - Modales de confirmación para todas las operaciones
- * - Validación de formularios y manejo de errores
+ * ${LABELS.admin.externalEntityManagement.comments.features.title}
+ * ${LABELS.admin.externalEntityManagement.comments.features.crud}
+ * ${LABELS.admin.externalEntityManagement.comments.features.adminCreation}
+ * ${LABELS.admin.externalEntityManagement.comments.features.responsive}
+ * ${LABELS.admin.externalEntityManagement.comments.features.confirmations}
+ * ${LABELS.admin.externalEntityManagement.comments.features.validation}
  *
- * Arquitectura modular:
- * - EntityHeader: Header con estadísticas y botones de acción
- * - EntityList: Lista de entidades con vistas desktop y móvil
- * - AddEntityModal: Modal para crear nuevas entidades (lazy)
- * - AddAdminModal: Modal para crear administradores (lazy)
+ * ${LABELS.admin.externalEntityManagement.comments.architecture.title}
+ * ${LABELS.admin.externalEntityManagement.comments.architecture.header}
+ * ${LABELS.admin.externalEntityManagement.comments.architecture.list}
+ * ${LABELS.admin.externalEntityManagement.comments.architecture.addEntityModal}
+ * ${LABELS.admin.externalEntityManagement.comments.architecture.addAdminModal}
  *
  * @returns {JSX.Element} Componente de gestión de entidades externas
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <ExternalEntityManagement />
+ * ${LABELS.admin.externalEntityManagement.comments.example.title}
+ * ${LABELS.admin.externalEntityManagement.comments.example.usage}
+ * ${LABELS.admin.externalEntityManagement.comments.example.component}
  *
- * @see {@link useExternalEntityManagement} Hook que maneja toda la lógica de negocio
- * @see {@link MOCK_EXTERNAL_ENTITIES} Datos mock de entidades
+ * ${LABELS.admin.externalEntityManagement.comments.see.hook}
+ * ${LABELS.admin.externalEntityManagement.comments.see.mockData}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (176 líneas aprox)
- * - Regla #4: Validación de datos y props
- * - Regla #5: Lógica compleja en hook personalizado + lazy loading
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.externalEntityManagement.comments.rules.title}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule3}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule4}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule5}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule6}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule8}
+ * ${LABELS.admin.externalEntityManagement.comments.rules.rule12}
  */
 const ExternalEntityManagement = () => {
+  const labels = LABELS.admin.externalEntityManagement
+  
   // ============================================
-  // HOOK - Toda la lógica compleja (Regla #5)
+  // ${LABELS.admin.externalEntityManagement.comments.businessLogic}
   // ============================================
   const {
     // Estados
@@ -90,12 +93,12 @@ const ExternalEntityManagement = () => {
   } = useExternalEntityManagement()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.externalEntityManagement.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en gestión de entidades: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.managementError.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }

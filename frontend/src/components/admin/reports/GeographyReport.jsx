@@ -164,7 +164,7 @@ const GeographyReport = ({ dateRange }) => {
               <i className="fas fa-bullseye text-purple-600 text-xl sm:text-2xl mb-2"></i>
               <h4 className="font-semibold text-purple-800 text-sm sm:text-base">{labels.executive.cards.opportunity.title}</h4>
               <p className="text-xs sm:text-sm text-purple-700">{labels.executive.cards.opportunity.description.replace('{district}', 'Callao')}</p>
-              <p className="text-xs text-purple-600 mt-1">{labels.executive.cards.opportunity.average.replace('{time}', '18')}
+              <p className="text-xs text-purple-600 mt-1">{labels.executive.cards.opportunity.average.replace('{time}', '18')}</p>
             </div>
           </div>
         </div>
@@ -1605,6 +1605,7 @@ const PerformanceAlerts = ({ responseTime, satisfaction, unitUtilization }) => {
 }
 
 const UnifiedDistrictAnalysis = ({ dateRange }) => {
+  const labels = LABELS.admin.reports.geographyReport
   const { allUsers, activeEmergencies } = useAppStore()
   
   // Combinar datos de servicios solicitados y estadísticas por región
@@ -1704,10 +1705,10 @@ const UnifiedDistrictAnalysis = ({ dateRange }) => {
           </p>
         </div>
         <div className="flex items-center space-x-2 flex-shrink-0">
-          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Descargar">
+          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Descargar reporte">
             <i className="fas fa-download text-sm sm:text-base"></i>
           </button>
-          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Expandir">
+          <button className="text-gray-600 hover:text-gray-800 transition-colors p-2" title="Expandir vista completa">
             <i className="fas fa-expand text-sm sm:text-base"></i>
           </button>
         </div>

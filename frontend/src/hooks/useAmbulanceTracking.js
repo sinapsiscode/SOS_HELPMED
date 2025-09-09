@@ -26,8 +26,8 @@ const useAmbulanceTracking = (emergency) => {
   })
 
   // Estados de tiempo y distancia
-  const [eta, setEta] = useState(() => emergency?.assignedUnit?.eta || '15 min')
-  const [distance, setDistance] = useState(() => emergency?.assignedUnit?.distance || '5.2 km')
+  const [eta, setEta] = useState(() => emergency?.assignedUnit?.eta || '0 min')
+  const [distance, setDistance] = useState(() => emergency?.assignedUnit?.distance || '0 km')
 
   // Estados de la interfaz
   const [mapLoaded, setMapLoaded] = useState(false)

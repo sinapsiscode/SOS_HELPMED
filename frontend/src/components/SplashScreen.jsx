@@ -3,11 +3,14 @@ const SplashScreen = () => {
     <div className="fixed inset-0 gradient-primary flex items-center justify-center z-50">
       <div className="text-center text-white animate-fade-in">
         <div className="mb-10">
-          <div className="w-24 h-24 mx-auto mb-6 bg-white rounded-full flex items-center justify-center">
-            <i className="fas fa-heartbeat text-primary-red text-3xl"></i>
+          <div className="mb-6">
+            <img 
+              src="/Logo-Helpmed-negativo.png" 
+              alt="HelpMed Logo" 
+              className="h-16 mx-auto"
+            />
           </div>
-          <h1 className="text-4xl font-bold mb-2">Help MED</h1>
-          <p className="text-xl opacity-90">Emergencias Médicas</p>
+          <p className="text-xl opacity-90">Primera Respuesta Médica</p>
         </div>
 
         <div className="flex flex-col items-center">

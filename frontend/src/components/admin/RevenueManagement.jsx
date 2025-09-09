@@ -1,21 +1,23 @@
 import React from 'react'
+import { LABELS } from '../../config/labels'
 import useRevenueManagement from '../../hooks/useRevenueManagement'
 import { FinancialDashboard, TransactionsList, TransactionModal } from './revenue'
 import ErrorMessage from '../shared/ErrorMessage'
 
 /**
- * Componente principal para gestión financiera y de ingresos
- * REFACTORIZADO siguiendo TODAS las reglas:
+ * ${LABELS.admin.revenueManagement.comments.title}
+ * ${LABELS.admin.revenueManagement.comments.refactored}
  *
- * ✅ Regla #2: Solo presentación, lógica compleja en hook useRevenueManagement
- * ✅ Regla #3: <200 líneas (actualmente ~190 líneas)
- * ✅ Regla #8: Manejo de errores delegado al hook
- * ✅ Regla #10: Arquitectura modular - componentes separados
- * ✅ Regla #4: Validación completa en formularios
+ * ${LABELS.admin.revenueManagement.comments.rules.rule2}
+ * ${LABELS.admin.revenueManagement.comments.rules.rule3}
+ * ${LABELS.admin.revenueManagement.comments.rules.rule8}
+ * ${LABELS.admin.revenueManagement.comments.rules.rule10}
+ * ${LABELS.admin.revenueManagement.comments.rules.rule4}
  *
  * @returns {JSX.Element} Interfaz principal de gestión financiera
  */
 const RevenueManagement = () => {
+  const labels = LABELS.admin.revenueManagement
   // Hook que maneja toda la lógica compleja (Regla #2)
   const {
     activeView,
@@ -49,7 +51,7 @@ const RevenueManagement = () => {
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en gestión financiera: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.managementError.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -62,10 +64,10 @@ const RevenueManagement = () => {
           <div className="mb-4 lg:mb-0">
             <h1 className="text-3xl font-exo font-bold text-gray-800">
               <i className="fas fa-chart-line text-helpmed-blue mr-3"></i>
-              Gestión Financiera
+              {labels.header.title}
             </h1>
             <p className="text-gray-600 font-roboto mt-2">
-              Control de ingresos, transacciones y reportes financieros
+              {labels.header.subtitle}
             </p>
           </div>
 
@@ -77,7 +79,7 @@ const RevenueManagement = () => {
               className="flex items-center px-4 py-2 bg-helpmed-blue text-white rounded-lg hover:bg-blue-700 transition-colors font-roboto disabled:opacity-50"
             >
               <i className="fas fa-plus mr-2"></i>
-              Nueva Transacción
+              {labels.buttons.newTransaction}
             </button>
 
             <div className="flex items-center space-x-2">
@@ -87,7 +89,7 @@ const RevenueManagement = () => {
                 className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-roboto disabled:opacity-50"
               >
                 <i className="fas fa-file-pdf mr-2"></i>
-                PDF
+                {labels.buttons.pdf}
               </button>
 
               <button
@@ -96,7 +98,7 @@ const RevenueManagement = () => {
                 className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-roboto disabled:opacity-50"
               >
                 <i className="fas fa-file-excel mr-2"></i>
-                Excel
+                {labels.buttons.excel}
               </button>
             </div>
           </div>
@@ -116,8 +118,8 @@ const RevenueManagement = () => {
             >
               <i className="fas fa-chart-pie mr-2"></i>
               <div className="text-left">
-                <div className="font-semibold">Dashboard</div>
-                <div className="text-xs opacity-75">KPIs y métricas principales</div>
+                <div className="font-semibold">{labels.dashboard.title}</div>
+                <div className="text-xs opacity-75">{labels.dashboard.subtitle}</div>
               </div>
             </button>
 
@@ -132,8 +134,8 @@ const RevenueManagement = () => {
             >
               <i className="fas fa-list mr-2"></i>
               <div className="text-left">
-                <div className="font-semibold">Transacciones</div>
-                <div className="text-xs opacity-75">Lista detallada con filtros</div>
+                <div className="font-semibold">{labels.transactions.title}</div>
+                <div className="text-xs opacity-75">{labels.transactions.subtitle}</div>
               </div>
             </button>
           </div>
@@ -145,17 +147,17 @@ const RevenueManagement = () => {
         <div className="bg-white rounded-xl shadow-medium p-12 text-center">
           <i className="fas fa-receipt text-6xl text-gray-300 mb-6"></i>
           <h3 className="text-2xl font-exo font-semibold text-gray-700 mb-4">
-            Sin Transacciones Registradas
+            {labels.empty.title}
           </h3>
           <p className="text-gray-600 font-roboto mb-8 max-w-md mx-auto">
-            Comienza registrando tu primera transacción para ver métricas y reportes financieros.
+            {labels.empty.description}
           </p>
           <button
             onClick={openAddModal}
             className="flex items-center mx-auto px-6 py-3 bg-helpmed-blue text-white rounded-lg hover:bg-blue-700 transition-colors font-roboto"
           >
             <i className="fas fa-plus mr-2"></i>
-            Registrar Primera Transacción
+            {labels.empty.registerFirst}
           </button>
         </div>
       ) : (
@@ -194,14 +196,14 @@ const RevenueManagement = () => {
           <div className="flex items-center text-gray-600">
             <i className="fas fa-info-circle mr-2"></i>
             <span className="text-sm font-roboto">
-              Sistema financiero HelpMED - Actualizado en tiempo real
+              {labels.footer.systemInfo}
             </span>
           </div>
 
           {hasFilteredTransactions && (
             <div className="text-sm text-gray-600 font-roboto">
               <i className="fas fa-calculator mr-1"></i>
-              Total mostrado:{' '}
+              {labels.footer.totalShown}{' '}
               {formatCurrency(
                 filteredTransactions
                   .filter((t) => t.status === 'COMPLETED')

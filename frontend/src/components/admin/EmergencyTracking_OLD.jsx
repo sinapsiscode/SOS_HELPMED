@@ -423,7 +423,7 @@ const EmergencyTracking = () => {
   return (
     <div className="space-y-6">
       {/* Header y Estadísticas */}
-      <div className="bg-white rounded-xl shadow-medium p-6">
+      <div className="p-6 bg-white rounded-xl shadow-medium">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Seguimiento de Emergencias</h1>
           <div className="flex items-center space-x-2">
@@ -433,7 +433,7 @@ const EmergencyTracking = () => {
         </div>
 
         {/* Estadísticas rápidas */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-6">
           <EmergencyStatCard title="Total" count={stats.total} color="blue" icon="fas fa-list" />
           <EmergencyStatCard
             title="Activas"
@@ -474,7 +474,7 @@ const EmergencyTracking = () => {
             <select
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2"
+              className="px-3 py-2 border border-gray-300 rounded-lg"
             >
               <option value="all">Todas las prioridades</option>
               <option value="CRITICA">Crítica</option>
@@ -486,7 +486,7 @@ const EmergencyTracking = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2"
+              className="px-3 py-2 border border-gray-300 rounded-lg"
             >
               <option value="all">Todos los estados</option>
               <option value="PENDIENTE">Pendientes</option>
@@ -498,7 +498,7 @@ const EmergencyTracking = () => {
             <select
               value={filterTimeRange}
               onChange={(e) => setFilterTimeRange(e.target.value)}
-              className="border border-gray-300 rounded-lg px-3 py-2"
+              className="px-3 py-2 border border-gray-300 rounded-lg"
             >
               <option value="today">Hoy</option>
               <option value="last24h">Últimas 24h</option>
@@ -508,7 +508,7 @@ const EmergencyTracking = () => {
           </div>
 
           {/* Vista */}
-          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
+          <div className="flex p-1 space-x-1 bg-gray-100 rounded-lg">
             <button
               onClick={() => setViewMode('timeline')}
               className={`px-3 py-1 rounded transition-colors ${
@@ -544,7 +544,7 @@ const EmergencyTracking = () => {
           onSelectEmergency={setSelectedEmergency}
         />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
           {/* Lista de Emergencias */}
           <div className={`${selectedEmergency ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
             <div className="bg-white rounded-xl shadow-medium">
@@ -556,7 +556,7 @@ const EmergencyTracking = () => {
 
               <div className={viewMode === 'grid' ? 'p-6' : ''}>
                 {viewMode === 'grid' ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     {filteredEmergencies.map((emergency) => (
                       <EmergencyCard
                         key={emergency.id}
@@ -703,36 +703,36 @@ const EmergencyCard = ({
         </div>
       </div>
 
-      <div className="space-y-2 text-sm text-gray-600 mb-3">
+      <div className="mb-3 space-y-2 text-sm text-gray-600">
         <div className="flex items-center">
-          <i className="fas fa-user w-4 mr-2"></i>
+          <i className="w-4 mr-2 fas fa-user"></i>
           <span>
             {emergency.patient.name}, {emergency.patient.age} años
           </span>
         </div>
         <div className="flex items-center">
-          <i className="fas fa-map-marker-alt w-4 mr-2"></i>
+          <i className="w-4 mr-2 fas fa-map-marker-alt"></i>
           <span className="truncate">{emergency.location.address}</span>
         </div>
         <div className="flex items-center">
-          <i className="fas fa-clock w-4 mr-2"></i>
+          <i className="w-4 mr-2 fas fa-clock"></i>
           <span>Hace {getElapsedTime(emergency.startTime)} min</span>
         </div>
         {emergency.assignedUnit && (
           <div className="flex items-center">
-            <i className="fas fa-ambulance w-4 mr-2 text-blue-600"></i>
+            <i className="w-4 mr-2 text-blue-600 fas fa-ambulance"></i>
             <span className="text-blue-700">{emergency.assignedUnit.name}</span>
           </div>
         )}
         {emergency.estimatedArrivalTime && (
           <div className="flex items-center">
-            <i className="fas fa-route w-4 mr-2 text-green-600"></i>
+            <i className="w-4 mr-2 text-green-600 fas fa-route"></i>
             <span className="text-green-700">Llegada: {emergency.estimatedArrivalTime} min</span>
           </div>
         )}
         {emergency.waitTime && (
           <div className="flex items-center">
-            <i className="fas fa-hourglass-half w-4 mr-2 text-red-600"></i>
+            <i className="w-4 mr-2 text-red-600 fas fa-hourglass-half"></i>
             <span className="text-red-700">Esperando {emergency.waitTime} min</span>
           </div>
         )}
@@ -743,32 +743,32 @@ const EmergencyCard = ({
         {!emergency.assignedUnit && emergency.status === 'PENDIENTE' && (
           <button
             onClick={onAssignUnit}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-1 px-2 rounded text-xs"
+            className="flex-1 px-2 py-1 text-xs text-white bg-blue-600 rounded hover:bg-blue-700"
           >
-            <i className="fas fa-ambulance mr-1"></i>Asignar
+            <i className="mr-1 fas fa-ambulance"></i>Asignar
           </button>
         )}
         {emergency.assignedUnit && emergency.status !== 'COMPLETADA' && (
           <button
             onClick={onSetArrivalTime}
-            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-1 px-2 rounded text-xs"
+            className="flex-1 px-2 py-1 text-xs text-white bg-purple-600 rounded hover:bg-purple-700"
           >
-            <i className="fas fa-clock mr-1"></i>Tiempo Llegada
+            <i className="mr-1 fas fa-clock"></i>Tiempo Llegada
           </button>
         )}
         {emergency.status !== 'COMPLETADA' && (
           <button
             onClick={() => onUpdateStatus('COMPLETADA')}
-            className="flex-1 bg-green-600 hover:bg-green-700 text-white py-1 px-2 rounded text-xs"
+            className="flex-1 px-2 py-1 text-xs text-white bg-green-600 rounded hover:bg-green-700"
           >
-            <i className="fas fa-check mr-1"></i>Completar
+            <i className="mr-1 fas fa-check"></i>Completar
           </button>
         )}
         <button
           onClick={onAddNote}
-          className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-1 px-2 rounded text-xs"
+          className="flex-1 px-2 py-1 text-xs text-white bg-gray-600 rounded hover:bg-gray-700"
         >
-          <i className="fas fa-note-sticky mr-1"></i>Nota
+          <i className="mr-1 fas fa-note-sticky"></i>Nota
         </button>
       </div>
     </div>
@@ -846,21 +846,21 @@ const EmergencyTimelineItem = ({
                 {emergency.priority}
               </span>
             </div>
-            <div className="flex items-center space-x-4 mt-1 text-sm text-gray-600">
+            <div className="flex items-center mt-1 space-x-4 text-sm text-gray-600">
               <span>
-                <i className="fas fa-user mr-1"></i>
+                <i className="mr-1 fas fa-user"></i>
                 {emergency.patient.name}
               </span>
               <span>
-                <i className="fas fa-map-marker-alt mr-1"></i>
+                <i className="mr-1 fas fa-map-marker-alt"></i>
                 {emergency.location.landmark}
               </span>
               <span>
-                <i className="fas fa-clock mr-1"></i>Hace {getElapsedTime(emergency.startTime)} min
+                <i className="mr-1 fas fa-clock"></i>Hace {getElapsedTime(emergency.startTime)} min
               </span>
               {emergency.assignedUnit && (
                 <span className="text-blue-600">
-                  <i className="fas fa-ambulance mr-1"></i>
+                  <i className="mr-1 fas fa-ambulance"></i>
                   {emergency.assignedUnit.name}
                 </span>
               )}
@@ -872,7 +872,7 @@ const EmergencyTimelineItem = ({
           {!emergency.assignedUnit && emergency.status === 'PENDIENTE' && (
             <button
               onClick={onAssignUnit}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded text-sm"
+              className="px-3 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
             >
               Asignar Unidad
             </button>
@@ -880,14 +880,14 @@ const EmergencyTimelineItem = ({
           {emergency.status !== 'COMPLETADA' && (
             <button
               onClick={() => onUpdateStatus('COMPLETADA')}
-              className="bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded text-sm"
+              className="px-3 py-1 text-sm text-white bg-green-600 rounded hover:bg-green-700"
             >
               Completar
             </button>
           )}
           <button
             onClick={onAddNote}
-            className="bg-gray-600 hover:bg-gray-700 text-white py-1 px-3 rounded text-sm"
+            className="px-3 py-1 text-sm text-white bg-gray-600 rounded hover:bg-gray-700"
           >
             + Nota
           </button>
@@ -936,7 +936,7 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
       <div className="p-6 space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto">
         {/* Información Básica */}
         <div>
-          <h3 className="font-semibold text-gray-800 mb-3">Información General</h3>
+          <h3 className="mb-3 font-semibold text-gray-800">Información General</h3>
           <div className="space-y-2 text-sm">
             <div className="flex justify-between">
               <span className="text-gray-600">ID:</span>
@@ -969,8 +969,8 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
 
         {/* Paciente */}
         <div>
-          <h3 className="font-semibold text-gray-800 mb-3">Información del Paciente</h3>
-          <div className="bg-gray-50 rounded-lg p-3 space-y-2 text-sm">
+          <h3 className="mb-3 font-semibold text-gray-800">Información del Paciente</h3>
+          <div className="p-3 space-y-2 text-sm rounded-lg bg-gray-50">
             <div>
               <strong>Nombre:</strong> {emergency.patient.name}
             </div>
@@ -986,7 +986,7 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
             {emergency.patient.medicalHistory.length > 0 && (
               <div>
                 <strong>Historial médico:</strong>
-                <ul className="list-disc list-inside ml-2 mt-1">
+                <ul className="mt-1 ml-2 list-disc list-inside">
                   {emergency.patient.medicalHistory.map((condition, index) => (
                     <li key={index}>{condition}</li>
                   ))}
@@ -998,10 +998,10 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
 
         {/* Ubicación */}
         <div>
-          <h3 className="font-semibold text-gray-800 mb-3">Ubicación</h3>
-          <div className="bg-gray-50 rounded-lg p-3 text-sm">
+          <h3 className="mb-3 font-semibold text-gray-800">Ubicación</h3>
+          <div className="p-3 text-sm rounded-lg bg-gray-50">
             <div className="flex items-start space-x-2">
-              <i className="fas fa-map-marker-alt text-red-600 mt-1"></i>
+              <i className="mt-1 text-red-600 fas fa-map-marker-alt"></i>
               <div>
                 <div className="font-medium">{emergency.location.address}</div>
                 <div className="text-gray-600">{emergency.location.landmark}</div>
@@ -1013,9 +1013,9 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
         {/* Signos Vitales */}
         {emergency.vital_signs && (
           <div>
-            <h3 className="font-semibold text-gray-800 mb-3">Signos Vitales</h3>
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <div className="text-xs text-blue-600 mb-2">
+            <h3 className="mb-3 font-semibold text-gray-800">Signos Vitales</h3>
+            <div className="p-3 border border-blue-200 rounded-lg bg-blue-50">
+              <div className="mb-2 text-xs text-blue-600">
                 Última medición: {new Date(emergency.vital_signs.timestamp).toLocaleString()}
               </div>
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -1042,8 +1042,8 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
         {/* Unidad Asignada */}
         {emergency.assignedUnit && (
           <div>
-            <h3 className="font-semibold text-gray-800 mb-3">Unidad Asignada</h3>
-            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+            <h3 className="mb-3 font-semibold text-gray-800">Unidad Asignada</h3>
+            <div className="p-3 border border-green-200 rounded-lg bg-green-50">
               <div className="font-medium text-green-800">{emergency.assignedUnit.name}</div>
               <div className="text-sm text-green-700">
                 <div>ETA: {emergency.assignedUnit.eta}</div>
@@ -1056,13 +1056,13 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
 
         {/* Timeline */}
         <div>
-          <h3 className="font-semibold text-gray-800 mb-3">Cronología</h3>
+          <h3 className="mb-3 font-semibold text-gray-800">Cronología</h3>
           <div className="space-y-3">
             {emergency.timeline.map((event, index) => (
               <div key={index} className="flex space-x-3">
-                <div className="flex-shrink-0 w-2 h-2 bg-blue-600 rounded-full mt-2"></div>
+                <div className="flex-shrink-0 w-2 h-2 mt-2 bg-blue-600 rounded-full"></div>
                 <div className="flex-1">
-                  <div className="flex justify-between items-start">
+                  <div className="flex items-start justify-between">
                     <div>
                       <div className="font-medium text-gray-800">{event.event}</div>
                       <div className="text-sm text-gray-600">{event.details}</div>
@@ -1084,24 +1084,24 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
             {!emergency.assignedUnit && emergency.status === 'PENDIENTE' && (
               <button
                 onClick={onAssignUnit}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
+                className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700"
               >
-                <i className="fas fa-ambulance mr-2"></i>Asignar Unidad
+                <i className="mr-2 fas fa-ambulance"></i>Asignar Unidad
               </button>
             )}
             {emergency.status !== 'COMPLETADA' && (
               <button
                 onClick={() => onUpdateStatus('COMPLETADA')}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
+                className="w-full px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
               >
-                <i className="fas fa-check mr-2"></i>Marcar como Completada
+                <i className="mr-2 fas fa-check"></i>Marcar como Completada
               </button>
             )}
             <button
               onClick={onAddNote}
-              className="w-full bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-lg"
+              className="w-full px-4 py-2 text-white bg-gray-600 rounded-lg hover:bg-gray-700"
             >
-              <i className="fas fa-note-sticky mr-2"></i>Agregar Nota
+              <i className="mr-2 fas fa-note-sticky"></i>Agregar Nota
             </button>
           </div>
         </div>
@@ -1112,19 +1112,19 @@ const EmergencyDetailPanel = ({ emergency, onClose, onAssignUnit, onUpdateStatus
 
 const EmergencyMapView = ({ emergencies, onSelectEmergency }) => {
   return (
-    <div className="bg-white rounded-xl shadow-medium p-6">
-      <h2 className="text-lg font-bold text-gray-800 mb-4">Mapa de Emergencias</h2>
-      <div className="h-96 bg-gray-100 rounded-lg flex items-center justify-center">
+    <div className="p-6 bg-white rounded-xl shadow-medium">
+      <h2 className="mb-4 text-lg font-bold text-gray-800">Mapa de Emergencias</h2>
+      <div className="flex items-center justify-center bg-gray-100 rounded-lg h-96">
         <div className="text-center text-gray-500">
-          <i className="fas fa-map text-4xl mb-4"></i>
+          <i className="mb-4 text-4xl fas fa-map"></i>
           <p className="mb-2">Mapa interactivo de emergencias activas</p>
           <p className="text-sm">Mostraría la ubicación en tiempo real de todas las emergencias</p>
-          <div className="mt-4 grid grid-cols-2 gap-2 max-w-md">
+          <div className="grid max-w-md grid-cols-2 gap-2 mt-4">
             {emergencies.map((emergency) => (
               <button
                 key={emergency.id}
                 onClick={() => onSelectEmergency(emergency)}
-                className="text-left p-2 bg-white rounded border hover:border-red-500 text-xs"
+                className="p-2 text-xs text-left bg-white border rounded hover:border-red-500"
               >
                 <div className="font-medium">{emergency.id}</div>
                 <div className="text-gray-600">{emergency.location.landmark}</div>

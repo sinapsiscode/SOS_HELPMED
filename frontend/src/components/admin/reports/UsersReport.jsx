@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useAppStore from '../../../stores/useAppStore'
-import LABELS from '../../../config/labels'
+import { LABELS } from '../../../config/labels'
 
 // Componente para tarjeta de tipo de usuario
 const UserTypeCard = ({ type, stats }) => {

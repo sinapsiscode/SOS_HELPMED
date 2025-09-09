@@ -30,31 +30,60 @@ const useTransferForm = (selectedDate, selectedTimeSlot, currentUser) => {
   })
 
   const [errors, setErrors] = useState({})
+  const [loading, setLoading] = useState(true)
 
-  // Configuraciones del formulario
-  const transferTypes = [
-    { value: 'medical_appointment', label: 'Cita M�dica' },
-    { value: 'medical_procedure', label: 'Procedimiento M�dico' },
-    { value: 'routine_checkup', label: 'Control de Rutina' },
-    { value: 'therapy_session', label: 'Sesi�n de Terapia' },
-    { value: 'dialysis', label: 'Di�lisis' },
-    { value: 'other', label: 'Otro' }
-  ]
+  // Configuraciones dinámicas desde db.json
+  const [transferTypes, setTransferTypes] = useState([])
+  const [reasons, setReasons] = useState([])
 
-  const reasons = [
-    'Alta hospitalaria',
-    'Consulta m�dica de rutina',
-    'Cita con especialista',
-    'Ex�menes m�dicos',
-    'Procedimiento ambulatorio',
-    'Control post-operatorio',
-    'Terapia f�sica',
-    'Hemodi�lisis',
-    'Oncolog�a',
-    'Cardiolog�a',
-    'Neurolog�a',
-    'Otro'
-  ]
+  // Cargar configuración desde db.json
+  useEffect(() => {
+    const loadTransferConfig = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('http://localhost:4001/transferConfig')
+        if (response.ok) {
+          const config = await response.json()
+          setTransferTypes(config.transferTypes)
+          setReasons(config.reasons)
+        } else {
+          throw new Error('Failed to fetch transfer config')
+        }
+      } catch (error) {
+        console.error('Error loading transfer config:', error)
+        console.warn('Using fallback transfer configuration')
+        
+        // Configuración de fallback si no hay servidor
+        setTransferTypes([
+          { value: 'medical_appointment', label: 'Cita Médica' },
+          { value: 'medical_procedure', label: 'Procedimiento Médico' },
+          { value: 'routine_checkup', label: 'Control de Rutina' },
+          { value: 'therapy_session', label: 'Sesión de Terapia' },
+          { value: 'dialysis', label: 'Diálisis' },
+          { value: 'other', label: 'Otro' }
+        ])
+        
+        setReasons([
+          'Alta hospitalaria',
+          'Consulta médica de rutina',
+          'Cita con especialista',
+          'Exámenes médicos',
+          'Procedimiento ambulatorio',
+          'Control post-operatorio',
+          'Terapia física',
+          'Hemodiálisis',
+          'Oncología',
+          'Cardiología',
+          'Neurología',
+          'Otro'
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadTransferConfig()
+  }, [])
 
   // Inicializar con la hora seleccionada del calendario
   useEffect(() => {
@@ -176,6 +205,7 @@ const useTransferForm = (selectedDate, selectedTimeSlot, currentUser) => {
     errors,
     transferTypes,
     reasons,
+    loading,
     
     // Acciones
     updateField,

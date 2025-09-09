@@ -25,10 +25,10 @@ const useExternalStats = (currentUser) => {
   const externalStats = useMemo(() => {
     if (!currentUser) return null
 
-    const totalUsed = currentUser.service_usage.current_period.services_used || 0
-    const individualRemaining = currentUser.service_usage.current_period.individual_remaining || 0
+    const totalUsed = currentUser.service_usage.services_used || currentUser.service_usage.individual_used || 0
+    const individualRemaining = currentUser.service_usage.individual_remaining || 0
     const generalRemaining = currentUser.client_company?.general_services_remaining || 0
-    const lastService = currentUser.service_usage.current_period.last_service
+    const lastService = currentUser.service_usage.last_service
 
     return {
       totalUsed,
@@ -54,7 +54,7 @@ const useExternalStats = (currentUser) => {
       }
     } else {
       return {
-        individual_remaining: currentUser.service_usage.current_period.individual_remaining,
+        individual_remaining: currentUser.service_usage.individual_remaining,
         general_remaining: currentUser.client_company?.general_services_remaining || 0
       }
     }
@@ -63,7 +63,7 @@ const useExternalStats = (currentUser) => {
   // Desglose de servicios usados
   const serviceBreakdown = useMemo(() => {
     if (!currentUser) return {}
-    return currentUser.service_usage.current_period.breakdown || {}
+    return currentUser.service_usage.breakdown || {}
   }, [currentUser])
 
   // Verificar si el servicio se puede usar
@@ -82,7 +82,7 @@ const useExternalStats = (currentUser) => {
       if (userCaseType?.isCaso1) return false
 
       // Si agotó sus servicios gratuitos individuales, tiene costo adicional
-      return currentUser?.service_usage?.current_period?.individual_remaining <= 0
+      return currentUser?.service_usage?.individual_remaining <= 0
     }
   }, [userCaseType, currentUser])
 

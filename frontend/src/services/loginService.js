@@ -14,100 +14,139 @@
  */
 class LoginService {
   constructor() {
-    // Credenciales de acceso rápido para demo
+    // Credenciales que existen en db.json y mockdata
     this.quickLoginCredentials = {
       admin: {
         username: 'admin',
         password: 'admin123'
       },
-      help: {
+      ambulance: {
+        username: 'conductor',
+        password: 'conductor123'
+      },
+      familiar: {
+        username: 'familiar',
+        password: 'familiar123'
+      },
+      // Planes familiares
+      help_user: {
         username: 'help_user',
         password: 'help123'
       },
-      basico: {
+      basico_user: {
         username: 'basico_user',
         password: 'basico123'
       },
-      vip: {
+      vip_user: {
         username: 'vip_user',
         password: 'vip123'
       },
-      dorado: {
+      dorado_user: {
         username: 'dorado_user',
         password: 'dorado123'
       },
-      corporativo: {
+      // Corporativos
+      empresa_abc: {
         username: 'empresa_abc',
         password: 'corp123'
       },
+      empresa_xyz: {
+        username: 'empresa_xyz',
+        password: 'corp456'
+      },
+      hotel_plaza: {
+        username: 'hotel_plaza',
+        password: 'hotel789'
+      },
+      // Externos
       externo1: {
         username: 'externo1',
         password: 'ext123'
+      },
+      externo1_b: {
+        username: 'externo1_b',
+        password: 'ext124'
       },
       externo2: {
         username: 'externo2',
         password: 'ext456'
       },
-      ambulancia1: {
-        username: 'ambulancia1',
-        password: 'amb123'
+      externo2_b: {
+        username: 'externo2_b',
+        password: 'ext457'
       },
-      ambulancia2: {
-        username: 'ambulancia2',
-        password: 'amb123'
+      externo2_c: {
+        username: 'externo2_c',
+        password: 'ext458'
       },
+      // Administradores externos
       bcr_admin: {
         username: 'bcr_admin',
         password: 'bcr123'
+      },
+      coopeservidores_admin: {
+        username: 'coopeservidores_admin',
+        password: 'coope123'
       }
     }
 
-    // Configuración de categorías de usuario
+    // Configuración de categorías de usuario que existen en db.json y mockdata
     this.userCategories = {
       admin: {
         name: 'ADMINISTRADOR',
         color: 'red',
         users: ['admin']
       },
+      ambulancia: {
+        name: 'AMBULANCIAS',
+        color: 'orange',
+        users: ['ambulance']
+      },
       familiar: {
         name: 'PLANES FAMILIARES',
         color: 'green',
-        users: ['help', 'basico', 'vip', 'dorado']
+        users: ['familiar', 'help_user', 'basico_user', 'vip_user', 'dorado_user']
       },
       corporativo: {
         name: 'CORPORATIVO',
         color: 'purple',
-        users: ['corporativo']
-      },
-      ambulancia: {
-        name: 'AMBULANCIAS',
-        color: 'orange',
-        users: ['ambulancia1', 'ambulancia2']
+        users: ['empresa_abc', 'empresa_xyz', 'hotel_plaza']
       },
       externo: {
-        name: 'AFILIADOS EXTERNOS',
-        color: 'teal',
-        users: ['externo1', 'externo2']
+        name: 'EXTERNOS',
+        color: 'indigo',
+        users: ['externo1', 'externo1_b', 'externo2', 'externo2_b', 'externo2_c']
       },
-      external_admin: {
-        name: 'ADMINISTRADOR EXTERNO',
-        color: 'emerald',
-        users: ['bcr_admin']
+      externo_admin: {
+        name: 'ADMIN EXTERNOS',
+        color: 'teal',
+        users: ['bcr_admin', 'coopeservidores_admin']
       }
     }
 
-    // Información detallada de usuarios
+    // Información detallada solo de usuarios que existen
     this.userDetails = {
       admin: { displayName: 'Administrador', description: 'admin / admin123' },
-      help: { displayName: 'Help', description: 'help_user / help123' },
-      basico: { displayName: 'Básico', description: 'basico_user / basico123' },
-      vip: { displayName: 'VIP', description: 'vip_user / vip123' },
-      dorado: { displayName: 'Dorado', description: 'dorado_user / dorado123' },
-      corporativo: { displayName: 'Corporativo', description: 'empresa_abc / corp123' },
-      ambulancia1: { displayName: 'Ambulancia 1', description: 'ambulancia1 / amb123' },
-      ambulancia2: { displayName: 'Ambulancia 2', description: 'ambulancia2 / amb123' },
-      externo1: { displayName: 'Caso 1', description: 'externo1 / ext123' },
-      bcr_admin: { displayName: 'BCR Admin', description: 'bcr_admin / bcr123' }
+      ambulance: { displayName: 'Conductor', description: 'conductor / conductor123' },
+      familiar: { displayName: 'Familiar', description: 'familiar / familiar123' },
+      // Planes familiares
+      help_user: { displayName: 'Plan Help', description: 'help_user / help123' },
+      basico_user: { displayName: 'Plan Básico', description: 'basico_user / basico123' },
+      vip_user: { displayName: 'Plan VIP', description: 'vip_user / vip123' },
+      dorado_user: { displayName: 'Plan Dorado', description: 'dorado_user / dorado123' },
+      // Corporativos
+      empresa_abc: { displayName: 'Empresa ABC', description: 'empresa_abc / corp123' },
+      empresa_xyz: { displayName: 'Centro Médico XYZ', description: 'empresa_xyz / corp456' },
+      hotel_plaza: { displayName: 'Hotel Plaza', description: 'hotel_plaza / hotel789' },
+      // Externos
+      externo1: { displayName: 'Externo Caso 1A', description: 'externo1 / ext123' },
+      externo1_b: { displayName: 'Externo Caso 1B', description: 'externo1_b / ext124' },
+      externo2: { displayName: 'Externo Caso 2A', description: 'externo2 / ext456' },
+      externo2_b: { displayName: 'Externo Caso 2B', description: 'externo2_b / ext457' },
+      externo2_c: { displayName: 'Externo Caso 2C', description: 'externo2_c / ext458' },
+      // Administradores externos
+      bcr_admin: { displayName: 'Admin BCR', description: 'bcr_admin / bcr123' },
+      coopeservidores_admin: { displayName: 'Admin Coopeservidores', description: 'coopeservidores_admin / coope123' }
     }
   }
 

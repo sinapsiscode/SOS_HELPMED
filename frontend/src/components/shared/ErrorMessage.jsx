@@ -1,28 +1,26 @@
 import React from 'react'
 
-/**
- * Componente reutilizable para mostrar mensajes de error
- * Incluye opción de retry y mensaje personalizable
- */
-const ErrorMessage = ({ message, onRetry, className = '' }) => {
+const ErrorMessage = ({ message, onRetry }) => {
   return (
-    <div className={`bg-red-50 border border-red-200 rounded-lg p-4 ${className}`}>
-      <div className="flex items-center">
-        <div className="flex-shrink-0">
-          <span className="text-red-500 text-xl">⚠️</span>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="p-8 m-4 border border-red-200 rounded-lg bg-red-50 max-w-2xl">
+        <div className="flex items-center mb-4">
+          <i className="fas fa-exclamation-triangle text-red-600 text-2xl mr-3"></i>
+          <h2 className="text-xl font-bold text-red-600">
+            Error
+          </h2>
         </div>
-        <div className="ml-3 flex-1">
-          <p className="text-sm font-medium text-red-800">{message || 'Ha ocurrido un error'}</p>
-        </div>
+        <p className="text-red-700 mb-4">
+          {message || 'Ha ocurrido un error inesperado'}
+        </p>
         {onRetry && (
-          <div className="ml-4">
-            <button
-              onClick={onRetry}
-              className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
-            >
-              Reintentar
-            </button>
-          </div>
+          <button
+            onClick={onRetry}
+            className="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700 transition-colors"
+          >
+            <i className="fas fa-redo mr-2"></i>
+            Reintentar
+          </button>
         )}
       </div>
     </div>

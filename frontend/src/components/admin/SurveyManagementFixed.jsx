@@ -3,11 +3,14 @@ import useAppStore from '../../stores/useAppStore'
 import { SurveyConfiguration, SurveyAnalytics, SurveyResponsesList } from './survey'
 import ErrorMessage from '../shared/ErrorMessage'
 import useSurveyManagementComplete from '../../hooks/useSurveyManagementComplete'
+import { LABELS } from '../../config/labels'
 
 /**
  * Componente principal para gestión de encuestas de satisfacción - VERSIÓN CORREGIDA
  */
 const SurveyManagementFixed = () => {
+  const labels = LABELS.admin.surveyManagement
+  
   // Obtener usuario actual del store
   const { currentUser } = useAppStore()
   
@@ -18,7 +21,7 @@ const SurveyManagementFixed = () => {
   if (!surveyData) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message="Error al cargar el módulo de encuestas" />
+        <ErrorMessage message={labels.errors.loadModule} />
       </div>
     )
   }
@@ -56,7 +59,7 @@ const SurveyManagementFixed = () => {
   if (error) {
     return (
       <div className="space-y-4">
-        <ErrorMessage message={`Error en gestión de encuestas: ${error}`} onRetry={clearError} />
+        <ErrorMessage message={labels.errors.loadModule.replace('{error}', error)} onRetry={clearError} />
       </div>
     )
   }
@@ -83,7 +86,7 @@ const SurveyManagementFixed = () => {
               disabled={!hasResponses}
             >
               <i className="fas fa-download mr-2"></i>
-              Exportar Reporte
+{labels.export.reportButton}
             </button>
           </div>
         </div>

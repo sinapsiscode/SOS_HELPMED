@@ -13,48 +13,66 @@ const useSurveyQuestions = (surveyQuestions, updateSurveyQuestions) => {
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [defaultQuestions, setDefaultQuestions] = useState([])
 
-  // Preguntas predeterminadas
-  const defaultQuestions = useMemo(
-    () => [
-      {
-        id: 'question1',
-        text: '¿Qué tan satisfecho está con la rapidez de nuestro servicio?',
-        icon: 'fas fa-clock',
-        category: 'tiempo',
-        active: true
-      },
-      {
-        id: 'question2',
-        text: '¿Cómo calificaría la profesionalidad de nuestro personal?',
-        icon: 'fas fa-user-md',
-        category: 'personal',
-        active: true
-      },
-      {
-        id: 'question3',
-        text: '¿Qué tan satisfecho está con la calidad de la atención médica recibida?',
-        icon: 'fas fa-heart',
-        category: 'calidad',
-        active: true
-      },
-      {
-        id: 'question4',
-        text: '¿Cómo calificaría la comunicación durante el servicio?',
-        icon: 'fas fa-comments',
-        category: 'comunicacion',
-        active: true
-      },
-      {
-        id: 'question5',
-        text: '¿Recomendaría nuestros servicios a familiares y amigos?',
-        icon: 'fas fa-star',
-        category: 'recomendacion',
-        active: true
+  // Cargar preguntas predeterminadas desde db.json
+  useEffect(() => {
+    const loadDefaultQuestions = async () => {
+      try {
+        const response = await fetch('http://localhost:4001/surveyConfig')
+        if (response.ok) {
+          const config = await response.json()
+          setDefaultQuestions(config.defaultQuestions)
+        } else {
+          throw new Error('Failed to fetch survey config')
+        }
+      } catch (error) {
+        console.error('Error loading default questions:', error)
+        console.warn('Using fallback survey configuration')
+        
+        // Configuración de fallback
+        setDefaultQuestions([
+          {
+            id: 'question1',
+            text: '¿Qué tan satisfecho está con la rapidez de nuestro servicio?',
+            icon: 'fas fa-clock',
+            category: 'tiempo',
+            active: true
+          },
+          {
+            id: 'question2',
+            text: '¿Cómo calificaría la profesionalidad de nuestro personal?',
+            icon: 'fas fa-user-md',
+            category: 'personal',
+            active: true
+          },
+          {
+            id: 'question3',
+            text: '¿Qué tan satisfecho está con la calidad de la atención médica recibida?',
+            icon: 'fas fa-heart',
+            category: 'calidad',
+            active: true
+          },
+          {
+            id: 'question4',
+            text: '¿Cómo calificaría la comunicación durante el servicio?',
+            icon: 'fas fa-comments',
+            category: 'comunicacion',
+            active: true
+          },
+          {
+            id: 'question5',
+            text: '¿Recomendaría nuestros servicios a familiares y amigos?',
+            icon: 'fas fa-star',
+            category: 'recomendacion',
+            active: true
+          }
+        ])
       }
-    ],
-    []
-  )
+    }
+
+    loadDefaultQuestions()
+  }, [])
 
   // Inicialización de preguntas
   useEffect(() => {

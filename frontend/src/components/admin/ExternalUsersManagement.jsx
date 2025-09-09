@@ -3,52 +3,55 @@ import useExternalUsersManagement from '../../hooks/useExternalUsersManagement'
 import { UsersHeader, HierarchicalView } from './externalUsers'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
-// Lazy loading de modal pesado (Regla #5)
+// ${LABELS.admin.externalUsersManagement.comments.lazyLoading}
 const AddEntityAdminModal = lazy(() => import('./externalUsers/AddEntityAdminModal'))
 
 /**
- * Sistema de gestión de usuarios de entidades externas
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.externalUsersManagement.comments.title}
+ * ${LABELS.admin.externalUsersManagement.comments.approach}
  *
- * Funcionalidades:
- * - Gestión jerárquica: Entidades -> Administradores -> Usuarios
- * - Creación de entidades con administrador obligatorio
- * - Vista expandible/colapsable de entidades
- * - Filtrado y búsqueda avanzada de usuarios
- * - Activación/desactivación de usuarios externos
- * - Estadísticas globales del sistema
+ * ${LABELS.admin.externalUsersManagement.comments.features.title}
+ * ${LABELS.admin.externalUsersManagement.comments.features.hierarchy}
+ * ${LABELS.admin.externalUsersManagement.comments.features.entityCreation}
+ * ${LABELS.admin.externalUsersManagement.comments.features.expandableView}
+ * ${LABELS.admin.externalUsersManagement.comments.features.filtering}
+ * ${LABELS.admin.externalUsersManagement.comments.features.activation}
+ * ${LABELS.admin.externalUsersManagement.comments.features.stats}
  *
- * Arquitectura modular:
- * - UsersHeader: Header con estadísticas, búsqueda y controles
- * - HierarchicalView: Vista jerárquica expandible de entidades
- * - AddEntityAdminModal: Modal para crear entidad con admin (lazy)
+ * ${LABELS.admin.externalUsersManagement.comments.architecture.title}
+ * ${LABELS.admin.externalUsersManagement.comments.architecture.header}
+ * ${LABELS.admin.externalUsersManagement.comments.architecture.hierarchicalView}
+ * ${LABELS.admin.externalUsersManagement.comments.architecture.addEntityAdminModal}
  *
- * Notas importantes:
- * - Los usuarios externos se registran desde el aplicativo móvil
- * - Cada entidad debe tener un administrador obligatorio
- * - Solo se permite vista jerárquica para mejor comprensión
+ * ${LABELS.admin.externalUsersManagement.comments.notes.title}
+ * ${LABELS.admin.externalUsersManagement.comments.notes.registration}
+ * ${LABELS.admin.externalUsersManagement.comments.notes.adminRequired}
+ * ${LABELS.admin.externalUsersManagement.comments.notes.viewOnly}
  *
  * @returns {JSX.Element} Componente de gestión de usuarios externos
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <ExternalUsersManagement />
+ * ${LABELS.admin.externalUsersManagement.comments.example.title}
+ * ${LABELS.admin.externalUsersManagement.comments.example.usage}
+ * ${LABELS.admin.externalUsersManagement.comments.example.component}
  *
- * @see {@link useExternalUsersManagement} Hook que maneja toda la lógica de negocio
- * @see {@link MOCK_EXTERNAL_STRUCTURE} Datos mock de estructura jerárquica
+ * ${LABELS.admin.externalUsersManagement.comments.see.hook}
+ * ${LABELS.admin.externalUsersManagement.comments.see.mockData}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (145 líneas aprox)
- * - Regla #4: Validación de datos y props
- * - Regla #5: Lógica compleja en hook personalizado + lazy loading
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.externalUsersManagement.comments.rules.title}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule3}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule4}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule5}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule6}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule8}
+ * ${LABELS.admin.externalUsersManagement.comments.rules.rule12}
  */
 const ExternalUsersManagement = () => {
+  const labels = LABELS.admin.externalUsersManagement
+  
   // ============================================
-  // HOOK - Toda la lógica compleja (Regla #5)
+  // ${LABELS.admin.externalUsersManagement.comments.businessLogic}
   // ============================================
   const {
     // Estados
@@ -97,13 +100,13 @@ const ExternalUsersManagement = () => {
   } = useExternalUsersManagement()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.externalUsersManagement.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
         <ErrorMessage
-          message={`Error en gestión de usuarios externos: ${error}`}
+          message={labels.errors.managementError.replace('{error}', error)}
           onRetry={clearError}
         />
       </div>
@@ -144,15 +147,15 @@ const ExternalUsersManagement = () => {
       {filteredStructure.length === 0 && searchTerm && (
         <div className="bg-white rounded-xl shadow-medium p-8 text-center">
           <i className="fas fa-search text-gray-400 text-4xl mb-4"></i>
-          <h3 className="text-lg font-medium text-gray-800 mb-2">No se encontraron resultados</h3>
+          <h3 className="text-lg font-medium text-gray-800 mb-2">{labels.search.noResults}</h3>
           <p className="text-gray-600 mb-4">
-            No hay entidades, administradores o usuarios que coincidan con "{searchTerm}"
+            {labels.search.noMatchesFor.replace('{searchTerm}', searchTerm)}
           </p>
           <button
             onClick={() => updateSearchTerm('')}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
-            Limpiar búsqueda
+            {labels.search.clearSearch}
           </button>
         </div>
       )}

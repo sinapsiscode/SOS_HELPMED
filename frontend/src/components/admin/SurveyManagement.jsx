@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
+import { LABELS } from '../../config/labels'
 import Swal from 'sweetalert2'
 import useSurveyData from '../../hooks/useSurveyData'
 import useAppStore from '../../stores/useAppStore'
 
 const SurveyManagement = () => {
+  const labels = LABELS.admin.surveyManagement
   const [activeTab, setActiveTab] = useState('configurar')
   const [editableQuestions, setEditableQuestions] = useState(null)
   
@@ -39,7 +41,7 @@ const SurveyManagement = () => {
 
   const handleEditQuestions = () => {
     Swal.fire({
-      title: 'Editar Preguntas',
+      title: labels.editModal.title,
       html: `
         <div class="text-left space-y-4 max-h-96 overflow-y-auto">
           ${displayQuestions.map((q, index) => `
@@ -74,8 +76,8 @@ const SurveyManagement = () => {
       `,
       width: '600px',
       showCancelButton: true,
-      confirmButtonText: 'Guardar Cambios',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.editModal.saveChanges,
+      cancelButtonText: labels.editModal.cancel,
       confirmButtonColor: '#3b82f6',
       preConfirm: () => {
         const updatedQuestions = displayQuestions.map(q => ({
@@ -92,8 +94,8 @@ const SurveyManagement = () => {
         // En producción, aquí se guardarían en el backend
         Swal.fire({
           icon: 'success',
-          title: 'Cambios guardados',
-          text: 'Las preguntas se han actualizado correctamente',
+          title: labels.editModal.success.title,
+          text: labels.editModal.success.message,
           timer: 2000,
           showConfirmButton: false
         })
@@ -114,16 +116,16 @@ const SurveyManagement = () => {
     if (!allRated) {
       Swal.fire({
         icon: 'warning',
-        title: 'Encuesta incompleta',
-        text: 'Por favor califique todas las preguntas antes de enviar'
+        title: labels.survey.incomplete.title,
+        text: labels.survey.incomplete.message
       })
       return
     }
 
     Swal.fire({
       icon: 'success',
-      title: 'Encuesta enviada',
-      text: 'Gracias por sus respuestas. Su opinión es muy importante para nosotros.',
+      title: labels.survey.submitted.title,
+      text: labels.survey.submitted.message,
       confirmButtonColor: '#3b82f6'
     }).then(() => {
       setPreviewRatings({})
@@ -139,8 +141,8 @@ const SurveyManagement = () => {
     
     Swal.fire({
       icon: 'info',
-      title: 'Evaluación del Sistema',
-      text: 'El sistema ha evaluado automáticamente basándose en métricas del servicio',
+      title: labels.survey.systemEvaluation.title,
+      text: labels.survey.systemEvaluation.message,
       timer: 2000,
       showConfirmButton: false
     })
@@ -150,8 +152,8 @@ const SurveyManagement = () => {
     // En producción, aquí se generaría y descargaría el archivo Excel
     Swal.fire({
       icon: 'success',
-      title: 'Exportando datos',
-      text: 'El archivo se descargará en breve...',
+      title: labels.export.title,
+      text: labels.export.message,
       timer: 2000,
       showConfirmButton: false
     })
@@ -203,10 +205,10 @@ const SurveyManagement = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800 mb-1">
-              Gestión de Encuestas de Satisfacción
+              {labels.header.title}
             </h2>
             <p className="text-sm text-gray-600">
-              Configura preguntas y revisa resultados de satisfacción del cliente
+              {labels.header.subtitle}
             </p>
           </div>
           <button
@@ -214,7 +216,7 @@ const SurveyManagement = () => {
             className="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
           >
             <i className="fas fa-info-circle"></i>
-            Sistema de evaluación 1-5 estrellas
+            {labels.header.systemEvaluation}
           </button>
         </div>
 
@@ -229,7 +231,7 @@ const SurveyManagement = () => {
             }`}
           >
             <i className="fas fa-cog"></i>
-            Configurar Preguntas
+            {labels.tabs.configure}
           </button>
           <button
             onClick={() => setActiveTab('resultados')}
@@ -240,7 +242,7 @@ const SurveyManagement = () => {
             }`}
           >
             <i className="fas fa-chart-bar"></i>
-            Ver Resultados
+            {labels.tabs.results}
           </button>
         </div>
       </div>
@@ -258,7 +260,7 @@ const SurveyManagement = () => {
                 className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2"
               >
                 <i className="fas fa-edit"></i>
-                Editar Preguntas
+{labels.configure}
               </button>
             </div>
             
@@ -422,7 +424,7 @@ const SurveyManagement = () => {
                   className="px-4 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
                 >
                   <i className="fas fa-file-excel"></i>
-                  Exportar
+                  {labels.export.reportButton}
                 </button>
               </div>
             </div>
@@ -434,7 +436,7 @@ const SurveyManagement = () => {
                 iconColor="text-blue-600"
                 bgColor="bg-blue-50"
                 value={metrics.totalResponses}
-                label="Total Respuestas"
+                label={labels.metrics.totalResponses}
                 trend={metrics.totalResponses > 0 ? "+12%" : null}
                 trendColor="text-blue-600"
               />
@@ -443,7 +445,7 @@ const SurveyManagement = () => {
                 iconColor="text-yellow-600"
                 bgColor="bg-yellow-50"
                 value={`${metrics.averageRating}/5`}
-                label="Calificación Promedio"
+                label={labels.metrics.averageRating}
                 trend={metrics.averageRating > 0 ? "+0.3" : null}
                 trendColor="text-green-600"
               />
@@ -452,7 +454,7 @@ const SurveyManagement = () => {
                 iconColor="text-green-600"
                 bgColor="bg-green-50"
                 value={metrics.npsScore}
-                label="NPS Score"
+                label={labels.metrics.npsScore}
                 trend={metrics.npsScore > 0 ? "+5" : null}
                 trendColor="text-green-600"
               />
@@ -461,7 +463,7 @@ const SurveyManagement = () => {
                 iconColor="text-purple-600"
                 bgColor="bg-purple-50"
                 value={metrics.todayResponses}
-                label="Respuestas Hoy"
+                label={labels.metrics.todayResponses}
                 trend={metrics.todayResponses > 0 ? "+2" : null}
                 trendColor="text-purple-600"
               />
@@ -470,7 +472,7 @@ const SurveyManagement = () => {
                 iconColor="text-indigo-600"
                 bgColor="bg-indigo-50"
                 value={`${metrics.responseRate}%`}
-                label="Tasa Respuesta"
+                label={labels.metrics.responseRate}
                 trend={metrics.responseRate > 0 ? "+2%" : null}
                 trendColor="text-indigo-600"
               />

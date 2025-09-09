@@ -13,6 +13,10 @@ import { LABELS } from '../../../config/labels'
  */
 const OverviewReport = ({ baseMetrics }) => {
   const labels = LABELS.admin.reports.overviewReport
+  
+  // Debug: log baseMetrics para verificar que llega correctamente
+  console.log('OverviewReport baseMetrics:', baseMetrics)
+  
   const { overviewMetrics, chartData, loading, hasData, exportReport } =
     useOverviewReport(baseMetrics)
 

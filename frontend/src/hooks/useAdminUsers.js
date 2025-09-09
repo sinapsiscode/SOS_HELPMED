@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import logger from '../utils/logger'
 import { userSearchSchema } from '../schemas/userSchema'
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../constants/adminDashboard'
+import apiService from '../services/api'
 
 /**
  * Hook para manejar la gestión de usuarios en el dashboard de administrador
@@ -20,42 +21,20 @@ export const useAdminUsers = () => {
       setLoading(true)
       setError(null)
 
-      // Simular llamada a API
-      await new Promise((resolve) => setTimeout(resolve, 800))
+      // Obtener datos reales desde JSON Server
+      const fetchedUsers = await apiService.getUsers()
 
-      const mockUsers = [
-        {
-          id: '1',
-          name: 'Juan Pérez',
-          email: 'juan@email.com',
-          role: 'familiar',
-          status: 'active',
-          createdAt: '2024-01-15',
-          plan: 'Básico'
-        },
-        {
-          id: '2',
-          name: 'María García',
-          email: 'maria@email.com',
-          role: 'corporate',
-          status: 'active',
-          createdAt: '2024-01-10',
-          plan: 'Corporativo'
-        },
-        {
-          id: '3',
-          name: 'Carlos López',
-          email: 'carlos@email.com',
-          role: 'familiar',
-          status: 'inactive',
-          createdAt: '2024-01-08',
-          plan: 'Premium'
-        }
-      ]
+      // Formatear usuarios si es necesario
+      const formattedUsers = fetchedUsers.map(user => ({
+        ...user,
+        status: user.status || 'active',
+        createdAt: user.createdAt || new Date().toISOString(),
+        plan: user.plan || 'basic'
+      }))
 
-      setUsers(mockUsers)
-      setFilteredUsers(mockUsers)
-      logger.info('Users loaded successfully', { count: mockUsers.length })
+      setUsers(formattedUsers)
+      setFilteredUsers(formattedUsers)
+      logger.info('Users loaded successfully', { count: formattedUsers.length })
     } catch (err) {
       const errorMessage = 'Error al cargar usuarios'
       setError(errorMessage)
@@ -98,6 +77,31 @@ export const useAdminUsers = () => {
         throw new Error('Datos de usuario inválidos')
       }
 
+      // Actualizar usuario en JSON Server
+      const updatedUser = await apiService.updateUser(userId, userData)
+      
+      // Actualizar estado local
+      setUsers(prev => prev.map(user => 
+        user.id === userId ? { ...user, ...updatedUser } : user
+      ))
+
+      logger.info('User updated successfully', { userId, userData })
+      return { 
+        success: true, 
+        message: SUCCESS_MESSAGES.USER_UPDATED,
+        data: updatedUser
+      }
+    } catch (err) {
+      const errorMessage = err.message || ERROR_MESSAGES.GENERIC
+      setError(errorMessage)
+      logger.error('Failed to update user', err, { userId, userData })
+      return { success: false, error: errorMessage }
+    }
+  }
+
+  const deleteUser = async (userId) => {
+    try {
+
       // Simular actualización
       await new Promise((resolve) => setTimeout(resolve, 500))
 
@@ -126,15 +130,16 @@ export const useAdminUsers = () => {
       }
 
       // Verificar que el usuario existe
-      const userExists = users.some((user) => user.id === userId)
+      const userExists = users.some((user) => user.id === userId || user.id === Number(userId))
       if (!userExists) {
         throw new Error('Usuario no encontrado')
       }
 
-      // Simular eliminación
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      // Eliminar usuario en JSON Server
+      await apiService.deleteUser(userId)
 
-      setUsers((prev) => prev.filter((user) => user.id !== userId))
+      // Actualizar estado local
+      setUsers((prev) => prev.filter((user) => user.id !== userId && user.id !== Number(userId)))
 
       logger.info('User deleted successfully', { userId })
       return {

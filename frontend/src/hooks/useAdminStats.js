@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import logger from '../utils/logger'
+import apiService from '../services/api'
 
 /**
  * Hook para obtener y manejar estadísticas del dashboard de administrador
@@ -25,27 +26,35 @@ export const useAdminStats = () => {
       setLoading(true)
       setError(null)
 
-      // Simular llamada a API para estadísticas
-      // En implementación real, esto vendría de un servicio
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Obtener datos reales desde el backend
+      const [users, emergencies, contracts, ambulances, dashboardStats] = await Promise.all([
+        apiService.getUsers(),
+        apiService.getEmergencies(),
+        apiService.getContracts(),
+        apiService.getAmbulances(),
+        apiService.getDashboardStats()
+      ])
 
-      const mockStats = {
-        totalUsers: 1247,
-        activeUsers: 892,
-        totalEmergencies: 156,
-        pendingEmergencies: 23,
-        totalContracts: 45,
-        activeContracts: 38,
-        totalUnits: 24,
-        availableUnits: 18
+      // Calcular estadísticas reales basadas en los datos
+      const calculatedStats = {
+        totalUsers: users.length,
+        activeUsers: users.filter(u => u.status === 'active').length || users.length,
+        totalEmergencies: emergencies.length,
+        pendingEmergencies: emergencies.filter(e => e.status === 'pending').length,
+        totalContracts: contracts.length,
+        activeContracts: contracts.filter(c => c.status === 'active').length,
+        totalUnits: ambulances.length,
+        availableUnits: ambulances.filter(a => a.status === 'available').length
       }
 
-      setStats(mockStats)
-      logger.info('Admin stats loaded successfully', mockStats)
-    } catch (err) {
-      const errorMessage = 'Error al cargar estadísticas del dashboard'
-      setError(errorMessage)
-      logger.error('Failed to load admin stats', err, { context: 'useAdminStats' })
+      // Combinar con stats del dashboard si existen
+      const finalStats = dashboardStats ? {
+        ...calculatedStats,
+        ...dashboardStats
+      } : calculatedStats
+
+      setStats(finalStats)
+      logger.info('Admin stats loaded successfully', finalStats)
     } finally {
       setLoading(false)
     }

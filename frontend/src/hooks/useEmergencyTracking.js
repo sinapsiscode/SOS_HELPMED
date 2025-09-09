@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useAppStore from '../stores/useAppStore'
 import Swal from 'sweetalert2'
-import { MOCK_EMERGENCY_DATA } from '../mocks/emergencyTrackingData'
+import apiService from '../services/api'
 
 /**
  * Hook para seguimiento de emergencias activas en tiempo real
@@ -24,9 +24,39 @@ export const useEmergencyTracking = () => {
   const [filterPriority, setFilterPriority] = useState('all')
   const [filterStatus, setFilterStatus] = useState('all')
   const [filterTimeRange, setFilterTimeRange] = useState('today')
-  const [emergencies, setEmergencies] = useState(MOCK_EMERGENCY_DATA)
-  const [isLoading, setIsLoading] = useState(false)
+  const [emergencies, setEmergencies] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  // Cargar emergencias desde API al montar
+  useEffect(() => {
+    fetchEmergencies()
+  }, [])
+
+  const fetchEmergencies = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await apiService.getEmergencies()
+      // Mapear datos si es necesario para compatibilidad
+      const mappedData = data.map(e => ({
+        ...e,
+        startTime: e.createdAt || e.startTime,
+        patientName: e.patient?.name || e.patientName,
+        patientAge: e.patient?.age || e.patientAge,
+        location: e.location?.address || e.location,
+        distance: e.location?.distance || e.distance,
+        estimatedArrival: e.eta || e.estimatedArrival,
+        ambulanceUnit: e.assignedAmbulance || e.ambulanceUnit
+      }))
+      setEmergencies(mappedData)
+    } catch (err) {
+      setError('Error al cargar emergencias')
+      console.error('Error fetching emergencies:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // ============================================
   // FILTROS Y BÚSQUEDA (Regla #2)

@@ -1,0 +1,9 @@
+{
+  "port": 4001,
+  "host": "localhost",
+  "watch": true,
+  "delay": 500,
+  "routes": {
+    "/api/*": "/$1"
+  }
+}

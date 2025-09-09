@@ -39,38 +39,24 @@ const useUserManagement = () => {
     loadAllUsersData
   } = useAppStore()
 
-  // Cargar usuarios al montar el componente
+  // Cargar usuarios solo al montar el componente (sin dependencias)
   useEffect(() => {
     const loadUsers = async () => {
-      // Verificar si los arrays de usuarios están vacíos
-      const hasUsers = allUsers && Object.values(allUsers).some(userArray => 
-        Array.isArray(userArray) && userArray.length > 0
-      )
-      
-      console.log('🔍 [useUserManagement] Debug info:')
-      console.log('📊 allUsers:', allUsers)
-      console.log('✅ hasUsers:', hasUsers)
-      console.log('📝 selectedUserType:', selectedUserType)
-      
-      if (!hasUsers) {
-        console.log('⏳ Loading users data...')
-        setLoading(true)
-        try {
-          await loadAllUsersData()
-          console.log('✅ Users loaded successfully')
-        } catch (err) {
-          setError('Error al cargar usuarios')
-          console.error('❌ Error loading users:', err)
-        } finally {
-          setLoading(false)
-        }
-      } else {
-        console.log('ℹ️ Users already loaded, skipping...')
+      console.log('⏳ Loading users data on mount...')
+      setLoading(true)
+      try {
+        await loadAllUsersData()
+        console.log('✅ Users loaded successfully')
+      } catch (err) {
+        setError('Error al cargar usuarios')
+        console.error('❌ Error loading users:', err)
+      } finally {
+        setLoading(false)
       }
     }
 
     loadUsers()
-  }, [allUsers, loadAllUsersData])
+  }, []) // SOLO se ejecuta al montar, sin dependencias
 
   /**
    * Gestiona servicios adicionales o consumo según el tipo y acción

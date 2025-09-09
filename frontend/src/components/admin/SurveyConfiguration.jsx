@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
+import { LABELS } from '../../config/labels'
 
 const SurveyConfiguration = () => {
+  const labels = LABELS.admin.surveyConfiguration
   const [editMode, setEditMode] = useState(false)
   
   // Las 5 preguntas de la encuesta
@@ -50,7 +52,7 @@ const SurveyConfiguration = () => {
 
   const handleEditQuestions = () => {
     Swal.fire({
-      title: 'Editar Preguntas',
+      title: labels.title,
       html: `
         <div class="text-left space-y-4">
           ${questions.map(q => `
@@ -81,8 +83,8 @@ const SurveyConfiguration = () => {
       `,
       width: '700px',
       showCancelButton: true,
-      confirmButtonText: 'Guardar Cambios',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: labels.saveChanges,
+      cancelButtonText: labels.cancel,
       confirmButtonColor: '#3b82f6',
       preConfirm: () => {
         const updatedQuestions = questions.map(q => ({
@@ -136,7 +138,7 @@ const SurveyConfiguration = () => {
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
           >
             <i className="fas fa-edit"></i>
-            Editar Preguntas
+{labels.title}
           </button>
         </div>
 

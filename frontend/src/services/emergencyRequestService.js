@@ -35,7 +35,7 @@ class EmergencyRequestService {
       }
     ]
 
-    if (user.affiliates && user.affiliates.length > 0) {
+    if (user?.affiliates && user.affiliates.length > 0) {
       const activeAffiliates = user.affiliates.filter((affiliate) => affiliate.status === 'active')
       const affiliatesWithRelation = activeAffiliates.map((affiliate) => ({
         ...affiliate,
@@ -54,10 +54,15 @@ class EmergencyRequestService {
    */
   getAvailableServices(user) {
     const services = []
+    
+    // Manejo defensivo para evitar errores si user.plan es undefined
+    if (!user || !user.plan) {
+      return services
+    }
 
     if (user.plan.subtype === 'HELP') {
       // Plan Help: todos los servicios del límite total
-      if (user.service_usage.current_period.remaining_services > 0) {
+      if (user.service_usage?.current_period?.remaining_services > 0) {
         services.push(
           {
             type: 'EMERGENCIA',
@@ -84,7 +89,7 @@ class EmergencyRequestService {
       }
     } else {
       // Otros planes: servicios específicos
-      const breakdown = user.service_usage.current_period.breakdown
+      const breakdown = user.service_usage?.current_period?.breakdown || {}
 
       // Emergencias (siempre disponibles en planes Básico, VIP, Dorado)
       if (breakdown.EMERGENCIA === 'ILIMITADO') {

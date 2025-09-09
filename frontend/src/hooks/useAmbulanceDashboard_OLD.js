@@ -54,7 +54,7 @@ const useAmbulanceDashboard = () => {
       totalServices: currentUser?.ambulanceStats?.totalServices || 0,
       activeEmergencies: emergencyAlerts.filter((alert) => alert.status === 'active').length,
       completedToday: currentUser?.ambulanceStats?.completedToday || 0,
-      averageResponseTime: currentUser?.ambulanceStats?.averageResponseTime || '15 min'
+      averageResponseTime: currentUser?.ambulanceStats?.averageResponseTime || '0 min'
     }),
     [currentUser?.ambulanceStats, emergencyAlerts]
   )

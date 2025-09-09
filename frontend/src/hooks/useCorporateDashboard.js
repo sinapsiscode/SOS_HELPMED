@@ -47,22 +47,22 @@ const useCorporateDashboard = () => {
     if (!currentUser) return null
 
     const usagePercentage = Math.round(
-      (currentUser.service_usage.current_period.used_services /
-        (currentUser.service_usage.current_period.used_services +
-          currentUser.service_usage.current_period.remaining_services)) *
+      (currentUser.service_usage.used_services /
+        (currentUser.service_usage.used_services +
+          currentUser.service_usage.remaining_services)) *
         100
     )
 
     // Calcular próxima fecha de reset según el ciclo del plan
     const getNextResetDate = () => {
-      const resetDate = new Date(currentUser.service_usage.reset_date)
+      const renewalDate = new Date(currentUser.plan.renewal_date)
       const today = new Date()
 
       if (currentUser.plan.billing_cycle === 'monthly') {
         const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1)
         return nextMonth
       } else {
-        return resetDate
+        return renewalDate
       }
     }
 
@@ -74,8 +74,8 @@ const useCorporateDashboard = () => {
       nextReset,
       daysUntilReset,
       totalServices: currentUser.plan.contract_services,
-      remainingServices: currentUser.service_usage.current_period.remaining_services,
-      usedServices: currentUser.service_usage.current_period.used_services,
+      remainingServices: currentUser.service_usage.remaining_services,
+      usedServices: currentUser.service_usage.used_services,
       billingCycle: currentUser.plan.billing_cycle,
       locationsCount: currentUser.company.locations?.length || 0
     }
@@ -98,7 +98,7 @@ const useCorporateDashboard = () => {
 
     // Alerta de servicios agotándose
     const alertThreshold = systemSettings.corporateServicesAlertThreshold || 2
-    const remainingServices = currentUser.service_usage.current_period.remaining_services
+    const remainingServices = currentUser.service_usage.remaining_services
     const showServicesAlert = remainingServices <= alertThreshold && remainingServices > 0
 
     return {
@@ -115,12 +115,12 @@ const useCorporateDashboard = () => {
     if (!currentUser) return null
 
     return {
-      usedServices: currentUser.service_usage.current_period.used_services,
-      remainingServices: currentUser.service_usage.current_period.remaining_services,
+      usedServices: currentUser.service_usage.used_services,
+      remainingServices: currentUser.service_usage.remaining_services,
       planInfo: `${currentUser.plan.contract_services}/${currentUser.plan.billing_cycle === 'monthly' ? 'mes' : 'año'}`,
       locationsCount: currentUser.company.locations?.length || 0,
-      monthlyBreakdown: currentUser.service_usage.current_period.breakdown_by_month,
-      locationBreakdown: currentUser.service_usage.current_period.breakdown_by_location
+      monthlyBreakdown: currentUser.service_usage.breakdown_by_month || {},
+      locationBreakdown: currentUser.service_usage.breakdown_by_location || {}
     }
   }, [currentUser])
 

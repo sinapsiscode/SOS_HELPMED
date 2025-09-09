@@ -72,7 +72,7 @@ const EmergencyRequestForm = ({ user, onSubmit }) => {
             Sin Servicios Disponibles
           </h3>
           <p className="mb-4 text-gray-600 font-roboto">
-            {user.plan.subtype === 'HELP'
+            {user?.plan?.subtype === 'HELP'
               ? 'Has agotado todos tus servicios del Plan Help'
               : 'Has agotado todos los servicios de tu plan'}
           </p>

@@ -2,9 +2,11 @@
   "users": [
     {
       "id": 1,
+      "username": "admin",
+      "password": "admin123",
       "name": "Admin",
       "email": "admin@helpmed.com",
-      "role": "admin",
+      "role": "ADMIN",
       "profile": {
         "name": "Administrador Principal",
         "phone": "+51 999888777",
@@ -13,9 +15,11 @@
     },
     {
       "id": 2,
+      "username": "conductor",
+      "password": "conductor123",
       "name": "Carlos Mendoza",
       "email": "conductor@helpmed.com",
-      "role": "ambulance",
+      "role": "AMBULANCE",
       "ambulance_unit": "AMB-001",
       "profile": {
         "name": "Carlos Mendoza",
@@ -25,14 +29,632 @@
     },
     {
       "id": 3,
+      "username": "familiar",
+      "password": "familiar123",
       "name": "María García",
       "email": "familiar@helpmed.com",
-      "role": "familiar",
+      "role": "FAMILIAR",
       "profile": {
         "name": "María García",
         "phone": "+51 912345678",
-        "address": "Miraflores, Lima"
+        "address": "Miraflores, Lima",
+        "birth_date": "1985-03-15",
+        "dni": "12345678"
+      },
+      "plan": {
+        "type": "FAMILIAR",
+        "subtype": "HELP",
+        "name": "Plan Help",
+        "start_date": "2024-01-15",
+        "renewal_date": "2025-01-15",
+        "status": "active"
+      },
+      "affiliates": []
+    },
+    {
+      "id": 4,
+      "username": "empresa_abc",
+      "password": "corp123",
+      "name": "Carlos Ramírez",
+      "email": "carlos.ramirez@empresaabc.cl",
+      "role": "CORPORATIVO",
+      "plan": {
+        "type": "CORPORATIVO",
+        "subtype": "AREA_PROTEGIDA",
+        "name": "Área Protegida - Empresa ABC",
+        "billing_cycle": "annual",
+        "contract_services": 50,
+        "start_date": "2024-01-01",
+        "renewal_date": "2025-01-01",
+        "end_date": "2025-01-15",
+        "contract_id": "CORP-ABC-2024-001",
+        "status": "active"
+      },
+      "company": {
+        "id": "comp_abc_001",
+        "name": "Empresa ABC Ltda.",
+        "rut": "96.123.456-7",
+        "industry": "Construcción",
+        "address": "Av. Industrial 1500, Callao",
+        "employees_count": 150
+      },
+      "profile": {
+        "name": "Carlos Ramírez",
+        "email": "carlos.ramirez@empresaabc.cl",
+        "phone": "+51 2 2555 1000",
+        "position": "Administrador Corporativo"
+      },
+      "service_usage": {
+        "used_services": 50,
+        "remaining_services": 0,
+        "total_limit": 50,
+        "usage_percentage": 100
+      },
+      "billing": {
+        "monthly_cost": 1075,
+        "payment_method": "invoice",
+        "auto_renewal": true,
+        "billing_contact": {
+          "name": "Ana Torres",
+          "email": "facturacion@empresaabc.cl",
+          "phone": "+51 2 2555 1001"
+        },
+        "additional_service_rate": 65
       }
+    },
+    {
+      "id": 5,
+      "username": "empresa_xyz",
+      "password": "corp456",
+      "name": "Dra. Patricia Morales",
+      "email": "patricia.morales@centromedico.cl",
+      "role": "CORPORATIVO",
+      "plan": {
+        "type": "CORPORATIVO",
+        "subtype": "AREA_PROTEGIDA",
+        "name": "Área Protegida - Centro Médico XYZ",
+        "billing_cycle": "monthly",
+        "contract_services": 10,
+        "start_date": "2024-06-01",
+        "renewal_date": "2025-06-01",
+        "contract_id": "CORP-XYZ-2024-002",
+        "status": "active"
+      },
+      "company": {
+        "id": "comp_xyz_001",
+        "name": "Centro Médico XYZ",
+        "rut": "76.987.654-3",
+        "industry": "Salud",
+        "address": "Av. Arequipa 1800, Lince",
+        "employees_count": 80
+      },
+      "profile": {
+        "name": "Dra. Patricia Morales",
+        "email": "patricia.morales@centromedico.cl",
+        "phone": "+51 2 2777 2000",
+        "position": "Administrador Corporativo"
+      },
+      "service_usage": {
+        "used_services": 8,
+        "remaining_services": 2,
+        "total_limit": 10,
+        "usage_percentage": 80
+      },
+      "billing": {
+        "monthly_cost": 645,
+        "payment_method": "credit_card",
+        "auto_renewal": true,
+        "billing_contact": {
+          "name": "Roberto Kim",
+          "email": "administracion@centromedico.cl",
+          "phone": "+51 2 2777 2001"
+        },
+        "additional_service_rate": 52
+      }
+    },
+    {
+      "id": 6,
+      "username": "hotel_plaza",
+      "password": "hotel789",
+      "name": "Fernando Castillo",
+      "email": "fernando.castillo@hotelplaza.cl",
+      "role": "CORPORATIVO",
+      "plan": {
+        "type": "CORPORATIVO",
+        "subtype": "AREA_PROTEGIDA",
+        "name": "Área Protegida - Hotel Plaza",
+        "billing_cycle": "annual",
+        "contract_services": 30,
+        "start_date": "2024-09-01",
+        "renewal_date": "2025-09-01",
+        "contract_id": "CORP-PLZ-2024-003",
+        "status": "active"
+      },
+      "company": {
+        "id": "comp_plz_001",
+        "name": "Hotel Plaza Santiago",
+        "rut": "85.222.111-9",
+        "industry": "Hotelería",
+        "address": "Plaza de Armas 100, Lima Centro",
+        "employees_count": 120
+      },
+      "profile": {
+        "name": "Fernando Castillo",
+        "email": "fernando.castillo@hotelplaza.cl",
+        "phone": "+51 2 2666 5000",
+        "position": "Administrador Corporativo"
+      },
+      "service_usage": {
+        "used_services": 8,
+        "remaining_services": 22,
+        "total_limit": 30,
+        "usage_percentage": 27
+      },
+      "billing": {
+        "monthly_cost": 775,
+        "payment_method": "bank_transfer",
+        "auto_renewal": false,
+        "billing_contact": {
+          "name": "Carla Núñez",
+          "email": "finanzas@hotelplaza.cl",
+          "phone": "+51 2 2666 5001"
+        },
+        "additional_service_rate": 77
+      }
+    },
+    {
+      "id": 7,
+      "username": "externo1",
+      "password": "ext123",
+      "name": "José Martínez",
+      "email": "jose.martinez@email.com",
+      "role": "EXTERNO",
+      "plan": {
+        "type": "EXTERNO",
+        "subtype": "CASO_1",
+        "name": "Afiliados Externos - Caso 1",
+        "billing_type": "direct",
+        "start_date": "2024-01-01",
+        "contract_id": "EXT-C1-2024-001",
+        "status": "active"
+      },
+      "client_company": {
+        "id": "client_001",
+        "name": "Rimac Seguros",
+        "rut": "90.123.000-7",
+        "contact_person": "Valentina Torres"
+      },
+      "profile": {
+        "name": "José Martínez",
+        "email": "jose.martinez@email.com",
+        "phone": "+51 9 4444 5555",
+        "dni": "20.111.222-3",
+        "address": "Los Aromos 789, San Martín de Porres",
+        "birth_date": "1982-08-14",
+        "affiliate_id": "SP-001-20111222"
+      },
+      "service_usage": {
+        "unlimited": true,
+        "services_used": 15,
+        "last_service": "2024-12-18T14:30:00Z"
+      }
+    },
+    {
+      "id": 8,
+      "username": "externo1_b",
+      "password": "ext124",
+      "name": "Carolina Rojas",
+      "email": "carolina.rojas@email.com",
+      "role": "EXTERNO",
+      "plan": {
+        "type": "EXTERNO",
+        "subtype": "CASO_1",
+        "name": "Afiliados Externos - Caso 1",
+        "billing_type": "direct",
+        "start_date": "2024-03-15",
+        "contract_id": "EXT-C1-2024-002",
+        "status": "active"
+      },
+      "client_company": {
+        "id": "client_002",
+        "name": "Pacifico Seguros",
+        "rut": "91.456.789-1",
+        "contact_person": "Ricardo Sandoval"
+      },
+      "profile": {
+        "name": "Carolina Rojas",
+        "email": "carolina.rojas@email.com",
+        "phone": "+51 9 6666 7777",
+        "dni": "22.333.444-5",
+        "address": "Av. Grecia 1200, Ñuñoa",
+        "birth_date": "1988-12-05",
+        "affiliate_id": "MS-002-22333444"
+      },
+      "service_usage": {
+        "unlimited": true,
+        "services_used": 8,
+        "last_service": "2024-12-15T09:45:00Z"
+      }
+    },
+    {
+      "id": 9,
+      "username": "externo2",
+      "password": "ext456",
+      "name": "Manuel Guerrero",
+      "email": "manuel.guerrero@email.com",
+      "role": "EXTERNO",
+      "plan": {
+        "type": "EXTERNO",
+        "subtype": "CASO_2",
+        "name": "Afiliados Externos - Caso 2",
+        "billing_type": "limited",
+        "individual_limit": 3,
+        "general_limit": 430,
+        "start_date": "2024-01-01",
+        "contract_id": "EXT-C2-2024-001",
+        "status": "active"
+      },
+      "client_company": {
+        "id": "client_003",
+        "name": "Empresa Minera Norte",
+        "rut": "88.777.666-5",
+        "contact_person": "Andrea Salinas"
+      },
+      "profile": {
+        "name": "Manuel Guerrero",
+        "email": "manuel.guerrero@email.com",
+        "phone": "+51 9 8888 9999",
+        "dni": "24.555.666-7",
+        "address": "Pasaje Los Copihues 456, Arequipa",
+        "birth_date": "1979-06-20",
+        "affiliate_id": "EMN-001-24555666"
+      },
+      "service_usage": {
+        "individual_limit": 3,
+        "individual_used": 3,
+        "individual_remaining": 0,
+        "last_service": "2024-11-28T16:20:00Z"
+      }
+    },
+    {
+      "id": 10,
+      "username": "externo2_b",
+      "password": "ext457",
+      "name": "Pamela Cortés",
+      "email": "pamela.cortes@email.com",
+      "role": "EXTERNO",
+      "plan": {
+        "type": "EXTERNO",
+        "subtype": "CASO_2",
+        "name": "Afiliados Externos - Caso 2",
+        "billing_type": "limited",
+        "individual_limit": 3,
+        "general_limit": 430,
+        "start_date": "2024-01-01",
+        "contract_id": "EXT-C2-2024-001",
+        "status": "active"
+      },
+      "client_company": {
+        "id": "client_003",
+        "name": "Empresa Minera Norte",
+        "rut": "88.777.666-5",
+        "contact_person": "Andrea Salinas"
+      },
+      "profile": {
+        "name": "Pamela Cortés",
+        "email": "pamela.cortes@email.com",
+        "phone": "+51 9 7777 8888",
+        "dni": "25.444.555-6",
+        "address": "Calle del Mineral 123, Arequipa",
+        "birth_date": "1985-09-12",
+        "affiliate_id": "EMN-002-25444555"
+      },
+      "service_usage": {
+        "individual_limit": 3,
+        "individual_used": 1,
+        "individual_remaining": 2,
+        "last_service": "2024-10-15T11:30:00Z"
+      }
+    },
+    {
+      "id": 11,
+      "username": "externo2_c",
+      "password": "ext458",
+      "name": "Profesor Alberto Ruiz",
+      "email": "alberto.ruiz@univalle.cl",
+      "role": "EXTERNO",
+      "plan": {
+        "type": "EXTERNO",
+        "subtype": "CASO_2",
+        "name": "Afiliados Externos - Caso 2",
+        "billing_type": "limited",
+        "individual_limit": 3,
+        "general_limit": 430,
+        "start_date": "2024-01-01",
+        "contract_id": "EXT-C2-2024-002",
+        "status": "active"
+      },
+      "client_company": {
+        "id": "client_004",
+        "name": "Universidad del Valle",
+        "rut": "71.222.333-4",
+        "contact_person": "Dr. Francisco López"
+      },
+      "profile": {
+        "name": "Profesor Alberto Ruiz",
+        "email": "alberto.ruiz@univalle.cl",
+        "phone": "+51 9 5555 4444",
+        "dni": "26.333.444-5",
+        "address": "Av. Educación 890, Lima",
+        "birth_date": "1975-03-08",
+        "affiliate_id": "UV-003-26333444"
+      },
+      "service_usage": {
+        "individual_limit": 3,
+        "individual_used": 0,
+        "individual_remaining": 3,
+        "last_service": null
+      }
+    },
+    {
+      "id": 12,
+      "username": "bcr_admin",
+      "password": "bcr123",
+      "name": "Administrador BCR",
+      "email": "admin.fondoempleados@bancobcr.com",
+      "role": "EXTERNO_ADMIN",
+      "organization": {
+        "id": "org_bcr_001",
+        "name": "Banco Central de Reserva del Perú - Fondo de Empleados",
+        "short_name": "BCR",
+        "type": "FONDO_EMPLEADOS",
+        "rut": "20100047218",
+        "address": "Jr. Miroquesada 441, Lima, Perú",
+        "referral_code": "BCR_FONDO_EMPLEADOS"
+      },
+      "profile": {
+        "name": "Administrador BCR",
+        "email": "admin.fondoempleados@bancobcr.com",
+        "phone": "+506 2287-9100",
+        "position": "Administrador de Beneficios"
+      },
+      "permissions": [
+        "view_employee_metrics",
+        "export_reports",
+        "view_service_history",
+        "view_consolidated_billing"
+      ]
+    },
+    {
+      "id": 13,
+      "username": "coopeservidores_admin",
+      "password": "coope123",
+      "name": "Administrador Coopeservidores",
+      "email": "beneficios@coopeservidores.fi.cr",
+      "role": "EXTERNO_ADMIN",
+      "organization": {
+        "id": "org_coope_001",
+        "name": "Coopeservidores - Programa de Salud",
+        "short_name": "COOPESERVIDORES",
+        "type": "COOPERATIVA",
+        "rut": "20136424867",
+        "address": "Av. Javier Prado Este 2875, San Borja, Lima",
+        "referral_code": "COOPESERVIDORES_SALUD"
+      },
+      "profile": {
+        "name": "Administrador Coopeservidores",
+        "email": "beneficios@coopeservidores.fi.cr",
+        "phone": "+506 2243-9501",
+        "position": "Administrador de Programa de Salud"
+      },
+      "permissions": [
+        "view_employee_metrics",
+        "export_reports",
+        "view_service_history",
+        "view_consolidated_billing"
+      ]
+    },
+    {
+      "id": 14,
+      "username": "help_user",
+      "password": "help123",
+      "name": "Ana Rodríguez",
+      "email": "ana.rodriguez@email.com",
+      "role": "FAMILIAR",
+      "profile": {
+        "name": "Ana Rodríguez",
+        "phone": "+51 9 9876 5432",
+        "address": "Av. Javier Prado 1234, San Isidro",
+        "birth_date": "1985-03-15",
+        "dni": "12.345.678-9"
+      },
+      "plan": {
+        "type": "FAMILIAR",
+        "subtype": "HELP",
+        "name": "Plan Help",
+        "total_services": 16,
+        "start_date": "2024-01-15",
+        "renewal_date": "2025-01-15",
+        "status": "active"
+      },
+      "service_usage": {
+        "used_services": 7,
+        "remaining_services": 9,
+        "total_limit": 16,
+        "usage_percentage": 44
+      },
+      "billing": {
+        "monthly_cost": 195,
+        "payment_method": "credit_card",
+        "auto_renewal": true
+      },
+      "affiliates": [
+        {
+          "id": "aff_001_001",
+          "name": "Pedro Rodríguez",
+          "dni": "12.345.679-8",
+          "phone": "+51 9 8765 4321",
+          "relationship": "conyuge",
+          "status": "active"
+        },
+        {
+          "id": "aff_001_002", 
+          "name": "Sofía Rodríguez",
+          "dni": "76.543.210-1",
+          "phone": "+51 9 1111 2222",
+          "relationship": "hijo",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "username": "basico_user",
+      "password": "basico123", 
+      "name": "Carmen López",
+      "email": "carmen.lopez@email.com",
+      "role": "FAMILIAR",
+      "profile": {
+        "name": "Carmen López",
+        "phone": "+51 9 3333 4444",
+        "address": "Calle Los Jardines 555, San Borja",
+        "birth_date": "1990-07-08",
+        "dni": "11.222.333-4"
+      },
+      "plan": {
+        "type": "FAMILIAR",
+        "subtype": "BASICO",
+        "name": "Plan Básico",
+        "start_date": "2024-02-01",
+        "renewal_date": "2025-02-01",
+        "status": "active"
+      },
+      "service_usage": {
+        "breakdown": {
+          "emergencias": "ILIMITADO",
+          "urgencias": { "used": 1, "limit": 3 },
+          "medico_domicilio": { "used": 2, "limit": 4 },
+          "traslados": { "used": 0, "limit": 1 }
+        }
+      },
+      "billing": {
+        "monthly_cost": 280,
+        "payment_method": "credit_card",
+        "auto_renewal": true
+      },
+      "affiliates": []
+    },
+    {
+      "id": 16,
+      "username": "vip_user",
+      "password": "vip123",
+      "name": "Eduardo Silva", 
+      "email": "eduardo.silva@email.com",
+      "role": "FAMILIAR",
+      "profile": {
+        "name": "Eduardo Silva",
+        "phone": "+51 9 7777 8888",
+        "address": "Av. Salaverry 3000, Jesús María",
+        "birth_date": "1975-12-03",
+        "dni": "16.555.777-8"
+      },
+      "plan": {
+        "type": "FAMILIAR",
+        "subtype": "VIP",
+        "name": "Plan VIP",
+        "start_date": "2024-01-01",
+        "renewal_date": "2025-01-01",
+        "status": "active"
+      },
+      "service_usage": {
+        "breakdown": {
+          "emergencias": "ILIMITADO",
+          "urgencias": { "used": 4, "limit": 6 },
+          "medico_domicilio": { "used": 3, "limit": 6 },
+          "traslados": { "used": 1, "limit": 1 },
+          "zona_protegida": { "used": 0, "limit": 1 }
+        }
+      },
+      "billing": {
+        "monthly_cost": 410,
+        "payment_method": "credit_card",
+        "auto_renewal": true
+      },
+      "benefits": {
+        "seguro_accidentes": {
+          "active": true,
+          "provider": "Chubb",
+          "coverage": 215000
+        }
+      },
+      "affiliates": []
+    },
+    {
+      "id": 17,
+      "username": "dorado_user",
+      "password": "dorado123",
+      "name": "Alejandra Vega",
+      "email": "alejandra.vega@email.com", 
+      "role": "FAMILIAR",
+      "profile": {
+        "name": "Alejandra Vega",
+        "phone": "+51 9 9999 0000",
+        "address": "Av. El Bosque 500, San Isidro",
+        "birth_date": "1980-04-25",
+        "dni": "18.999.000-1"
+      },
+      "plan": {
+        "type": "FAMILIAR",
+        "subtype": "DORADO",
+        "name": "Plan Dorado",
+        "start_date": "2024-01-01",
+        "renewal_date": "2025-01-01",
+        "status": "active"
+      },
+      "service_usage": {
+        "breakdown": {
+          "emergencias": "ILIMITADO",
+          "urgencias": { "used": 2, "limit": 10 },
+          "medico_domicilio": { "used": 5, "limit": 10 },
+          "traslados": { "used": 0, "limit": 1 },
+          "zona_protegida": { "used": 1, "limit": 2 },
+          "examenes_laboratorio": "ILIMITADO"
+        }
+      },
+      "billing": {
+        "monthly_cost": 625,
+        "payment_method": "credit_card", 
+        "auto_renewal": true
+      },
+      "benefits": {
+        "seguro_accidentes": {
+          "active": true,
+          "provider": "Chubb",
+          "coverage": 430000
+        },
+        "examenes_laboratorio": {
+          "active": true,
+          "monthly_limit": "ILIMITADO"
+        }
+      },
+      "affiliates": [
+        {
+          "id": "aff_dor_001",
+          "name": "Fernando Vega", 
+          "dni": "18.999.001-8",
+          "phone": "+51 9 9999 1111",
+          "relationship": "conyuge",
+          "status": "active"
+        },
+        {
+          "id": "aff_dor_002",
+          "name": "Camila Vega",
+          "dni": "77.888.999-2", 
+          "phone": "+51 9 7777 1234",
+          "relationship": "hijo",
+          "status": "active"
+        }
+      ]
     }
   ],
   "emergencies": [
@@ -267,5 +889,281 @@
       "totalAffiliates": 342,
       "activeContracts": 15
     }
+  },
+  "service_history": [
+    {
+      "id": "serv_001",
+      "user_id": 3,
+      "user_type": "FAMILIAR",
+      "service_type": "EMERGENCIA",
+      "date": "2024-12-15",
+      "time": "14:30",
+      "status": "completed",
+      "description": "Dolor de pecho intenso",
+      "location": "Av. San Isidro 1234, San Isidro",
+      "unit_assigned": "AMB-001",
+      "response_time": "4 min",
+      "duration": "45 min",
+      "cost": 0,
+      "rating": 5,
+      "notes": "Atención excelente, personal muy profesional"
+    },
+    {
+      "id": "serv_002",
+      "user_id": 4,
+      "user_type": "CORPORATIVO",
+      "service_type": "EMERGENCIA",
+      "date": "2024-12-18",
+      "time": "10:45",
+      "status": "completed",
+      "description": "Accidente laboral - corte en mano",
+      "location": "Av. Industrial 1500, Callao",
+      "unit_assigned": "AMB-002",
+      "response_time": "6 min",
+      "duration": "50 min",
+      "cost": 0,
+      "employee_name": "Juan Pérez",
+      "rating": 5,
+      "notes": "Atención inmediata, trabajador estabilizado y trasladado"
+    },
+    {
+      "id": "serv_003",
+      "user_id": 7,
+      "user_type": "EXTERNO",
+      "service_type": "EMERGENCIA",
+      "date": "2024-12-18",
+      "time": "14:30",
+      "status": "completed",
+      "description": "Crisis hipertensiva",
+      "location": "Los Aromos 789, San Martín de Porres",
+      "unit_assigned": "AMB-004",
+      "response_time": "18 min",
+      "duration": "65 min",
+      "cost": 120000,
+      "billing_to": "Rimac Seguros",
+      "rating": 4,
+      "notes": "Paciente estabilizado y trasladado a clínica"
+    }
+  ],
+  "medical_units": [
+    {
+      "id": "AMB-001",
+      "type": "Ambulancia",
+      "status": "available",
+      "location": "Base Central - Miraflores",
+      "equipment": "Completo",
+      "crew": 2,
+      "last_service": "2024-12-19T16:30:00Z",
+      "coverage_area": ["Miraflores", "San Isidro", "Vitacura"],
+      "coordinates": { "lat": -12.0284, "lng": -77.05965 }
+    },
+    {
+      "id": "AMB-002",
+      "type": "Ambulancia",
+      "status": "in_service",
+      "location": "En servicio - San Martín de Porres",
+      "equipment": "Completo",
+      "crew": 2,
+      "current_service": "serv_011",
+      "eta_available": "2024-12-20T11:45:00Z",
+      "coverage_area": ["San Martín de Porres", "Callao", "Cerrillos"],
+      "coordinates": { "lat": -33.5067, "lng": -77.07581 }
+    },
+    {
+      "id": "MED-003",
+      "type": "Unidad Médica",
+      "status": "available",
+      "location": "Base Central - Miraflores",
+      "equipment": "Básico",
+      "crew": 1,
+      "last_service": "2024-12-19T09:30:00Z",
+      "coverage_area": ["Miraflores", "Lima", "Ñuñoa"],
+      "coordinates": { "lat": -12.0284, "lng": -77.05965 }
+    }
+  ],
+  "service_statistics": {
+    "monthly_totals": {
+      "december": {
+        "emergencias": 156,
+        "urgencias": 89,
+        "medico_domicilio": 167,
+        "traslados": 34,
+        "zona_protegida": 12,
+        "orientacion": 234,
+        "laboratorio": 45
+      },
+      "november": {
+        "emergencias": 142,
+        "urgencias": 95,
+        "medico_domicilio": 145,
+        "traslados": 28,
+        "zona_protegida": 8,
+        "orientacion": 198,
+        "laboratorio": 38
+      }
+    },
+    "response_times": {
+      "average_emergency": "7.5 min",
+      "average_urgency": "15.2 min",
+      "average_home_visit": "28.4 min",
+      "best_time": "2 min",
+      "worst_time": "45 min"
+    },
+    "satisfaction": {
+      "overall": 4.6,
+      "emergency": 4.8,
+      "urgency": 4.5,
+      "home_visit": 4.7,
+      "total_reviews": 1247
+    }
+  },
+  "dashboard": {
+    "totalEmergencies": 156,
+    "activeEmergencies": 3,
+    "availableAmbulances": 8,
+    "totalAmbulances": 12,
+    "monthlyRevenue": 45230,
+    "totalUsers": 1234,
+    "averageResponseTime": "8.5 min",
+    "satisfactionRate": 94.5,
+    "totalAffiliates": 342,
+    "activeContracts": 15
+  },
+  "paymentConfig": {
+    "enabledMethods": {
+      "card": true,
+      "yape": true,
+      "plin": true,
+      "transfer": true
+    },
+    "yape": {
+      "phoneNumber": "999888777",
+      "ownerName": "HELPMED S.A.C.",
+      "instructions": "Enviar captura del voucher después de realizar el pago"
+    },
+    "plin": {
+      "phoneNumber": "998877666", 
+      "ownerName": "HELPMED S.A.C.",
+      "instructions": "Usar el código QR o número para realizar el pago"
+    },
+    "transfer": {
+      "bankName": "Banco de Crédito del Perú",
+      "accountNumber": "",
+      "cci": "",
+      "accountType": "corriente",
+      "ownerName": "HELPMED S.A.C.",
+      "instructions": "Enviar voucher a administracion@helpmed.com después de la transferencia"
+    },
+    "general": {
+      "maxFileSize": 5,
+      "allowedFormats": ["jpg", "jpeg", "png", "pdf"],
+      "confirmationMessage": "Su pago ha sido registrado y será verificado en las próximas 2 horas"
+    }
+  },
+  "registrationConfig": {
+    "planOptions": {
+      "familiar": {
+        "help": "Plan Help - 10 servicios/mes",
+        "basico": "Plan Básico - Servicios limitados",
+        "vip": "Plan VIP - Servicios premium",
+        "dorado": "Plan Dorado - Servicios ilimitados"
+      },
+      "corporativo": {
+        "area_protegida": "Área Protegida - Plan empresarial"
+      },
+      "externo": {
+        "caso1": "Afiliado Externo - Sin límites",
+        "caso2": "Afiliado Externo - Con límites"
+      }
+    },
+    "externalEntities": [
+      { "value": "BCR", "label": "Banco Central de Reserva (BCR)" },
+      { "value": "RIMAC", "label": "Rimac Seguros" },
+      { "value": "PACIFICO", "label": "Pacífico Seguros" },
+      { "value": "MAPFRE", "label": "Mapfre Seguros" },
+      { "value": "other", "label": "Otra entidad" }
+    ]
+  },
+  "transferConfig": {
+    "transferTypes": [
+      { "value": "medical_appointment", "label": "Cita Médica" },
+      { "value": "medical_procedure", "label": "Procedimiento Médico" },
+      { "value": "routine_checkup", "label": "Control de Rutina" },
+      { "value": "therapy_session", "label": "Sesión de Terapia" },
+      { "value": "dialysis", "label": "Diálisis" },
+      { "value": "other", "label": "Otro" }
+    ],
+    "reasons": [
+      "Alta hospitalaria",
+      "Consulta médica de rutina",
+      "Cita con especialista",
+      "Exámenes médicos",
+      "Procedimiento ambulatorio",
+      "Control post-operatorio",
+      "Terapia física",
+      "Hemodiálisis",
+      "Oncología",
+      "Cardiología",
+      "Neurología",
+      "Otro"
+    ]
+  },
+  "surveyConfig": {
+    "defaultQuestions": [
+      {
+        "id": "question1",
+        "text": "¿Qué tan satisfecho está con la rapidez de nuestro servicio?",
+        "icon": "fas fa-clock",
+        "category": "tiempo",
+        "active": true
+      },
+      {
+        "id": "question2",
+        "text": "¿Cómo calificaría la profesionalidad de nuestro personal?",
+        "icon": "fas fa-user-md",
+        "category": "personal",
+        "active": true
+      },
+      {
+        "id": "question3",
+        "text": "¿Qué tan satisfecho está con la calidad de la atención médica recibida?",
+        "icon": "fas fa-heart",
+        "category": "calidad",
+        "active": true
+      },
+      {
+        "id": "question4",
+        "text": "¿Cómo calificaría la comunicación durante el servicio?",
+        "icon": "fas fa-comments",
+        "category": "comunicacion",
+        "active": true
+      },
+      {
+        "id": "question5",
+        "text": "¿Recomendaría nuestros servicios a familiares y amigos?",
+        "icon": "fas fa-star",
+        "category": "recomendacion",
+        "active": true
+      }
+    ]
+  },
+  "billingConfig": {
+    "paymentMethodIcons": {
+      "credit_card": "fas fa-credit-card",
+      "bank_transfer": "fas fa-university",
+      "invoice": "fas fa-file-invoice",
+      "debit_card": "fas fa-credit-card"
+    },
+    "paymentMethodNames": {
+      "credit_card": "Tarjeta de Crédito",
+      "bank_transfer": "Transferencia Bancaria",
+      "invoice": "Facturación Empresarial",
+      "debit_card": "Tarjeta de Débito"
+    },
+    "planUpgradeOptions": [
+      { "id": "help", "name": "Plan HELP", "description": "Servicios generales" },
+      { "id": "med", "name": "Plan MED", "description": "Servicios médicos completos" },
+      { "id": "med_plus", "name": "Plan MED+", "description": "Servicios premium" }
+    ]
   }
 }

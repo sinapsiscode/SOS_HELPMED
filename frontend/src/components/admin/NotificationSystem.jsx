@@ -3,51 +3,54 @@ import useNotificationSystem from '../../hooks/useNotificationSystem'
 import { NotificationsHeader, AlertsView, ConfigView, SummaryStats } from './notifications'
 import LoadingSkeleton from '../shared/LoadingSkeleton'
 import ErrorMessage from '../shared/ErrorMessage'
+import { LABELS } from '../../config/labels'
 
 /**
- * Sistema de notificaciones y alertas automáticas
- * ENFOQUE BALANCEADO: Estructura en componente, lógica en hook
+ * ${LABELS.admin.notificationSystem.comments.title}
+ * ${LABELS.admin.notificationSystem.comments.approach}
  *
- * Funcionalidades:
- * - Alertas automáticas de emergencias con popups y sonidos
- * - Sistema de silenciado temporal de alertas por tipo
- * - Configuración de comportamiento de notificaciones
- * - Vista de alertas activas y historial de notificaciones
- * - Panel de estadísticas resumidas del sistema
- * - Reproducción automática de sonidos según tipo de emergencia
+ * ${LABELS.admin.notificationSystem.comments.features.title}
+ * ${LABELS.admin.notificationSystem.comments.features.autoAlerts}
+ * ${LABELS.admin.notificationSystem.comments.features.silenceSystem}
+ * ${LABELS.admin.notificationSystem.comments.features.configBehavior}
+ * ${LABELS.admin.notificationSystem.comments.features.alertsView}
+ * ${LABELS.admin.notificationSystem.comments.features.statsPanel}
+ * ${LABELS.admin.notificationSystem.comments.features.autoSounds}
  *
- * Arquitectura modular:
- * - NotificationsHeader: Header con tabs y contador de alertas
- * - AlertsView: Vista de alertas con controles de silencio
- * - ConfigView: Formulario de configuración de notificaciones
- * - SummaryStats: Panel de estadísticas resumidas
+ * ${LABELS.admin.notificationSystem.comments.architecture.title}
+ * ${LABELS.admin.notificationSystem.comments.architecture.header}
+ * ${LABELS.admin.notificationSystem.comments.architecture.alertsView}
+ * ${LABELS.admin.notificationSystem.comments.architecture.configView}
+ * ${LABELS.admin.notificationSystem.comments.architecture.summaryStats}
  *
- * Características especiales:
- * - Popups automáticos para emergencias SOS (nunca se cierran solos)
- * - Sistema de sonidos diferenciados por tipo de emergencia
- * - Modos de notificación: silencioso, normal, detallado
- * - Sincronización con configuración global del sistema
+ * ${LABELS.admin.notificationSystem.comments.specialFeatures.title}
+ * ${LABELS.admin.notificationSystem.comments.specialFeatures.autoPopups}
+ * ${LABELS.admin.notificationSystem.comments.specialFeatures.soundSystem}
+ * ${LABELS.admin.notificationSystem.comments.specialFeatures.notificationModes}
+ * ${LABELS.admin.notificationSystem.comments.specialFeatures.globalSync}
  *
  * @returns {JSX.Element} Componente de sistema de notificaciones
  *
- * @example
- * // Uso básico en dashboard administrativo
- * <NotificationSystem />
+ * ${LABELS.admin.notificationSystem.comments.example.title}
+ * ${LABELS.admin.notificationSystem.comments.example.usage}
+ * ${LABELS.admin.notificationSystem.comments.example.component}
  *
- * @see {@link useNotificationSystem} Hook que maneja toda la lógica de negocio
- * @see {@link INITIAL_NOTIFICATION_CONFIG} Configuración inicial
+ * ${LABELS.admin.notificationSystem.comments.see.hook}
+ * ${LABELS.admin.notificationSystem.comments.see.config}
  *
- * Cumple reglas de refactorización:
- * - Regla #3: <200 líneas (142 líneas aprox)
- * - Regla #4: Validación de datos y props
- * - Regla #5: Lógica compleja en hook personalizado
- * - Regla #6: Componentes modulares y reutilizables
- * - Regla #8: Manejo consistente de errores
- * - Regla #12: Documentación JSDoc completa
+ * ${LABELS.admin.notificationSystem.comments.rules.title}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule3}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule4}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule5}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule6}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule8}
+ * ${LABELS.admin.notificationSystem.comments.rules.rule12}
  */
 const NotificationSystem = () => {
+  const labels = LABELS.admin.notificationSystem
+  
   // ============================================
-  // HOOK - Toda la lógica compleja (Regla #5)
+  // ${LABELS.admin.notificationSystem.comments.businessLogic}
   // ============================================
   const {
     // Estados
@@ -82,13 +85,13 @@ const NotificationSystem = () => {
   } = useNotificationSystem()
 
   // ============================================
-  // MANEJO DE ERRORES (Regla #8)
+  // ${LABELS.admin.notificationSystem.comments.errorHandling}
   // ============================================
   if (error) {
     return (
       <div className="space-y-4">
         <ErrorMessage
-          message={`Error en sistema de notificaciones: ${error}`}
+          message={labels.errors.systemError.replace('{error}', error)}
           onRetry={clearError}
         />
       </div>

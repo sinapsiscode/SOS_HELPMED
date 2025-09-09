@@ -1,10 +1,9 @@
 // Configuración de API y endpoints
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-const MOCK_API_URL = import.meta.env.VITE_MOCK_API_URL || 'http://localhost:3002'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001/api'
+// MOCK_API_URL is deprecated - not used anymore
 
 export const API_CONFIG = {
   baseURL: API_BASE_URL,
-  mockURL: MOCK_API_URL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json'
@@ -21,7 +20,7 @@ export const API_ENDPOINTS = {
     forgotPassword: '/auth/forgot-password',
     resetPassword: '/auth/reset-password'
   },
-  
+
   // Users
   users: {
     list: '/users',
@@ -31,7 +30,7 @@ export const API_ENDPOINTS = {
     delete: (id) => `/users/${id}`,
     profile: '/users/profile'
   },
-  
+
   // Emergencies
   emergencies: {
     list: '/emergencies',
@@ -43,7 +42,7 @@ export const API_ENDPOINTS = {
     cancel: (id) => `/emergencies/${id}/cancel`,
     track: (id) => `/emergencies/${id}/track`
   },
-  
+
   // Ambulances
   ambulances: {
     list: '/ambulances',
@@ -54,7 +53,7 @@ export const API_ENDPOINTS = {
     updateLocation: (id) => `/ambulances/${id}/location`,
     available: '/ambulances/available'
   },
-  
+
   // Affiliates
   affiliates: {
     list: '/affiliates',
@@ -65,7 +64,7 @@ export const API_ENDPOINTS = {
     activate: (id) => `/affiliates/${id}/activate`,
     suspend: (id) => `/affiliates/${id}/suspend`
   },
-  
+
   // Contracts
   contracts: {
     list: '/contracts',
@@ -75,7 +74,7 @@ export const API_ENDPOINTS = {
     cancel: (id) => `/contracts/${id}/cancel`,
     renew: (id) => `/contracts/${id}/renew`
   },
-  
+
   // Reports
   reports: {
     dashboard: '/reports/dashboard',
@@ -84,7 +83,7 @@ export const API_ENDPOINTS = {
     performance: '/reports/performance',
     export: '/reports/export'
   },
-  
+
   // Notifications
   notifications: {
     list: '/notifications',
@@ -92,7 +91,6 @@ export const API_ENDPOINTS = {
     markAllAsRead: '/notifications/read-all',
     preferences: '/notifications/preferences'
   },
-  
   // Settings
   settings: {
     general: '/settings/general',
@@ -113,7 +111,7 @@ export const EXTERNAL_URLS = {
 
 // Configuración de WebSocket
 export const WEBSOCKET_CONFIG = {
-  url: import.meta.env.VITE_WS_URL || 'ws://localhost:3001',
+  url: import.meta.env.VITE_WS_URL || 'ws://localhost:4001',
   reconnectInterval: 5000,
   maxReconnectAttempts: 10
 }

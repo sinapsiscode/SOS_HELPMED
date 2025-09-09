@@ -8,7 +8,7 @@ class UserService {
       return await apiService.get(API_ENDPOINTS.users.list)
     } catch (error) {
       console.error('Error fetching users:', error)
-      return Object.values(MOCK_DATA.defaultUsers)
+      return []
     }
   }
 
@@ -17,7 +17,7 @@ class UserService {
       return await apiService.get(API_ENDPOINTS.users.get(id))
     } catch (error) {
       console.error('Error fetching user:', error)
-      return MOCK_DATA.defaultUsers.admin
+      return null
     }
   }
 
@@ -53,7 +53,7 @@ class UserService {
       return await apiService.get(API_ENDPOINTS.users.profile)
     } catch (error) {
       console.error('Error fetching user profile:', error)
-      return MOCK_DATA.defaultUsers.admin
+      return null
     }
   }
 
@@ -62,7 +62,7 @@ class UserService {
       return await apiService.put(API_ENDPOINTS.users.profile, data)
     } catch (error) {
       console.error('Error updating profile:', error)
-      return { ...MOCK_DATA.defaultUsers.admin, ...data }
+      return data
     }
   }
 }

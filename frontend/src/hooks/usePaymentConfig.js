@@ -14,45 +14,57 @@ const usePaymentConfig = () => {
     try {
       setLoading(true)
       
-      // Obtener configuración del localStorage (en producción sería de la API)
+      // Obtener configuración del localStorage o desde db.json
       const savedConfig = localStorage.getItem('paymentMethodsConfig')
       
       if (savedConfig) {
         setPaymentConfig(JSON.parse(savedConfig))
       } else {
-        // Configuración por defecto
-        const defaultConfig = {
-          enabledMethods: {
-            card: true,
-            yape: true,
-            plin: true,
-            transfer: true
-          },
-          yape: {
-            phoneNumber: '999888777',
-            ownerName: 'HELPMED S.A.C.',
-            instructions: 'Enviar captura del voucher después de realizar el pago'
-          },
-          plin: {
-            phoneNumber: '998877666',
-            ownerName: 'HELPMED S.A.C.',
-            instructions: 'Usar el código QR o número para realizar el pago'
-          },
-          transfer: {
-            bankName: 'Banco de Crédito del Perú',
-            accountNumber: '123-456789-0-12',
-            cci: '00212300456789012',
-            accountType: 'corriente',
-            ownerName: 'HELPMED S.A.C.',
-            instructions: 'Enviar voucher a administracion@helpmed.com después de la transferencia'
-          },
-          general: {
-            maxFileSize: 5,
-            allowedFormats: ['jpg', 'jpeg', 'png', 'pdf'],
-            confirmationMessage: 'Su pago ha sido registrado y será verificado en las próximas 2 horas'
+        // Cargar desde db.json
+        try {
+          const response = await fetch('http://localhost:4001/paymentConfig')
+          if (response.ok) {
+            const config = await response.json()
+            setPaymentConfig(config)
+          } else {
+            throw new Error('No se pudo cargar la configuración desde el servidor')
           }
+        } catch (fetchError) {
+          console.warn('Using fallback payment configuration')
+          // Configuración de fallback
+          const defaultConfig = {
+            enabledMethods: {
+              card: true,
+              yape: true,
+              plin: true,
+              transfer: true
+            },
+            yape: {
+              phoneNumber: '999888777',
+              ownerName: 'HELPMED S.A.C.',
+              instructions: 'Enviar captura del voucher después de realizar el pago'
+            },
+            plin: {
+              phoneNumber: '998877666',
+              ownerName: 'HELPMED S.A.C.',
+              instructions: 'Usar el código QR o número para realizar el pago'
+            },
+            transfer: {
+              bankName: 'Banco de Crédito del Perú',
+              accountNumber: '',
+              cci: '',
+              accountType: 'corriente',
+              ownerName: 'HELPMED S.A.C.',
+              instructions: 'Enviar voucher a administracion@helpmed.com después de la transferencia'
+            },
+            general: {
+              maxFileSize: 5,
+              allowedFormats: ['jpg', 'jpeg', 'png', 'pdf'],
+              confirmationMessage: 'Su pago ha sido registrado y será verificado en las próximas 2 horas'
+            }
+          }
+          setPaymentConfig(defaultConfig)
         }
-        setPaymentConfig(defaultConfig)
       }
     } catch (err) {
       setError('Error al cargar la configuración de pagos')

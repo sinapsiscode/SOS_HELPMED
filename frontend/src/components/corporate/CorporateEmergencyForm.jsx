@@ -180,11 +180,11 @@ const CorporateEmergencyForm = ({ user, formData, errors, onUpdateData, onSubmit
             disabled={loading}
           >
             <option value="">Seleccionar ubicación...</option>
-            {user.company.locations?.map((loc) => (
+            {user?.company?.locations?.map((loc) => (
               <option key={loc.id} value={loc.address}>
                 {loc.name} - {loc.address}
               </option>
-            ))}
+            )) || <option value="">No hay ubicaciones disponibles</option>}
           </select>
           {errors.location && <p className="text-red-600 text-sm mt-1">{errors.location}</p>}
         </div>

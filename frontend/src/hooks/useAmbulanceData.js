@@ -20,7 +20,7 @@ const useAmbulanceData = (user, emergencyAlerts) => {
       totalServices: user?.ambulanceStats?.totalServices || 0,
       activeEmergencies: emergencyAlerts.filter((alert) => alert.status === 'active').length,
       completedToday: user?.ambulanceStats?.completedToday || 0,
-      averageResponseTime: user?.ambulanceStats?.averageResponseTime || '15 min'
+      averageResponseTime: user?.ambulanceStats?.averageResponseTime || '0 min'
     }),
     [user?.ambulanceStats, emergencyAlerts]
   )

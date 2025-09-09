@@ -18,7 +18,7 @@ export const useAdminHeader = (user) => {
    * Provee valor por defecto si no existe
    */
   const userName = useMemo(() => {
-    return user?.name || 'Administrador'
+    return user?.name || ''
   }, [user?.name])
 
   /**
@@ -26,7 +26,7 @@ export const useAdminHeader = (user) => {
    * Provee valor por defecto si no existe
    */
   const userEmail = useMemo(() => {
-    return user?.email || 'admin@helpmed.com'
+    return user?.email || ''
   }, [user?.email])
 
   /**

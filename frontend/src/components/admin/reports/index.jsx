@@ -4,8 +4,8 @@ import useAppStore from '../../../stores/useAppStore'
 import Swal from 'sweetalert2'
 import { LABELS } from '../../../config/labels'
 
-// Lazy loading de reportes para mejor performance
-const OverviewReport = lazy(() => import('./OverviewReport'))
+// Lazy loading de reportes para mejor performance  
+const OverviewReport = lazy(() => import('./OverviewReportSimple'))
 const UsersReport = lazy(() => import('./UsersReport'))
 const ServicesReport = lazy(() => import('./ServicesReport'))
 const PerformanceReport = lazy(() => import('./PerformanceReport'))
@@ -27,8 +27,8 @@ const LoadingSpinner = () => {
 }
 
 const ReportsAnalytics = () => {
-  const labels = LABELS.admin.reports.reportsAnalytics
-  const { revenueSummary, transactions, allUsers, emergencyServices, surveys } = useAppStore()
+  const labels = LABELS.admin.reports?.reportsAnalytics || {}
+  const store = useAppStore()
   const [selectedReport, setSelectedReport] = useState('overview')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
@@ -187,41 +187,60 @@ const ReportsAnalytics = () => {
   }
 
   const renderReportContent = () => {
-    const dateRange = { startDate, endDate }
-    
-    // Construir baseMetrics con la estructura esperada
-    const totalUsers = Object.values(allUsers || {}).reduce((sum, users) => sum + (users?.length || 0), 0)
-    
-    const baseMetrics = {
-      total: {
-        users: totalUsers,
-        revenue: revenueSummary?.totalRevenue || 0,
-        services: emergencyServices?.length || 0
-      },
-      filtered: {
-        services: emergencyServices || [],
-        surveys: surveys || []
-      },
-      dateRange
-    }
-    
-    switch (selectedReport) {
-      case 'overview':
-        return <OverviewReport baseMetrics={baseMetrics} />
-      case 'users':
-        return <UsersReport baseMetrics={{ dateRange, filterType }} />
-      case 'services':
-        return <ServicesReport dateRange={dateRange} />
-      case 'performance':
-        return <PerformanceReport dateRange={dateRange} />
-      case 'geography':
-        return <GeographyReport dateRange={dateRange} />
-      case 'finanzas':
-        return <FinancialReport />
-      case 'surveys':
-        return <SurveysReport dateRange={dateRange} />
-      default:
-        return <OverviewReport baseMetrics={baseMetrics} />
+    try {
+      const dateRange = { startDate, endDate }
+      
+      // Construir baseMetrics con la estructura esperada - con valores seguros
+      const allUsers = store.allUsers || {}
+      const revenueSummary = store.revenueSummary || {}
+      const emergencyServices = store.emergencyServices || []
+      const surveys = store.surveyResponses || []
+      
+      const totalUsers = Object.values(allUsers).reduce((sum, users) => sum + (Array.isArray(users) ? users.length : 0), 0)
+      
+      const baseMetrics = {
+        total: {
+          users: totalUsers,
+          revenue: revenueSummary.totalRevenue || 0,
+          services: emergencyServices.length || 0
+        },
+        filtered: {
+          services: emergencyServices,
+          surveys: surveys
+        },
+        dateRange
+      }
+      
+      switch (selectedReport) {
+        case 'overview':
+          return <OverviewReport dateRange={dateRange} revenueSummary={revenueSummary} />
+        case 'users':
+          return <UsersReport baseMetrics={{ dateRange, filterType }} />
+        case 'services':
+          return <ServicesReport dateRange={dateRange} />
+        case 'performance':
+          return <PerformanceReport dateRange={dateRange} />
+        case 'geography':
+          return <GeographyReport dateRange={dateRange} />
+        case 'finanzas':
+          return <FinancialReport />
+        case 'surveys':
+          return <SurveysReport dateRange={dateRange} />
+        default:
+          return <OverviewReport dateRange={dateRange} revenueSummary={revenueSummary} />
+      }
+    } catch (error) {
+      console.error('Error rendering report content:', error)
+      return (
+        <div className="text-center py-12">
+          <div className="text-red-600 mb-4">
+            <i className="fas fa-exclamation-triangle text-4xl"></i>
+          </div>
+          <h3 className="text-lg font-semibold text-gray-800 mb-2">Error al cargar el reporte</h3>
+          <p className="text-gray-600 mb-4">Por favor, recarga la página e intenta de nuevo.</p>
+          <p className="text-xs text-gray-500">{error.message}</p>
+        </div>
+      )
     }
   }
 

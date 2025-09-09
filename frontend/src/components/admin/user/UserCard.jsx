@@ -407,7 +407,7 @@ const UserCard = ({
                 <button
                   onClick={() => onManageServices('default')}
                   className="w-8 h-8 bg-green-500 text-white rounded flex items-center justify-center"
-                  title="+ Servicios"
+                  title={labels.buttons.addServicesMobile}
                 >
                   <i className="fas fa-plus text-xs"></i>
                 </button>
@@ -417,7 +417,7 @@ const UserCard = ({
                 <button
                   onClick={onManageAffiliates}
                   className="w-8 h-8 bg-purple-500 text-white rounded flex items-center justify-center"
-                  title="👥"
+                  title={labels.buttons.manageAffiliatesMobile}
                 >
                   <i className="fas fa-users text-xs"></i>
                 </button>
@@ -428,7 +428,7 @@ const UserCard = ({
                 className={`w-8 h-8 rounded flex items-center justify-center ${
                   isActive ? 'bg-yellow-500' : 'bg-green-500'
                 } text-white`}
-                title="⏸"
+                title={labels.buttons.toggleStatusMobile}
               >
                 <i className={`fas fa-${isActive ? 'pause' : 'play'} text-xs`}></i>
               </button>
@@ -436,7 +436,7 @@ const UserCard = ({
               <button
                 onClick={onDelete}
                 className="w-8 h-8 bg-red-500 text-white rounded flex items-center justify-center"
-                title="🗑"
+                title={labels.buttons.deleteUserMobile}
               >
                 <i className="fas fa-trash text-xs"></i>
               </button>

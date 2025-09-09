@@ -25,7 +25,7 @@ const UnitsTab = ({
   getStatusText,
   getCurrentStatusText
 }) => {
-  const labels = LABELS.admin.units
+  const labels = LABELS.admin.ambulance
   
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)

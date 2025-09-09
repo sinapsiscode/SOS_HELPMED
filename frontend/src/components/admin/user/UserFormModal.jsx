@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import userService from '../../../services/userService'
 import LocationMapModal from './LocationMapModal'
-import LABELS from '../../../config/labels'
+import { LABELS } from '../../../config/labels'
 
 /**
  * ${LABELS.admin.user.userFormModal.comments.title}
@@ -423,7 +423,7 @@ const CorporateUserFields = ({ formData, onChange }) => {
             type="number"
             value={formData.plan?.contract_amount || ''}
             onChange={(e) => onChange('plan.contract_amount', parseFloat(e.target.value))}
-            placeholder="0.00"
+            placeholder={labels.amountPlaceholder}
             step="0.01"
             min="0"
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary-red focus:border-primary-red"

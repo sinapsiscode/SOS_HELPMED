@@ -17,7 +17,10 @@ import { reportService } from '../services/reportService'
  * @returns {Object} Datos y funciones específicas del reporte overview
  */
 const useOverviewReport = (baseMetrics) => {
-  const { users, emergencyServices, revenueSummary, transactions, surveys, affiliates } =
+  // Debug: verificar que recibimos baseMetrics
+  console.log('useOverviewReport - baseMetrics received:', baseMetrics)
+  
+  const { allUsers, activeEmergencies, revenueSummary, transactions, surveyResponses } =
     useAppStore()
 
   const [chartData, setChartData] = useState({})
@@ -27,10 +30,21 @@ const useOverviewReport = (baseMetrics) => {
   // MÉTRICAS PRINCIPALES DEL OVERVIEW
   // ============================================
   const overviewMetrics = useMemo(() => {
-    const totalUsers = baseMetrics.total.users || 0
-    const totalServices = baseMetrics.filtered.services.length || 0
-    const totalRevenue = baseMetrics.total.revenue || 0
-    const totalSurveys = baseMetrics.filtered.surveys.length || 0
+    // Manejo defensivo para evitar errores si baseMetrics es undefined
+    if (!baseMetrics) {
+      return {
+        users: { total: 0, growth: 0, previous: 0 },
+        services: { total: 0, growth: 0, previous: 0 },
+        revenue: { total: 0, growth: 0, previous: 0 },
+        satisfaction: { average: 0, total: 0 },
+        performance: { avgResponseTime: 0, successRate: 0 }
+      }
+    }
+    
+    const totalUsers = baseMetrics.total?.users || 0
+    const totalServices = baseMetrics.filtered?.services?.length || 0
+    const totalRevenue = baseMetrics.total?.revenue || 0
+    const totalSurveys = baseMetrics.filtered?.surveys?.length || 0
 
     // Cálculos de crecimiento (simulated - en producción vendría de API)
     const previousPeriodUsers = Math.floor(totalUsers * 0.85)
@@ -52,7 +66,7 @@ const useOverviewReport = (baseMetrics) => {
 
     // Métricas de satisfacción
     const averageSatisfaction =
-      totalSurveys > 0
+      totalSurveys > 0 && baseMetrics.filtered?.surveys
         ? (
             baseMetrics.filtered.surveys.reduce((sum, survey) => sum + (survey.rating || 0), 0) /
             totalSurveys
@@ -87,7 +101,7 @@ const useOverviewReport = (baseMetrics) => {
         successRate: 96.5 // Simulated KPI
       }
     }
-  }, [baseMetrics, users, emergencyServices, revenueSummary, surveys])
+  }, [baseMetrics, allUsers, activeEmergencies, revenueSummary, surveyResponses])
 
   // ============================================
   // DATOS PARA GRÁFICOS
@@ -263,24 +277,30 @@ const useOverviewReport = (baseMetrics) => {
   // FUNCIÓN DE EXPORTACIÓN ESPECÍFICA
   // ============================================
   const exportOverviewReport = async (format) => {
-    const reportData = generateOverviewContent
+    try {
+      const reportData = generateOverviewContent
 
-    if (format === 'pdf') {
-      await reportService.generatePDF({
-        reportType: 'overview',
-        title: reportData.title,
-        content: reportData.content,
-        dateRange: baseMetrics.dateRange,
-        metrics: reportData.metrics
-      })
-    } else if (format === 'excel') {
-      await reportService.generateExcel({
-        reportType: 'overview',
-        title: reportData.title,
-        content: reportData.excelContent,
-        dateRange: baseMetrics.dateRange,
-        metrics: reportData.metrics
-      })
+      if (format === 'pdf') {
+        await reportService.generatePDF({
+          reportType: 'overview',
+          title: reportData.title,
+          content: reportData.content,
+          dateRange: baseMetrics?.dateRange,
+          metrics: reportData.metrics
+        })
+      } else if (format === 'excel') {
+        await reportService.generateExcel({
+          reportType: 'overview',
+          title: reportData.title,
+          content: reportData.excelContent,
+          dateRange: baseMetrics?.dateRange,
+          metrics: reportData.metrics
+        })
+      }
+    } catch (error) {
+      console.error('Error exporting overview report:', error)
+      // Fallback: mostrar alert simple si el servicio falla
+      alert(`Error al exportar reporte: ${error.message || 'Error desconocido'}`)
     }
   }
 

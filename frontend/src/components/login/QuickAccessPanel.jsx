@@ -60,15 +60,15 @@ const CredentialsGrid = ({ onQuickLogin }) => {
       {/* Planes Familiares */}
       <FamiliarPlansCard onQuickLogin={onQuickLogin} />
 
+      {/* Ambulancias */}
+      <AmbulancesCard onQuickLogin={onQuickLogin} />
+
       {/* Corporativo */}
       <CategoryCard
         category={categories.corporativo}
         users={loginService.getUsersByCategory('corporativo')}
         onQuickLogin={onQuickLogin}
       />
-
-      {/* Ambulancias */}
-      <AmbulancesCard onQuickLogin={onQuickLogin} />
 
       {/* Externos */}
       <CategoryCard
@@ -77,10 +77,10 @@ const CredentialsGrid = ({ onQuickLogin }) => {
         onQuickLogin={onQuickLogin}
       />
 
-      {/* Administrador Externo */}
+      {/* Admin Externos */}
       <CategoryCard
-        category={categories.external_admin}
-        users={loginService.getUsersByCategory('external_admin')}
+        category={categories.externo_admin}
+        users={loginService.getUsersByCategory('externo_admin')}
         onQuickLogin={onQuickLogin}
       />
     </div>

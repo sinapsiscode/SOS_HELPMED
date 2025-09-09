@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useAppStore from '../stores/useAppStore'
 import Swal from 'sweetalert2'
 import logger from '../utils/logger'
@@ -40,35 +40,63 @@ const useRegistrationForm = (onBack) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showTerms, setShowTerms] = useState(false)
   const [hasAcceptedTerms, setHasAcceptedTerms] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // Store
   const { submitRegistrationRequest } = useAppStore()
 
-  // Opciones de planes
-  const planOptions = {
-    familiar: {
-      help: 'Plan Help - 10 servicios/mes',
-      basico: 'Plan Básico - Servicios limitados',
-      vip: 'Plan VIP - Servicios premium',
-      dorado: 'Plan Dorado - Servicios ilimitados'
-    },
-    corporativo: {
-      area_protegida: 'Área Protegida - Plan empresarial'
-    },
-    externo: {
-      caso1: 'Afiliado Externo - Sin límites',
-      caso2: 'Afiliado Externo - Con límites'
-    }
-  }
+  // Configuración dinámica desde db.json
+  const [planOptions, setPlanOptions] = useState({})
+  const [externalEntities, setExternalEntities] = useState([])
 
-  // Entidades externas
-  const externalEntities = [
-    { value: 'BCR', label: 'Banco Central de Reserva (BCR)' },
-    { value: 'RIMAC', label: 'Rimac Seguros' },
-    { value: 'PACIFICO', label: 'Pacífico Seguros' },
-    { value: 'MAPFRE', label: 'Mapfre Seguros' },
-    { value: 'other', label: 'Otra entidad' }
-  ]
+  // Cargar configuración desde db.json
+  useEffect(() => {
+    const loadRegistrationConfig = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('http://localhost:4001/registrationConfig')
+        if (response.ok) {
+          const config = await response.json()
+          setPlanOptions(config.planOptions)
+          setExternalEntities(config.externalEntities)
+        } else {
+          throw new Error('Failed to fetch registration config')
+        }
+      } catch (error) {
+        logger.error('Error loading registration config:', error)
+        console.warn('Using fallback registration configuration')
+        
+        // Configuración de fallback
+        setPlanOptions({
+          familiar: {
+            help: 'Plan Help - 10 servicios/mes',
+            basico: 'Plan Básico - Servicios limitados',
+            vip: 'Plan VIP - Servicios premium',
+            dorado: 'Plan Dorado - Servicios ilimitados'
+          },
+          corporativo: {
+            area_protegida: 'Área Protegida - Plan empresarial'
+          },
+          externo: {
+            caso1: 'Afiliado Externo - Sin límites',
+            caso2: 'Afiliado Externo - Con límites'
+          }
+        })
+        
+        setExternalEntities([
+          { value: 'BCR', label: 'Banco Central de Reserva (BCR)' },
+          { value: 'RIMAC', label: 'Rimac Seguros' },
+          { value: 'PACIFICO', label: 'Pacífico Seguros' },
+          { value: 'MAPFRE', label: 'Mapfre Seguros' },
+          { value: 'other', label: 'Otra entidad' }
+        ])
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadRegistrationConfig()
+  }, [])
 
   // Manejar cambios en inputs
   const handleInputChange = (e) => {
@@ -178,6 +206,7 @@ const useRegistrationForm = (onBack) => {
     isSubmitting,
     showTerms,
     hasAcceptedTerms,
+    loading,
 
     // Datos de referencia
     planOptions,

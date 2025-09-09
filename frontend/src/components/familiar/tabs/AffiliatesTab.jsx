@@ -32,7 +32,7 @@ const AffiliatesTab = ({ user }) => {
         email: user.profile.email,
         relationship: 'Titular',
         birthDate: user.profile.birth_date,
-        addedAt: user.plan.start_date,
+        addedAt: user?.plan?.start_date || new Date(),
         status: 'active'
       }
     ]
@@ -197,7 +197,7 @@ const AffiliatesTab = ({ user }) => {
             </div>
             <div className="text-xs sm:text-sm font-medium text-blue-800">Fecha de Afiliación</div>
             <div className="text-sm sm:text-lg font-bold text-blue-600">
-              {new Date(user.plan.start_date).toLocaleDateString('es-CL')}
+              {user?.plan?.start_date ? new Date(user.plan.start_date).toLocaleDateString('es-CL') : 'No disponible'}
             </div>
           </div>
 
@@ -206,7 +206,7 @@ const AffiliatesTab = ({ user }) => {
               <i className="fas fa-crown text-white text-lg sm:text-xl"></i>
             </div>
             <div className="text-xs sm:text-sm font-medium text-purple-800">Plan Actual</div>
-            <div className="text-sm sm:text-lg font-bold text-purple-600">{user.plan.name}</div>
+            <div className="text-sm sm:text-lg font-bold text-purple-600">{user?.plan?.name || 'Plan no disponible'}</div>
           </div>
         </div>
       </div>
