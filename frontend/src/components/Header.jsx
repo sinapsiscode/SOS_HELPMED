@@ -26,7 +26,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <img 
-              src="/public/Logo-Helpmed-negativo.png" 
+              src="/Logo-Helpmed-negativo.png" 
               alt="Help MED Logo" 
               className="h-10 sm:h-12 w-auto object-contain"
             />

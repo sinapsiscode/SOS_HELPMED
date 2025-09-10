@@ -1,7 +1,7 @@
 // Configuración centralizada de constantes
 export const APP_CONFIG = {
   name: 'HelpMED',
-  logo: '/public/Logo-Helpmed-negativo.png',
+  logo: '/Logo-Helpmed-negativo.png',
   version: '1.0.0'
 }
 

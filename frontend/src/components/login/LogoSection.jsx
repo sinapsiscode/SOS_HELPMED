@@ -24,7 +24,7 @@ const LogoIcon = () => {
   return (
     <div className="w-48 h-40 mx-auto mb-2 flex items-center justify-center">
       <img 
-        src="/public/Logo-Helpmed-negativo.png" 
+        src="/Logo-Helpmed-negativo.png" 
         alt="Help MED Logo" 
         className="w-full h-full object-contain"
       />

@@ -46,7 +46,7 @@ const AdminHeader = React.memo(({ user }) => {
           {/* Sección Izquierda */}
           <div className={leftSection.className}>
             <img 
-              src="/public/Logo-Helpmed-negativo.png" 
+              src="/Logo-Helpmed-negativo.png" 
               alt={labels.logo.alt} 
               className="h-10 w-auto object-contain"
             />

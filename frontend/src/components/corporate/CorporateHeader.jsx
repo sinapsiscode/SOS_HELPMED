@@ -33,7 +33,7 @@ const CorporateHeader = ({ user, onLogout }) => {
           {/* Logo - Sección Izquierda */}
           <div className="flex items-center pl-6 sm:pl-10 md:pl-20">
             <img 
-              src="/public/Logo-Helpmed-negativo.png" 
+              src="/Logo-Helpmed-negativo.png" 
               alt="Help MED Logo" 
               className="h-10 w-auto object-contain"
             />
