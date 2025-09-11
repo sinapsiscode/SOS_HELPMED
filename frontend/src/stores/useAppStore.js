@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import apiService from '../services/api'
+import databaseService from '../services/database.service'
 
 const useAppStore = create((set, get) => {
   const store = {
@@ -91,10 +92,10 @@ const useAppStore = create((set, get) => {
       // Simular delay de autenticación
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
-      // Autenticación contra la API usando el servicio
+      // Autenticación contra la API usando databaseService
       let user = null
       try {
-        const users = await apiService.getUsers()
+        const users = await databaseService.getUsers()
         console.log('Users from API:', users)
         console.log('Looking for:', { username, password })
         
@@ -241,6 +242,14 @@ const useAppStore = create((set, get) => {
         status: 'pending',
         isCritical: type === 'sos',
         medicalRecord: null // Se llenará cuando la ambulancia registre las acciones
+      }
+
+      // Persistir emergencia en la base de datos
+      try {
+        await databaseService.createEmergency(emergency)
+        console.log('Emergencia creada en la base de datos:', emergency.id)
+      } catch (error) {
+        console.error('Error al crear emergencia en la base de datos:', error)
       }
 
       set((state) => ({
@@ -484,15 +493,37 @@ const useAppStore = create((set, get) => {
       }
     },
 
-    loadAllUsersData: () => {
-      set({
-        allUsers: {
-          admin: [],
-          familiar: [],
-          corporativo: [],
-          externo: []
+    loadAllUsersData: async () => {
+      try {
+        // Cargar usuarios desde la base de datos
+        const users = await databaseService.getUsers()
+        
+        const usersByRole = {
+          admin: users.filter(u => u.role === 'ADMIN'),
+          familiar: users.filter(u => u.role === 'FAMILIAR'),
+          corporativo: users.filter(u => u.role === 'CORPORATIVO'),
+          externo: users.filter(u => u.role === 'EXTERNO')
         }
-      })
+        
+        set({ 
+          allUsers: usersByRole,
+          ambulanceUsers: users.filter(u => u.role === 'AMBULANCE')
+        })
+        
+        return usersByRole
+      } catch (error) {
+        console.error('Error loading users:', error)
+        // Mantener datos vacíos en caso de error
+        set({
+          allUsers: {
+            admin: [],
+            familiar: [],
+            corporativo: [],
+            externo: []
+          }
+        })
+        return null
+      }
     },
 
     loadAdminData: () => {
@@ -532,9 +563,19 @@ const useAppStore = create((set, get) => {
     },
 
     // ========== NOTIFICACIONES ==========
-    addNotification: (notification) => {
+    addNotification: async (notification) => {
+      const newNotification = { ...notification, id: Date.now() }
+      
+      // Persistir notificación en la base de datos
+      try {
+        await databaseService.createNotification(newNotification)
+        console.log('Notificación creada en la base de datos:', newNotification.id)
+      } catch (error) {
+        console.error('Error al crear notificación en la base de datos:', error)
+      }
+      
       set((state) => ({
-        notifications: [...state.notifications, { ...notification, id: Date.now() }]
+        notifications: [...state.notifications, newNotification]
       }))
     },
 
@@ -685,6 +726,15 @@ const useAppStore = create((set, get) => {
         },
         service_usage: get().initializeServiceUsage(request.planType, request.planSubtype),
         billing: get().initializeBilling(request.planType, request.planSubtype)
+      }
+
+      // Persistir el nuevo usuario en la base de datos
+      try {
+        await databaseService.createUser(newUser)
+        console.log('Usuario creado en la base de datos:', newUser.id)
+      } catch (error) {
+        console.error('Error al crear usuario en la base de datos:', error)
+        // Continuar con la actualización local aunque falle la persistencia
       }
 
       // Actualizar solicitud
@@ -1665,7 +1715,7 @@ const useAppStore = create((set, get) => {
     },
 
     // ========== GESTIÓN DE SERVICIOS ADICIONALES ==========
-    addExtraServices: (userId, userType, extras) => {
+    addExtraServices: async (userId, userType, extras) => {
       set((state) => {
         const updateUser = (user) => {
           if (!user || user.id !== userId) return user
@@ -1800,11 +1850,23 @@ const useAppStore = create((set, get) => {
         }
       })
 
+      // Persistir cambios en la base de datos
+      const state = get()
+      const updatedUser = state.allUsers[userType]?.find(u => u.id === userId)
+      if (updatedUser) {
+        try {
+          await databaseService.updateUser(userId, updatedUser)
+          console.log('Usuario actualizado en la base de datos con servicios adicionales')
+        } catch (error) {
+          console.error('Error al actualizar usuario en la base de datos:', error)
+        }
+      }
+
       console.log('Servicios adicionales agregados para usuario:', userId, extras)
     },
 
     // ========== CONSUMIR SERVICIOS ==========
-    consumeServices: (userId, userType, amount) => {
+    consumeServices: async (userId, userType, amount) => {
       set((state) => {
         const updateUser = (user) => {
           if (!user || user.id !== userId) return user
@@ -1857,6 +1919,18 @@ const useAppStore = create((set, get) => {
           currentUser: newCurrentUser
         }
       })
+
+      // Persistir cambios en la base de datos
+      const state = get()
+      const updatedUser = state.allUsers[userType]?.find(u => u.id === userId)
+      if (updatedUser) {
+        try {
+          await databaseService.updateUser(userId, updatedUser)
+          console.log('Usuario actualizado en la base de datos después de consumir servicios')
+        } catch (error) {
+          console.error('Error al actualizar usuario en la base de datos:', error)
+        }
+      }
 
       console.log('Servicios consumidos para usuario:', userId, amount)
     },
@@ -2052,7 +2126,14 @@ const useAppStore = create((set, get) => {
           revenueSummary: get().calculateRevenueSummary(updatedTransactions)
         }
       })
-    }
+    },
+
+    // ========== FUNCIONES DE ACTUALIZACIÓN PARA HOOKS ==========
+    setAllUsers: (usersByRole) => set({ allUsers: usersByRole }),
+    setActiveEmergencies: (emergencies) => set({ activeEmergencies: emergencies }),
+    setAmbulanceUsers: (ambulanceUsers) => set({ ambulanceUsers: ambulanceUsers }),
+    setSurveyResponses: (responses) => set({ surveyResponses: responses }),
+    setNotifications: (notifications) => set({ notifications: notifications })
   }
 
   // Exponer el store globalmente para acceso desde mockdata

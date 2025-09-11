@@ -2,9 +2,12 @@ import { API_CONFIG, API_ENDPOINTS } from '../config/api'
 
 class ApiService {
   constructor() {
-    this.baseURL = import.meta.env.VITE_ENABLE_MOCK_DATA === 'true' 
-      ? API_CONFIG.mockURL 
-      : API_CONFIG.baseURL
+    // En desarrollo, usar el proxy /api para evitar problemas de CORS
+    this.baseURL = import.meta.env.DEV 
+      ? '/api'
+      : (import.meta.env.VITE_ENABLE_MOCK_DATA === 'true' 
+          ? API_CONFIG.mockURL 
+          : API_CONFIG.baseURL)
   }
 
   async request(endpoint, options = {}) {

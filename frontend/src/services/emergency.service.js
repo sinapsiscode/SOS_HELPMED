@@ -1,84 +1,149 @@
 import apiService from './api.service'
-import { API_ENDPOINTS } from '../config/api'
-import { MOCK_DATA } from '../config/mockData'
 
 class EmergencyService {
+  // Emergencias activas
   async getEmergencies() {
     try {
-      return await apiService.get(API_ENDPOINTS.emergencies.list)
+      return await apiService.get('/emergencies')
     } catch (error) {
       console.error('Error fetching emergencies:', error)
-      // Retornar datos mock si hay error
-      return [MOCK_DATA.emergencyExample]
+      return []
     }
   }
 
   async getEmergencyById(id) {
     try {
-      return await apiService.get(API_ENDPOINTS.emergencies.get(id))
+      return await apiService.get(`/emergencies/${id}`)
     } catch (error) {
       console.error('Error fetching emergency:', error)
-      return MOCK_DATA.emergencyExample
+      return null
     }
   }
 
   async createEmergency(data) {
     try {
-      return await apiService.post(API_ENDPOINTS.emergencies.create, data)
+      return await apiService.post('/emergencies', {
+        ...data,
+        id: `EMG-${Date.now()}`,
+        createdAt: new Date().toISOString(),
+        status: 'pending'
+      })
     } catch (error) {
       console.error('Error creating emergency:', error)
-      return { ...MOCK_DATA.emergencyExample, ...data, id: Date.now() }
+      throw error
     }
   }
 
   async updateEmergency(id, data) {
     try {
-      return await apiService.put(API_ENDPOINTS.emergencies.update(id), data)
+      return await apiService.put(`/emergencies/${id}`, data)
     } catch (error) {
       console.error('Error updating emergency:', error)
-      return { ...MOCK_DATA.emergencyExample, ...data, id }
+      throw error
     }
   }
 
-  async assignEmergency(id, ambulanceId) {
+  async deleteEmergency(id) {
     try {
-      return await apiService.post(API_ENDPOINTS.emergencies.assign(id), { ambulanceId })
+      return await apiService.delete(`/emergencies/${id}`)
     } catch (error) {
-      console.error('Error assigning emergency:', error)
-      return { success: true, message: 'Emergency assigned (mock)' }
+      console.error('Error deleting emergency:', error)
+      throw error
     }
   }
 
-  async completeEmergency(id) {
+  // Emergencias pendientes
+  async getPendingEmergencies() {
     try {
-      return await apiService.post(API_ENDPOINTS.emergencies.complete(id))
+      return await apiService.get('/pendingEmergencies')
+    } catch (error) {
+      console.error('Error fetching pending emergencies:', error)
+      return []
+    }
+  }
+
+  async createPendingEmergency(data) {
+    try {
+      return await apiService.post('/pendingEmergencies', {
+        ...data,
+        id: `PEMG-${Date.now()}`,
+        timestamp: new Date().toISOString(),
+        status: 'pending'
+      })
+    } catch (error) {
+      console.error('Error creating pending emergency:', error)
+      throw error
+    }
+  }
+
+  async updatePendingEmergency(id, data) {
+    try {
+      return await apiService.put(`/pendingEmergencies/${id}`, data)
+    } catch (error) {
+      console.error('Error updating pending emergency:', error)
+      throw error
+    }
+  }
+
+  async deletePendingEmergency(id) {
+    try {
+      return await apiService.delete(`/pendingEmergencies/${id}`)
+    } catch (error) {
+      console.error('Error deleting pending emergency:', error)
+      throw error
+    }
+  }
+
+  // Asignar ambulancia a emergencia
+  async assignAmbulance(emergencyId, ambulanceId) {
+    try {
+      const emergency = await this.getEmergencyById(emergencyId)
+      if (!emergency) throw new Error('Emergency not found')
+
+      return await this.updateEmergency(emergencyId, {
+        ...emergency,
+        status: 'in_progress',
+        assignedAmbulance: ambulanceId,
+        assignedAt: new Date().toISOString()
+      })
+    } catch (error) {
+      console.error('Error assigning ambulance:', error)
+      throw error
+    }
+  }
+
+  // Completar emergencia
+  async completeEmergency(emergencyId) {
+    try {
+      const emergency = await this.getEmergencyById(emergencyId)
+      if (!emergency) throw new Error('Emergency not found')
+
+      return await this.updateEmergency(emergencyId, {
+        ...emergency,
+        status: 'completed',
+        completedAt: new Date().toISOString()
+      })
     } catch (error) {
       console.error('Error completing emergency:', error)
-      return { success: true, message: 'Emergency completed (mock)' }
+      throw error
     }
   }
 
-  async cancelEmergency(id, reason) {
+  // Cancelar emergencia
+  async cancelEmergency(emergencyId, reason) {
     try {
-      return await apiService.post(API_ENDPOINTS.emergencies.cancel(id), { reason })
+      const emergency = await this.getEmergencyById(emergencyId)
+      if (!emergency) throw new Error('Emergency not found')
+
+      return await this.updateEmergency(emergencyId, {
+        ...emergency,
+        status: 'cancelled',
+        cancelledAt: new Date().toISOString(),
+        cancelReason: reason
+      })
     } catch (error) {
       console.error('Error cancelling emergency:', error)
-      return { success: true, message: 'Emergency cancelled (mock)' }
-    }
-  }
-
-  async trackEmergency(id) {
-    try {
-      return await apiService.get(API_ENDPOINTS.emergencies.track(id))
-    } catch (error) {
-      console.error('Error tracking emergency:', error)
-      return {
-        id,
-        status: 'in_progress',
-        ambulance: MOCK_DATA.ambulances[0],
-        eta: '5 min',
-        distance: '1.5 km'
-      }
+      throw error
     }
   }
 }

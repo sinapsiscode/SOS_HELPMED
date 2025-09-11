@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import useAppStore from '../stores/useAppStore'
+import useDatabase from './useDatabase'
 import Swal from 'sweetalert2'
 import userService from '../services/userService'
 
@@ -38,6 +39,9 @@ const useUserManagement = () => {
     allUsers,
     loadAllUsersData
   } = useAppStore()
+
+  // Hook de base de datos para persistencia
+  const { createUser, updateUser, deleteUser } = useDatabase()
 
   // Cargar usuarios solo al montar el componente (sin dependencias)
   useEffect(() => {
@@ -226,8 +230,13 @@ const useUserManagement = () => {
           const newUser = {
             ...userData,
             id: `${selectedUserType}_${Date.now()}`,
-            role: selectedUserType.toUpperCase()
+            role: selectedUserType.toUpperCase(),
+            createdAt: new Date().toISOString()
           }
+
+          // *** PERSISTIR EN LA BASE DE DATOS ***
+          await createUser(newUser)
+          console.log('Usuario creado y guardado en la base de datos:', newUser.id)
 
           // Registrar ingresos según el tipo de usuario
           if (selectedUserType === 'familiar' && userData.plan) {

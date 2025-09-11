@@ -478,7 +478,7 @@
         "status": "active",
         "limits": {
           "monthly_emergencies": "FLEXIBLE",
-          "monthly_urgencies": "FLEXIBLE", 
+          "monthly_urgencies": "FLEXIBLE",
           "monthly_consultations": "FLEXIBLE",
           "monthly_transfers": 0,
           "monthly_protected_zone": 0
@@ -496,12 +496,30 @@
           "used_services": 7,
           "remaining_services": 9,
           "breakdown": {
-            "emergencies": { "used": 2, "limit": "FLEXIBLE" },
-            "urgencies": { "used": 3, "limit": "FLEXIBLE" },
-            "medical_consultations": { "used": 2, "limit": "FLEXIBLE" },
-            "programmed_transfers": { "used": 0, "limit": 0 },
-            "protected_zone": { "used": 0, "limit": 0 },
-            "phone_consultations": { "used": 8, "limit": "ILIMITADO" }
+            "emergencies": {
+              "used": 2,
+              "limit": "FLEXIBLE"
+            },
+            "urgencies": {
+              "used": 3,
+              "limit": "FLEXIBLE"
+            },
+            "medical_consultations": {
+              "used": 2,
+              "limit": "FLEXIBLE"
+            },
+            "programmed_transfers": {
+              "used": 0,
+              "limit": 0
+            },
+            "protected_zone": {
+              "used": 0,
+              "limit": 0
+            },
+            "phone_consultations": {
+              "used": 8,
+              "limit": "ILIMITADO"
+            }
           }
         },
         "reset_date": "2025-01-15T00:00:00Z"
@@ -521,7 +539,7 @@
           "status": "active"
         },
         {
-          "id": "aff_001_002", 
+          "id": "aff_001_002",
           "name": "Sofía Rodríguez",
           "dni": "76.543.210-1",
           "phone": "+51 9 1111 2222",
@@ -533,7 +551,7 @@
     {
       "id": 15,
       "username": "basico_user",
-      "password": "basico123", 
+      "password": "basico123",
       "name": "Carmen López",
       "email": "carmen.lopez@email.com",
       "role": "FAMILIAR",
@@ -569,12 +587,30 @@
       "service_usage": {
         "current_period": {
           "breakdown": {
-            "emergencies": { "used": 2, "limit": "ILIMITADO" },
-            "urgencies": { "used": 1, "limit": 3 },
-            "medical_consultations": { "used": 2, "limit": 4 },
-            "programmed_transfers": { "used": 0, "limit": 1 },
-            "protected_zone": { "used": 0, "limit": 0 },
-            "phone_consultations": { "used": 12, "limit": "ILIMITADO" }
+            "emergencies": {
+              "used": 2,
+              "limit": "ILIMITADO"
+            },
+            "urgencies": {
+              "used": 1,
+              "limit": 3
+            },
+            "medical_consultations": {
+              "used": 2,
+              "limit": 4
+            },
+            "programmed_transfers": {
+              "used": 0,
+              "limit": 1
+            },
+            "protected_zone": {
+              "used": 0,
+              "limit": 0
+            },
+            "phone_consultations": {
+              "used": 12,
+              "limit": "ILIMITADO"
+            }
           }
         },
         "reset_date": "2025-02-01T00:00:00Z"
@@ -590,7 +626,7 @@
       "id": 16,
       "username": "vip_user",
       "password": "vip123",
-      "name": "Eduardo Silva", 
+      "name": "Eduardo Silva",
       "email": "eduardo.silva@email.com",
       "role": "FAMILIAR",
       "profile": {
@@ -625,12 +661,30 @@
       "service_usage": {
         "current_period": {
           "breakdown": {
-            "emergencies": { "used": 3, "limit": "ILIMITADO" },
-            "urgencies": { "used": 4, "limit": 6 },
-            "medical_consultations": { "used": 3, "limit": 6 },
-            "programmed_transfers": { "used": 1, "limit": 1 },
-            "protected_zone": { "used": 0, "limit": 1 },
-            "phone_consultations": { "used": 15, "limit": "ILIMITADO" }
+            "emergencies": {
+              "used": 3,
+              "limit": "ILIMITADO"
+            },
+            "urgencies": {
+              "used": 4,
+              "limit": 6
+            },
+            "medical_consultations": {
+              "used": 3,
+              "limit": 6
+            },
+            "programmed_transfers": {
+              "used": 1,
+              "limit": 1
+            },
+            "protected_zone": {
+              "used": 0,
+              "limit": 1
+            },
+            "phone_consultations": {
+              "used": 15,
+              "limit": "ILIMITADO"
+            }
           }
         },
         "reset_date": "2025-01-01T00:00:00Z"
@@ -654,7 +708,7 @@
       "username": "dorado_user",
       "password": "dorado123",
       "name": "Alejandra Vega",
-      "email": "alejandra.vega@email.com", 
+      "email": "alejandra.vega@email.com",
       "role": "FAMILIAR",
       "profile": {
         "name": "Alejandra Vega",
@@ -688,20 +742,41 @@
       "service_usage": {
         "current_period": {
           "breakdown": {
-            "emergencies": { "used": 1, "limit": "ILIMITADO" },
-            "urgencies": { "used": 2, "limit": 10 },
-            "medical_consultations": { "used": 5, "limit": 10 },
-            "programmed_transfers": { "used": 0, "limit": 1 },
-            "protected_zone": { "used": 1, "limit": 2 },
-            "phone_consultations": { "used": 8, "limit": "ILIMITADO" },
-            "laboratory_exams": { "used": 3, "limit": "ILIMITADO" }
+            "emergencies": {
+              "used": 1,
+              "limit": "ILIMITADO"
+            },
+            "urgencies": {
+              "used": 2,
+              "limit": 10
+            },
+            "medical_consultations": {
+              "used": 5,
+              "limit": 10
+            },
+            "programmed_transfers": {
+              "used": 0,
+              "limit": 1
+            },
+            "protected_zone": {
+              "used": 1,
+              "limit": 2
+            },
+            "phone_consultations": {
+              "used": 8,
+              "limit": "ILIMITADO"
+            },
+            "laboratory_exams": {
+              "used": 3,
+              "limit": "ILIMITADO"
+            }
           }
         },
         "reset_date": "2025-01-01T00:00:00Z"
       },
       "billing": {
         "monthly_cost": 625,
-        "payment_method": "credit_card", 
+        "payment_method": "credit_card",
         "auto_renewal": true
       },
       "benefits": {
@@ -718,7 +793,7 @@
       "affiliates": [
         {
           "id": "aff_dor_001",
-          "name": "Fernando Vega", 
+          "name": "Fernando Vega",
           "dni": "18.999.001-8",
           "phone": "+51 9 9999 1111",
           "relationship": "conyuge",
@@ -727,12 +802,73 @@
         {
           "id": "aff_dor_002",
           "name": "Camila Vega",
-          "dni": "77.888.999-2", 
+          "dni": "77.888.999-2",
           "phone": "+51 9 7777 1234",
           "relationship": "hijo",
           "status": "active"
         }
       ]
+    },
+    {
+      "username": "test",
+      "name": "Test User",
+      "email": "test@test.com",
+      "role": "FAMILIAR",
+      "id": 18
+    },
+    {
+      "username": "pierre",
+      "password": "7#TPOh%k$v",
+      "profile": {
+        "name": "pierre",
+        "dni": "77091210",
+        "phone": "961170946",
+        "email": "pier@gmail.com",
+        "birthDate": "2025-07-16",
+        "address": "afasgasfasf"
+      },
+      "plan": {
+        "subtype": "HELP"
+      },
+      "id": "familiar_1757550429322",
+      "role": "FAMILIAR",
+      "createdAt": "2025-09-11T00:27:09.322Z"
+    },
+    {
+      "username": "Akise",
+      "password": "sLPa9%Q3pR",
+      "profile": {
+        "dni": "77091210",
+        "name": "Gianpierre Terrazas",
+        "email": "gian@gmail.com",
+        "phone": "96117772",
+        "birthDate": "2025-09-02",
+        "address": "afagasfggegerge"
+      },
+      "plan": {
+        "subtype": "BASICO"
+      },
+      "id": "familiar_1757550627601",
+      "role": "FAMILIAR",
+      "createdAt": "2025-09-11T00:30:27.601Z"
+    },
+    {
+      "username": "jairo",
+      "password": "UwP0tdW1HL",
+      "profile": {
+        "name": "jairo toylocaso",
+        "dni": "76709121",
+        "phone": "987765441",
+        "email": "pier@gmail.com",
+        "birthDate": "2025-06-24",
+        "address": "asfasfasfasfsaf"
+      },
+      "plan": {
+        "subtype": "HELP"
+      },
+      "id": "familiar_1757551061442",
+      "role": "FAMILIAR",
+      "createdAt": "2025-09-11T00:37:41.442Z"
     }
   ],
   "emergencies": [
@@ -746,11 +882,14 @@
         "name": "Juan Pérez",
         "age": "45 años",
         "phone": "+51 999888777"
-      },
+      },   
       "symptoms": "Dolor torácico intenso, dificultad respiratoria",
       "location": {
         "address": "Av. Arequipa 2450, Lince",
-        "coordinates": [-12.086158, -77.035936],
+        "coordinates": [
+          -12.086158,
+          -77.035936
+        ],
         "distance": "2.5 km"
       },
       "eta": "8 min",
@@ -770,7 +909,10 @@
       "symptoms": "Fractura de brazo",
       "location": {
         "address": "Av. Javier Prado 4200, San Borja",
-        "coordinates": [-12.091234, -77.001234],
+        "coordinates": [
+          -12.091234,
+          -77.001234
+        ],
         "distance": "4.1 km"
       },
       "eta": "12 min",
@@ -901,7 +1043,7 @@
     {
       "id": "basic",
       "name": "Plan Básico",
-      "price": 29.90,
+      "price": 29.9,
       "currency": "S/",
       "features": [
         "Atención médica básica",
@@ -909,12 +1051,14 @@
         "Cobertura en Lima"
       ],
       "maxServices": 2,
-      "coverage": ["Lima"]
+      "coverage": [
+        "Lima"
+      ]
     },
     {
       "id": "premium",
       "name": "Plan Premium",
-      "price": 59.90,
+      "price": 59.9,
       "currency": "S/",
       "features": [
         "Atención médica completa",
@@ -923,7 +1067,9 @@
         "Asistencia mecánica"
       ],
       "maxServices": -1,
-      "coverage": ["Nacional"]
+      "coverage": [
+        "Nacional"
+      ]
     },
     {
       "id": "corporate",
@@ -937,22 +1083,72 @@
         "Soporte 24/7"
       ],
       "maxServices": -1,
-      "coverage": ["Personalizado"]
+      "coverage": [
+        "Personalizado"
+      ]
     }
   ],
   "districts": [
-    {"id": 1, "name": "Miraflores", "zone": "Lima Sur"},
-    {"id": 2, "name": "San Isidro", "zone": "Lima Moderna"},
-    {"id": 3, "name": "Barranco", "zone": "Lima Sur"},
-    {"id": 4, "name": "Surco", "zone": "Lima Sur"},
-    {"id": 5, "name": "La Molina", "zone": "Lima Este"},
-    {"id": 6, "name": "San Borja", "zone": "Lima Moderna"},
-    {"id": 7, "name": "Jesús María", "zone": "Lima Centro"},
-    {"id": 8, "name": "Lince", "zone": "Lima Centro"},
-    {"id": 9, "name": "Magdalena", "zone": "Lima Oeste"},
-    {"id": 10, "name": "Pueblo Libre", "zone": "Lima Oeste"},
-    {"id": 11, "name": "San Miguel", "zone": "Lima Oeste"},
-    {"id": 12, "name": "Cercado de Lima", "zone": "Lima Centro"}
+    {
+      "id": 1,
+      "name": "Miraflores",
+      "zone": "Lima Sur"
+    },
+    {
+      "id": 2,
+      "name": "San Isidro",
+      "zone": "Lima Moderna"
+    },
+    {
+      "id": 3,
+      "name": "Barranco",
+      "zone": "Lima Sur"
+    },
+    {
+      "id": 4,
+      "name": "Surco",
+      "zone": "Lima Sur"
+    },
+    {
+      "id": 5,
+      "name": "La Molina",
+      "zone": "Lima Este"
+    },
+    {
+      "id": 6,
+      "name": "San Borja",
+      "zone": "Lima Moderna"
+    },
+    {
+      "id": 7,
+      "name": "Jesús María",
+      "zone": "Lima Centro"
+    },
+    {
+      "id": 8,
+      "name": "Lince",
+      "zone": "Lima Centro"
+    },
+    {
+      "id": 9,
+      "name": "Magdalena",
+      "zone": "Lima Oeste"
+    },
+    {
+      "id": 10,
+      "name": "Pueblo Libre",
+      "zone": "Lima Oeste"
+    },
+    {
+      "id": 11,
+      "name": "San Miguel",
+      "zone": "Lima Oeste"
+    },
+    {
+      "id": 12,
+      "name": "Cercado de Lima",
+      "zone": "Lima Centro"
+    }
   ],
   "stats": {
     "dashboard": {
@@ -1032,8 +1228,15 @@
       "equipment": "Completo",
       "crew": 2,
       "last_service": "2024-12-19T16:30:00Z",
-      "coverage_area": ["Miraflores", "San Isidro", "Vitacura"],
-      "coordinates": { "lat": -12.0284, "lng": -77.05965 }
+      "coverage_area": [
+        "Miraflores",
+        "San Isidro",
+        "Vitacura"
+      ],
+      "coordinates": {
+        "lat": -12.0284,
+        "lng": -77.05965
+      }
     },
     {
       "id": "AMB-002",
@@ -1044,8 +1247,15 @@
       "crew": 2,
       "current_service": "serv_011",
       "eta_available": "2024-12-20T11:45:00Z",
-      "coverage_area": ["San Martín de Porres", "Callao", "Cerrillos"],
-      "coordinates": { "lat": -33.5067, "lng": -77.07581 }
+      "coverage_area": [
+        "San Martín de Porres",
+        "Callao",
+        "Cerrillos"
+      ],
+      "coordinates": {
+        "lat": -33.5067,
+        "lng": -77.07581
+      }
     },
     {
       "id": "MED-003",
@@ -1055,8 +1265,15 @@
       "equipment": "Básico",
       "crew": 1,
       "last_service": "2024-12-19T09:30:00Z",
-      "coverage_area": ["Miraflores", "Lima", "Ñuñoa"],
-      "coordinates": { "lat": -12.0284, "lng": -77.05965 }
+      "coverage_area": [
+        "Miraflores",
+        "Lima",
+        "Ñuñoa"
+      ],
+      "coordinates": {
+        "lat": -12.0284,
+        "lng": -77.05965
+      }
     }
   ],
   "service_statistics": {
@@ -1120,7 +1337,7 @@
       "instructions": "Enviar captura del voucher después de realizar el pago"
     },
     "plin": {
-      "phoneNumber": "998877666", 
+      "phoneNumber": "998877666",
       "ownerName": "HELPMED S.A.C.",
       "instructions": "Usar el código QR o número para realizar el pago"
     },
@@ -1134,7 +1351,12 @@
     },
     "general": {
       "maxFileSize": 5,
-      "allowedFormats": ["jpg", "jpeg", "png", "pdf"],
+      "allowedFormats": [
+        "jpg",
+        "jpeg",
+        "png",
+        "pdf"
+      ],
       "confirmationMessage": "Su pago ha sido registrado y será verificado en las próximas 2 horas"
     }
   },
@@ -1155,21 +1377,54 @@
       }
     },
     "externalEntities": [
-      { "value": "BCR", "label": "Banco Central de Reserva (BCR)" },
-      { "value": "RIMAC", "label": "Rimac Seguros" },
-      { "value": "PACIFICO", "label": "Pacífico Seguros" },
-      { "value": "MAPFRE", "label": "Mapfre Seguros" },
-      { "value": "other", "label": "Otra entidad" }
+      {
+        "value": "BCR",
+        "label": "Banco Central de Reserva (BCR)"
+      },
+      {
+        "value": "RIMAC",
+        "label": "Rimac Seguros"
+      },
+      {
+        "value": "PACIFICO",
+        "label": "Pacífico Seguros"
+      },
+      {
+        "value": "MAPFRE",
+        "label": "Mapfre Seguros"
+      },
+      {
+        "value": "other",
+        "label": "Otra entidad"
+      }
     ]
   },
   "transferConfig": {
     "transferTypes": [
-      { "value": "medical_appointment", "label": "Cita Médica" },
-      { "value": "medical_procedure", "label": "Procedimiento Médico" },
-      { "value": "routine_checkup", "label": "Control de Rutina" },
-      { "value": "therapy_session", "label": "Sesión de Terapia" },
-      { "value": "dialysis", "label": "Diálisis" },
-      { "value": "other", "label": "Otro" }
+      {
+        "value": "medical_appointment",
+        "label": "Cita Médica"
+      },
+      {
+        "value": "medical_procedure",
+        "label": "Procedimiento Médico"
+      },
+      {
+        "value": "routine_checkup",
+        "label": "Control de Rutina"
+      },
+      {
+        "value": "therapy_session",
+        "label": "Sesión de Terapia"
+      },
+      {
+        "value": "dialysis",
+        "label": "Diálisis"
+      },
+      {
+        "value": "other",
+        "label": "Otro"
+      }
     ],
     "reasons": [
       "Alta hospitalaria",
@@ -1430,7 +1685,13 @@
       "text": "¿Cómo calificarías la calidad del servicio recibido?",
       "type": "rating",
       "required": true,
-      "options": ["1", "2", "3", "4", "5"],
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "order": 1
     },
     {
@@ -1453,7 +1714,18 @@
       "text": "¿Recomendarías nuestro servicio a familiares o amigos?",
       "type": "rating",
       "required": true,
-      "options": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+      "options": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10"
+      ],
       "order": 3
     },
     {
@@ -1472,19 +1744,43 @@
     "averageRating": 4.2,
     "npsScore": 45,
     "monthlyTrend": [
-      { "month": "Ene", "responses": 95, "rating": 4.1 },
-      { "month": "Feb", "responses": 110, "rating": 4.3 },
-      { "month": "Mar", "responses": 120, "rating": 4.2 },
-      { "month": "Abr", "responses": 105, "rating": 4.4 },
-      { "month": "May", "responses": 115, "rating": 4.3 },
-      { "month": "Jun", "responses": 125, "rating": 4.5 }
+      {
+        "month": "Ene",
+        "responses": 95,
+        "rating": 4.1
+      },
+      {
+        "month": "Feb",
+        "responses": 110,
+        "rating": 4.3
+      },
+      {
+        "month": "Mar",
+        "responses": 120,
+        "rating": 4.2
+      },
+      {
+        "month": "Abr",
+        "responses": 105,
+        "rating": 4.4
+      },
+      {
+        "month": "May",
+        "responses": 115,
+        "rating": 4.3
+      },
+      {
+        "month": "Jun",
+        "responses": 125,
+        "rating": 4.5
+      }
     ],
     "ratingDistribution": {
-      "5": 45,
-      "4": 30,
-      "3": 15,
+      "1": 3,
       "2": 7,
-      "1": 3
+      "3": 15,
+      "4": 30,
+      "5": 45
     },
     "improvementAreas": {
       "Tiempo de respuesta": 35,
@@ -1676,12 +1972,42 @@
     }
   ],
   "entityTypes": [
-    { "value": "empresa", "label": "Empresa", "icon": "fas fa-building", "color": "purple" },
-    { "value": "banco", "label": "Banco", "icon": "fas fa-university", "color": "blue" },
-    { "value": "aseguradora", "label": "Aseguradora", "icon": "fas fa-shield-alt", "color": "green" },
-    { "value": "gobierno", "label": "Entidad Gubernamental", "icon": "fas fa-landmark", "color": "red" },
-    { "value": "educacion", "label": "Institución Educativa", "icon": "fas fa-graduation-cap", "color": "indigo" },
-    { "value": "otro", "label": "Otro", "icon": "fas fa-handshake", "color": "gray" }
+    {
+      "value": "empresa",
+      "label": "Empresa",
+      "icon": "fas fa-building",
+      "color": "purple"
+    },
+    {
+      "value": "banco",
+      "label": "Banco",
+      "icon": "fas fa-university",
+      "color": "blue"
+    },
+    {
+      "value": "aseguradora",
+      "label": "Aseguradora",
+      "icon": "fas fa-shield-alt",
+      "color": "green"
+    },
+    {
+      "value": "gobierno",
+      "label": "Entidad Gubernamental",
+      "icon": "fas fa-landmark",
+      "color": "red"
+    },
+    {
+      "value": "educacion",
+      "label": "Institución Educativa",
+      "icon": "fas fa-graduation-cap",
+      "color": "indigo"
+    },
+    {
+      "value": "otro",
+      "label": "Otro",
+      "icon": "fas fa-handshake",
+      "color": "gray"
+    }
   ],
   "planConfiguration": {
     "PLAN_TYPES": {
@@ -1714,9 +2040,18 @@
           "name": "Plan Help",
           "description": "Plan con límite de servicios de emergencia, urgencia o médico a domicilio",
           "variants": [
-            { "services": 8, "name": "Help 8" },
-            { "services": 12, "name": "Help 12" },
-            { "services": 16, "name": "Help 16" }
+            {
+              "services": 8,
+              "name": "Help 8"
+            },
+            {
+              "services": 12,
+              "name": "Help 12"
+            },
+            {
+              "services": 16,
+              "name": "Help 16"
+            }
           ],
           "limits": {
             "EMERGENCIA": "FLEXIBLE",
@@ -1751,7 +2086,9 @@
               "details": {
                 "provider": "Chubb",
                 "maxAge": 79,
-                "coverage": ["Accidentes personales 24/7"],
+                "coverage": [
+                  "Accidentes personales 24/7"
+                ],
                 "validity": "24/7 - 365 días"
               }
             },
@@ -1801,7 +2138,9 @@
               "details": {
                 "provider": "Chubb",
                 "maxAge": 79,
-                "coverage": ["Accidentes personales 24/7"],
+                "coverage": [
+                  "Accidentes personales 24/7"
+                ],
                 "validity": "24/7 - 365 días"
               }
             },
@@ -1852,7 +2191,9 @@
               "details": {
                 "provider": "Chubb",
                 "maxAge": 79,
-                "coverage": ["Accidentes personales 24/7"],
+                "coverage": [
+                  "Accidentes personales 24/7"
+                ],
                 "validity": "24/7 - 365 días"
               }
             },
@@ -1904,7 +2245,9 @@
               "details": {
                 "provider": "Chubb",
                 "maxAge": 79,
-                "coverage": ["Accidentes personales 24/7"],
+                "coverage": [
+                  "Accidentes personales 24/7"
+                ],
                 "validity": "24/7 - 365 días"
               }
             },
@@ -1914,7 +2257,11 @@
               "description": "Análisis clínicos básicos incluidos en el plan",
               "icon": "fas fa-flask",
               "details": {
-                "tests": ["Examen de orina", "Examen de heces", "Hemograma completo"],
+                "tests": [
+                  "Examen de orina",
+                  "Examen de heces",
+                  "Hemograma completo"
+                ],
                 "network": "Disponible en laboratorios de la red Help MED"
               }
             }
@@ -2124,9 +2471,24 @@
       "debit_card": "Tarjeta de Débito"
     },
     "planUpgradeOptions": [
-      { "id": "help", "name": "Plan HELP", "description": "Servicios generales" },
-      { "id": "med", "name": "Plan MED", "description": "Servicios médicos completos" },
-      { "id": "med_plus", "name": "Plan MED+", "description": "Servicios premium" }
+      {
+        "id": "help",
+        "name": "Plan HELP",
+        "description": "Servicios generales"
+      },
+      {
+        "id": "med",
+        "name": "Plan MED",
+        "description": "Servicios médicos completos"
+      },
+      {
+        "id": "med_plus",
+        "name": "Plan MED+",
+        "description": "Servicios premium"
+      }
     ]
-  }
+  },
+  "transactions": [],
+  "registrationRequests": [],
+  "contactRequests": []
 }

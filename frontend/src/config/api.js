@@ -1,5 +1,5 @@
 // Configuración de API y endpoints
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001/api'
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4001'
 // MOCK_API_URL is deprecated - not used anymore
 
 export const API_CONFIG = {
