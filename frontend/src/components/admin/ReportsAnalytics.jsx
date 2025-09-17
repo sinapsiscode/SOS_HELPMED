@@ -11,7 +11,6 @@ const ServicesReport = lazy(() => import('./reports/ServicesReport'))
 const PerformanceReport = lazy(() => import('./reports/PerformanceReport'))
 const GeographyReport = lazy(() => import('./reports/GeographyReport'))
 const FinancialReport = lazy(() => import('./reports/FinancialReport')) // Reporte financiero con gráficos completos
-const SurveysReport = lazy(() => import('./reports/SurveysReport'))
 
 // Loading Spinner Component
 const LoadingSpinner = () => {
@@ -224,8 +223,6 @@ const ReportsAnalytics = () => {
           return <GeographyReport dateRange={dateRange} />
         case 'finanzas':
           return <FinancialReport />
-        case 'surveys':
-          return <SurveysReport dateRange={dateRange} />
         default:
           return <OverviewReport dateRange={dateRange} revenueSummary={revenueSummary} />
       }
@@ -309,8 +306,7 @@ const ReportsAnalytics = () => {
             { id: 'services', label: labels.tabs.services.label, icon: labels.tabs.services.icon, short: labels.tabs.services.short },
             { id: 'performance', label: labels.tabs.performance.label, icon: labels.tabs.performance.icon, short: labels.tabs.performance.short },
             { id: 'geography', label: labels.tabs.geography.label, icon: labels.tabs.geography.icon, short: labels.tabs.geography.short },
-            { id: 'finanzas', label: labels.tabs.finanzas.label, icon: labels.tabs.finanzas.icon, short: labels.tabs.finanzas.short },
-            { id: 'surveys', label: labels.tabs.surveys.label, icon: labels.tabs.surveys.icon, short: labels.tabs.surveys.short }
+            { id: 'finanzas', label: labels.tabs.finanzas.label, icon: labels.tabs.finanzas.icon, short: labels.tabs.finanzas.short }
           ].map((tab) => (
             <button
               key={tab.id}
