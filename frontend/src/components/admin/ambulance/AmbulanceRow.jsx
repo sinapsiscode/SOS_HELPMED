@@ -133,7 +133,7 @@ const AmbulanceRow = ({
 
           <div className="flex items-center justify-between">
             <div className="text-xs text-gray-500 font-roboto">
-              {labels.fields.id}: {ambulance.id.slice(-8)} • {labels.fields.created}:{' '}
+              {labels.fields.id}: {String(ambulance.id).slice(-8)} • {labels.fields.created}:{' '}
               {formatDate(ambulance.createdAt || Date.now())}
             </div>
 

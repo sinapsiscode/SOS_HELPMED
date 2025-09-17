@@ -12,7 +12,7 @@ const OverviewTab = lazy(() => import('./dashboard/OverviewTab'))
 const UsersTab = lazy(() => import('./dashboard/UsersTab'))
 const ContactRequestsTab = lazy(() => import('./dashboard/ContactRequestsTab'))
 const CorporateContractManagement = lazy(() => import('./CorporateContractManagement'))
-const ReportsAnalytics = lazy(() => import('./reports')) // Modularizado en carpeta reports/
+const ReportsAnalytics = lazy(() => import('./ReportsAnalytics')) // Componente de reportes y analytics
 const SurveyManagement = lazy(() => import('./SurveyManagement'))
 const AmbulanceManagement = lazy(() => import('./AmbulanceManagement'))
 const PlanConfiguration = lazy(() => import('./PlanConfiguration'))

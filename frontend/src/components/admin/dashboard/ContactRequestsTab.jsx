@@ -47,27 +47,27 @@ const ContactRequestsTab = () => {
     allUsers?.familiar?.forEach(user => {
       const serviceUsage = user.service_usage?.current_period
       
-      if (user.plan.subtype === 'HELP') {
+      if (user.plan?.subtype === 'HELP') {
         // Plan Help - verificar servicios restantes
         const remainingServices = serviceUsage?.remaining_services || 0
         if (remainingServices <= 2) {
           requests.push({
             id: `req_${user.id}_help`,
             userId: user.id,
-            userName: user.profile.name,
+            userName: user.profile?.name,
             userType: labels.userTypes.familiar,
-            planName: user.plan.name,
-            planType: user.plan.subtype,
+            planName: user.plan?.name,
+            planType: user.plan?.subtype,
             urgency: remainingServices === 0 ? labels.urgencyValues.critical : labels.urgencyValues.high,
             reason: remainingServices === 0 
               ? labels.reasons.servicesExhausted
               : labels.reasons.onlyXServicesRemaining.replace('{count}', remainingServices),
-            contactPhone: user.profile.phone || '+51 9 7777 8888',
-            contactEmail: user.profile.email || labels.demo.emails[1],
+            contactPhone: user.profile?.phone ||'+51 9 7777 8888',
+            contactEmail: user.profile?.email || labels.demo.emails[1],
             requestDate: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
             status: labels.status.pending,
-            servicesUsed: (user.plan.total_services || 10) - remainingServices,
-            servicesTotal: user.plan.total_services || 10,
+            servicesUsed: (user.plan?.total_services || 10) - remainingServices,
+            servicesTotal: user.plan?.total_services || 10,
             lastServiceDate: new Date(Date.now() - Math.random() * 3 * 24 * 60 * 60 * 1000)
           })
         }
@@ -81,16 +81,16 @@ const ContactRequestsTab = () => {
               requests.push({
                 id: `req_${user.id}_${serviceType}`,
                 userId: user.id,
-                userName: user.profile.name,
+                userName: user.profile?.name,
                 userType: labels.userTypes.familiar,
-                planName: user.plan.name,
-                planType: user.plan.subtype,
+                planName: user.plan?.name,
+                planType: user.plan?.subtype,
                 urgency: remaining === 0 ? labels.urgencyValues.critical : labels.urgencyValues.high,
                 reason: remaining === 0 
                   ? labels.reasons.serviceExhausted.replace('{service}', getServiceTypeName(serviceType))
                   : labels.reasons.onlyXRemaining.replace('{service}', getServiceTypeName(serviceType)).replace('{count}', remaining).replace('{plural}', remaining > 1 ? 's' : ''),
-                contactPhone: user.profile.phone || '+51 9 7777 8888',
-                contactEmail: user.profile.email || labels.demo.emails[1],
+                contactPhone: user.profile?.phone ||'+51 9 7777 8888',
+                contactEmail: user.profile?.email || labels.demo.emails[1],
                 requestDate: new Date(Date.now() - Math.random() * 5 * 24 * 60 * 60 * 1000),
                 status: labels.status.pending,
                 serviceType,
@@ -111,7 +111,7 @@ const ContactRequestsTab = () => {
         requests.push({
           id: `req_${user.id}_corp`,
           userId: user.id,
-          userName: user.profile.name,
+          userName: user.profile?.name,
           userType: labels.userTypes.corporate,
           planName: labels.planNames.protectedArea,
           companyName: user.company?.name,
@@ -119,8 +119,8 @@ const ContactRequestsTab = () => {
           reason: remainingServices === 0 
             ? labels.reasons.corporateServicesExhausted
             : labels.reasons.onlyXCorporateRemaining.replace('{count}', remainingServices),
-          contactPhone: user.profile.phone || '+51 2 2555 1000',
-          contactEmail: user.profile.email || labels.demo.emails[2],
+          contactPhone: user.profile?.phone || '+51 2 2555 1000',
+          contactEmail: user.profile?.email || labels.demo.emails[2],
           requestDate: new Date(Date.now() - Math.random() * 4 * 24 * 60 * 60 * 1000),
           status: 'pendiente',
           servicesUsed: (user.company?.contracted_services || 50) - remainingServices,

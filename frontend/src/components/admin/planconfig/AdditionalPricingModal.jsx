@@ -169,40 +169,6 @@ const AdditionalPricingModal = ({ isOpen, onClose, onSave, initialData = {} }) =
               </div>
             </div>
           </div>
-
-          {/* Información adicional */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-start">
-              <i className="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
-              <div>
-                <p className="text-sm text-blue-800 font-medium">
-                  {labels.sections.info.title}
-                </p>
-                <p className="text-xs text-blue-700 mt-1">
-                  {labels.sections.info.description}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Resumen de configuración actual */}
-          <div className="bg-gray-50 rounded-lg p-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3">{labels.sections.summary.title}</h4>
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-gray-600">{labels.sections.summary.totalServices}</p>
-                <p className="font-semibold text-gray-900">
-                  {labels.sections.summary.servicesCount.replace('{count}', Object.keys(formData.costosBase).length)}
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-600">{labels.sections.summary.mostExpensive}</p>
-                <p className="font-semibold text-gray-900">
-                  {labels.sections.summary.currency} {Math.max(...Object.values(formData.costosBase)).toFixed(2)}
-                </p>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer con botones */}

@@ -47,9 +47,18 @@
         "name": "Plan Help",
         "start_date": "2024-01-15",
         "renewal_date": "2025-01-15",
-        "status": "active"
+        "status": "active",
+        "contract_services": 2
       },
-      "affiliates": []
+      "affiliates": [],
+      "service_usage": {
+        "current_period": {
+          "remaining_services": 2,
+          "extra_services": 2,
+          "extra_services_added": true,
+          "extra_services_date": "2025-09-11T00:51:30.323Z"
+        }
+      }
     },
     {
       "id": 4,
@@ -869,6 +878,30 @@
       "id": "familiar_1757551061442",
       "role": "FAMILIAR",
       "createdAt": "2025-09-11T00:37:41.442Z"
+    },
+    {
+      "username": "asdfasf",
+      "password": "asdqwe",
+      "company": {
+        "name": "Galdiaz",
+        "rut": "1077091210",
+        "address": "asdfdafafwfwefwe",
+        "coordinates": {
+          "lat": -12.047253036469822,
+          "lng": -77.03943729400636
+        },
+        "mapAddress": "735, Jirón Chancay, Urbanización Cercado de Lima, Lima, Lima Metropolitana, Lima, 15001, Perú"
+      },
+      "profile": {
+        "name": "xdd"
+      },
+      "plan": {
+        "contract_services": 22,
+        "contract_amount": 223
+      },
+      "id": "corporativo_1757552011955",
+      "role": "CORPORATIVO",
+      "createdAt": "2025-09-11T00:53:31.955Z"
     }
   ],
   "emergencies": [
@@ -882,7 +915,7 @@
         "name": "Juan Pérez",
         "age": "45 años",
         "phone": "+51 999888777"
-      },   
+      },
       "symptoms": "Dolor torácico intenso, dificultad respiratoria",
       "location": {
         "address": "Av. Arequipa 2450, Lince",
@@ -918,6 +951,48 @@
       "eta": "12 min",
       "assignedAmbulance": "AMB-002",
       "createdAt": "2024-01-15T11:00:00Z"
+    },
+    {
+      "id": "emg_1758124334391",
+      "user_id": 14,
+      "type": "EMERGENCIA",
+      "description": "tyr5tey",
+      "location": {
+        "address": "Av. Javier Prado 1234, San Isidro"
+      },
+      "extraContacts": [],
+      "affiliateInfo": {
+        "id": "aff_001_001",
+        "name": "Pedro Rodríguez",
+        "dni": "12.345.679-8",
+        "phone": "+51 9 8765 4321",
+        "relationship": "conyuge",
+        "status": "active",
+        "relation": "Cónyuge"
+      },
+      "timestamp": "2025-09-17T15:52:14.391Z",
+      "status": "pending",
+      "isCritical": false,
+      "medicalRecord": null,
+      "createdAt": "2025-09-17T15:52:14.391Z"
+    },
+    {
+      "id": "emg_1758124760015",
+      "user_id": 7,
+      "location": {
+        "address": "Ubicación no disponible"
+      },
+      "extraContacts": [],
+      "affiliateInfo": {
+        "id": "titular",
+        "name": "José Martínez",
+        "relation": "Titular"
+      },
+      "timestamp": "2025-09-17T15:59:20.015Z",
+      "status": "pending",
+      "isCritical": false,
+      "medicalRecord": null,
+      "createdAt": "2025-09-17T15:59:20.015Z"
     }
   ],
   "ambulances": [

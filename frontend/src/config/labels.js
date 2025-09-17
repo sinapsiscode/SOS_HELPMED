@@ -3889,7 +3889,7 @@ export const LABELS = {
           title: 'Modal para configuración de precios adicionales',
           description: 'Incluye costos base por servicio'
         },
-        title: 'Configuración de Precios Adicionales',
+        title: 'Servicios sin Suscripción',
         sections: {
           baseCosts: {
             title: 'Costos Base por Servicio',
@@ -3915,10 +3915,6 @@ export const LABELS = {
                 description: 'Servicio incluido en ubicación'
               }
             }
-          },
-          info: {
-            title: 'Información sobre los costos base',
-            description: 'Estos son los precios base para cada tipo de servicio. Los costos finales pueden variar según las condiciones específicas del servicio.'
           },
           summary: {
             title: 'Resumen de Configuración',
@@ -4095,7 +4091,7 @@ export const LABELS = {
           excel: 'Excel',
           pdf: 'PDF',
           csv: 'CSV',
-          additionalPricing: 'Precios Adicionales'
+          additionalPricing: 'Servicio sin Suscripción'
         },
         stats: {
           totalPlans: 'Total Planes',
