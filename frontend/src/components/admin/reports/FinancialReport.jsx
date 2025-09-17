@@ -1,482 +1,632 @@
-import React, { useState, useEffect } from 'react'
-import useAppStore from '../../../stores/useAppStore'
-import Swal from 'sweetalert2'
-import { LABELS } from '../../../config/labels'
+import React, { useState } from 'react'
 
 const FinancialReport = () => {
-  const labels = LABELS.admin.reports.financialReport
-  const { transactions, revenueSummary, allUsers } = useAppStore()
   const [activeTab, setActiveTab] = useState('dashboard')
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [metrics, setMetrics] = useState({
-    totalRevenue: 0,
-    monthlyRevenue: 0,
-    todayRevenue: 0,
-    averageTransaction: 0,
-    growthRate: 0
-  })
-  
-  const [revenueByType, setRevenueByType] = useState({
-    subscription: { amount: 0, percentage: 0 },
-    additional: { amount: 0, percentage: 0 },
-    corporate: { amount: 0, percentage: 0 },
-    particular: { amount: 0, percentage: 0 },
-    manual: { amount: 0, percentage: 0 }
-  })
+  const [dateFrom, setDateFrom] = useState('dd/mm/aaaa')
+  const [dateTo, setDateTo] = useState('dd/mm/aaaa')
+  const [filterType, setFilterType] = useState('todos')
+  const [filterStatus, setFilterStatus] = useState('todos')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [showModal, setShowModal] = useState(false)
 
-  // Calcular métricas
-  useEffect(() => {
-    if (transactions && transactions.length > 0) {
-      const now = new Date()
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-
-      const totalRevenue = transactions.reduce((sum, t) => sum + (t.amount || 0), 0)
-      const monthlyTransactions = transactions.filter(t => new Date(t.date) >= startOfMonth)
-      const todayTransactions = transactions.filter(t => new Date(t.date) >= startOfDay)
-
-      const monthlyRevenue = monthlyTransactions.reduce((sum, t) => sum + (t.amount || 0), 0)
-      const todayRevenue = todayTransactions.reduce((sum, t) => sum + (t.amount || 0), 0)
-
-      // Calcular ingresos por tipo
-      const byType = {
-        subscription: 0,
-        additional: 0,
-        corporate: 0,
-        particular: 0,
-        manual: 0
-      }
-      
-      transactions.forEach(t => {
-        if (t.type === 'SUBSCRIPTION') byType.subscription += t.amount || 0
-        else if (t.type === 'ADDITIONAL') byType.additional += t.amount || 0
-        else if (t.type === 'CORPORATE') byType.corporate += t.amount || 0
-        else if (t.type === 'PARTICULAR') byType.particular += t.amount || 0
-        else byType.manual += t.amount || 0
-      })
-      
-      const total = Object.values(byType).reduce((sum, val) => sum + val, 0)
-      
-      setRevenueByType({
-        subscription: { 
-          amount: byType.subscription, 
-          percentage: total > 0 ? (byType.subscription / total * 100) : 0 
-        },
-        additional: { 
-          amount: byType.additional, 
-          percentage: total > 0 ? (byType.additional / total * 100) : 0 
-        },
-        corporate: { 
-          amount: byType.corporate, 
-          percentage: total > 0 ? (byType.corporate / total * 100) : 0 
-        },
-        particular: { 
-          amount: byType.particular, 
-          percentage: total > 0 ? (byType.particular / total * 100) : 0 
-        },
-        manual: { 
-          amount: byType.manual, 
-          percentage: total > 0 ? (byType.manual / total * 100) : 0 
-        }
-      })
-
-      setMetrics({
-        totalRevenue,
-        monthlyRevenue,
-        todayRevenue,
-        averageTransaction: transactions.length > 0 ? totalRevenue / transactions.length : 0,
-        growthRate: 0 // Calculado vs mes anterior
-      })
+  // Datos de ejemplo para la tabla
+  const transactions = [
+    {
+      id: 'TRX-001',
+      fecha: '15/03/2024',
+      concepto: 'Plan Familiar - Mensualidad',
+      cliente: 'Juan Pérez García',
+      tipo: 'Suscripción',
+      monto: 280.00,
+      estado: 'Pagado',
+      estadoColor: 'text-green-600 bg-green-50'
+    },
+    {
+      id: 'TRX-002',
+      fecha: '14/03/2024',
+      concepto: 'Servicio de Emergencia',
+      cliente: 'María López',
+      tipo: 'Servicio',
+      monto: 150.00,
+      estado: 'Pendiente',
+      estadoColor: 'text-yellow-600 bg-yellow-50'
+    },
+    {
+      id: 'TRX-003',
+      fecha: '14/03/2024',
+      concepto: 'Plan Corporativo - Trimestre',
+      cliente: 'Empresa ABC S.A.',
+      tipo: 'Corporativo',
+      monto: 2500.00,
+      estado: 'Pagado',
+      estadoColor: 'text-green-600 bg-green-50'
+    },
+    {
+      id: 'TRX-004',
+      fecha: '13/03/2024',
+      concepto: 'Traslado Programado',
+      cliente: 'Carlos Mendoza',
+      tipo: 'Servicio',
+      monto: 80.00,
+      estado: 'Pagado',
+      estadoColor: 'text-green-600 bg-green-50'
+    },
+    {
+      id: 'TRX-005',
+      fecha: '13/03/2024',
+      concepto: 'Plan VIP - Anual',
+      cliente: 'Roberto Silva',
+      tipo: 'Suscripción',
+      monto: 4920.00,
+      estado: 'Procesando',
+      estadoColor: 'text-blue-600 bg-blue-50'
     }
-  }, [transactions])
+  ]
 
-  const handleRegisterManual = () => {
-    Swal.fire({
-      title: labels.modals.registerManual.title,
-      html: `
-        <div class="text-left">
-          <div class="mb-3">
-            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.registerManual.fields.concept.label}</label>
-            <input id="concept" class="w-full px-3 py-2 border rounded-lg" placeholder="${labels.modals.registerManual.fields.concept.placeholder}">
-          </div>
-          <div class="mb-3">
-            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.registerManual.fields.amount.label}</label>
-            <input id="amount" type="number" class="w-full px-3 py-2 border rounded-lg" placeholder="${labels.modals.registerManual.fields.amount.placeholder}">
-          </div>
-          <div class="mb-3">
-            <label class="block text-sm font-medium text-gray-700 mb-1">${labels.modals.registerManual.fields.type.label}</label>
-            <select id="type" class="w-full px-3 py-2 border rounded-lg">
-              <option value="MANUAL">${labels.modals.registerManual.fields.type.options.manual}</option>
-              <option value="SUBSCRIPTION">${labels.modals.registerManual.fields.type.options.subscription}</option>
-              <option value="ADDITIONAL">${labels.modals.registerManual.fields.type.options.additional}</option>
-              <option value="CORPORATE">${labels.modals.registerManual.fields.type.options.corporate}</option>
-              <option value="PARTICULAR">${labels.modals.registerManual.fields.type.options.particular}</option>
-            </select>
-          </div>
-        </div>
-      `,
-      showCancelButton: true,
-      confirmButtonText: labels.modals.registerManual.buttons.register,
-      cancelButtonText: labels.modals.registerManual.buttons.cancel,
-      confirmButtonColor: '#10b981',
-      preConfirm: () => {
-        const concept = document.getElementById('concept').value
-        const amount = document.getElementById('amount').value
-        const type = document.getElementById('type').value
-        
-        if (!concept || !amount) {
-          Swal.showValidationMessage(labels.modals.registerManual.validation)
-          return false
-        }
-        
-        return { concept, amount: parseFloat(amount), type }
-      }
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Aquí se registraría la transacción
-        Swal.fire(labels.modals.registerManual.success.title, labels.modals.registerManual.success.message, 'success')
-      }
-    })
-  }
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: 'fas fa-chart-pie' },
+    { id: 'transacciones', label: 'Transacciones', icon: 'fas fa-list' },
+    { id: 'pendientes', label: 'Pendientes', icon: 'fas fa-clock' },
+    { id: 'analisis', label: 'Análisis', icon: 'fas fa-chart-bar' }
+  ]
 
-  const handleExportExcel = () => {
-    Swal.fire({
-      icon: 'info',
-      title: labels.modals.exportExcel.title,
-      text: labels.modals.exportExcel.message,
-      timer: 2000,
-      showConfirmButton: false
-    })
-  }
-
-  const handleExportPDF = () => {
-    Swal.fire({
-      icon: 'info', 
-      title: labels.modals.exportPDF.title,
-      text: labels.modals.exportPDF.message,
-      timer: 2000,
-      showConfirmButton: false
-    })
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <DashboardContent />
+      case 'transacciones':
+        return <TransaccionesContent transactions={transactions} />
+      case 'pendientes':
+        return <PendientesContent transactions={transactions.filter(t => t.estado === 'Pendiente')} />
+      case 'analisis':
+        return <AnalisisContent />
+      default:
+        return <TransaccionesContent transactions={transactions} />
+    }
   }
 
   return (
     <div className="space-y-6">
-      {/* Header con título y botones */}
+      {/* Header */}
       <div className="bg-white rounded-xl shadow-sm p-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <h2 className="text-2xl font-bold text-gray-800">{labels.title}</h2>
-          <div className="flex flex-wrap gap-2">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Gestión Financiera</h1>
+          <div className="flex gap-3">
             <button
-              onClick={handleRegisterManual}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
+              onClick={() => setShowModal(true)}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center"
             >
-              <i className="fas fa-plus"></i>
-              {labels.buttons.registerManual}
+              <i className="fas fa-plus mr-2"></i>
+              Registrar Ingreso Manual
             </button>
-            <button
-              onClick={handleExportExcel}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
-            >
-              <i className="fas fa-file-excel"></i>
-              {labels.buttons.excel}
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+              <i className="fas fa-file-excel mr-2"></i>
+              Excel
             </button>
-            <button
-              onClick={handleExportPDF}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors flex items-center gap-2 text-sm font-medium"
-            >
-              <i className="fas fa-file-pdf"></i>
-              {labels.buttons.pdf}
+            <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center">
+              <i className="fas fa-file-pdf mr-2"></i>
+              PDF
             </button>
           </div>
         </div>
 
-        {/* Tabs de navegación */}
-        <div className="flex gap-1 mt-6 border-b">
-          <button
-            onClick={() => setActiveTab('dashboard')}
-            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 border-b-2 ${
-              activeTab === 'dashboard'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-gray-800'
-            }`}
-          >
-            <i className="fas fa-chart-line"></i>
-            {labels.tabs.dashboard}
-          </button>
-          <button
-            onClick={() => setActiveTab('transactions')}
-            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 border-b-2 ${
-              activeTab === 'transactions'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-gray-800'
-            }`}
-          >
-            <i className="fas fa-list"></i>
-            {labels.tabs.transactions}
-          </button>
-          <button
-            onClick={() => setActiveTab('pending')}
-            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 border-b-2 ${
-              activeTab === 'pending'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-gray-800'
-            }`}
-          >
-            <i className="fas fa-clock"></i>
-            {labels.tabs.pending}
-          </button>
-          <button
-            onClick={() => setActiveTab('analysis')}
-            className={`px-4 py-2 font-medium text-sm transition-colors flex items-center gap-2 border-b-2 ${
-              activeTab === 'analysis'
-                ? 'text-blue-600 border-blue-600'
-                : 'text-gray-600 border-transparent hover:text-gray-800'
-            }`}
-          >
-            <i className="fas fa-chart-pie"></i>
-            {labels.tabs.analysis}
-          </button>
+        {/* Tabs */}
+        <div className="flex space-x-1 border-b">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex items-center px-4 py-3 font-medium transition-colors ${
+                activeTab === tab.id
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              <i className={`${tab.icon} mr-2`}></i>
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {/* Cards de métricas principales */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Ingresos Totales */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <span className="text-green-600 font-bold text-xl">$</span>
-                </div>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">
-                S/ {metrics.totalRevenue.toLocaleString()}
-              </p>
-              <p className="text-sm text-green-600 font-medium mt-1">{labels.metrics.totalRevenue.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{labels.metrics.totalRevenue.subtitle}</p>
+      {/* Filtros */}
+      {activeTab === 'transacciones' && (
+        <div className="bg-white rounded-xl shadow-sm p-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="dd/mm/aaaa"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span className="text-gray-500">-</span>
+              <input
+                type="text"
+                placeholder="dd/mm/aaaa"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 text-sm w-32 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="todos">Todos los tipos</option>
+              <option value="suscripcion">Suscripción</option>
+              <option value="servicio">Servicio</option>
+              <option value="corporativo">Corporativo</option>
+            </select>
+
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="todos">Todos los estados</option>
+              <option value="pagado">Pagado</option>
+              <option value="pendiente">Pendiente</option>
+              <option value="procesando">Procesando</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+
+            <div className="flex-1 max-w-md">
+              <input
+                type="text"
+                placeholder="Buscar..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
             </div>
           </div>
         </div>
+      )}
 
-        {/* Ingresos del Mes */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-calendar text-blue-600 text-lg"></i>
-                </div>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">
-                S/ {metrics.monthlyRevenue.toLocaleString()}
-              </p>
-              <p className="text-sm text-blue-600 font-medium mt-1">{labels.metrics.monthlyRevenue.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{labels.metrics.monthlyRevenue.subtitle}</p>
+      {/* Contenido */}
+      {renderTabContent()}
+
+      {/* Modal de Registrar Ingreso Manual */}
+      {showModal && <RegisterIncomeModal onClose={() => setShowModal(false)} />}
+    </div>
+  )
+}
+
+// Componente Dashboard
+const DashboardContent = () => {
+  return (
+    <div className="space-y-6">
+      {/* Cards principales */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-dollar-sign text-green-600 text-xl"></i>
             </div>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800">S/ 45,280</h3>
+          <p className="text-sm text-gray-600 mt-1">Ingresos del Mes</p>
+          <div className="flex items-center mt-2 text-green-600 text-sm">
+            <i className="fas fa-arrow-up mr-1"></i>
+            <span>12% vs mes anterior</span>
           </div>
         </div>
 
-        {/* Ingresos Hoy */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-clock text-purple-600 text-lg"></i>
-                </div>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">
-                S/ {metrics.todayRevenue.toLocaleString()}
-              </p>
-              <p className="text-sm text-purple-600 font-medium mt-1">{labels.metrics.todayRevenue.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{labels.metrics.todayRevenue.subtitle}</p>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-file-invoice text-blue-600 text-xl"></i>
             </div>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800">156</h3>
+          <p className="text-sm text-gray-600 mt-1">Transacciones</p>
+          <div className="flex items-center mt-2 text-blue-600 text-sm">
+            <i className="fas fa-arrow-up mr-1"></i>
+            <span>8% vs mes anterior</span>
           </div>
         </div>
 
-        {/* Transacción Promedio */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-chart-bar text-orange-600 text-lg"></i>
-                </div>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">
-                S/ {Math.round(metrics.averageTransaction).toLocaleString()}
-              </p>
-              <p className="text-sm text-orange-600 font-medium mt-1">{labels.metrics.averageTransaction.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{labels.metrics.averageTransaction.subtitle}</p>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-clock text-yellow-600 text-xl"></i>
             </div>
+          </div>
+          <h3 className="text-2xl font-bold text-gray-800">23</h3>
+          <p className="text-sm text-gray-600 mt-1">Pagos Pendientes</p>
+          <div className="flex items-center mt-2 text-yellow-600 text-sm">
+            <span>S/ 3,450 por cobrar</span>
           </div>
         </div>
 
-        {/* Crecimiento - Card adicional */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 lg:hidden">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                  <i className="fas fa-chart-line text-gray-600 text-lg"></i>
-                </div>
-              </div>
-              <p className="text-2xl font-bold text-gray-900">
-                {metrics.growthRate > 0 ? labels.metrics.growth.noData : labels.metrics.growth.noData}
-              </p>
-              <p className="text-sm text-gray-600 font-medium mt-1">{labels.metrics.growth.title}</p>
-              <p className="text-xs text-gray-500 mt-1">{labels.metrics.growth.subtitle}</p>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-users text-purple-600 text-xl"></i>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Sección de Ingresos por Tipo */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">{labels.revenueByType.title}</h3>
-        
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {/* Plan Familiar */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">{labels.revenueByType.types.subscription}</p>
-            <p className="text-xl font-bold text-gray-900">
-              S/ {revenueByType.subscription.amount.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {revenueByType.subscription.percentage.toFixed(0)}%
-            </p>
-          </div>
-
-          {/* Servicio Adicional */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">{labels.revenueByType.types.additional}</p>
-            <p className="text-xl font-bold text-gray-900">
-              S/ {revenueByType.additional.amount.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {revenueByType.additional.percentage.toFixed(0)}%
-            </p>
-          </div>
-
-          {/* Contrato Corporativo */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">{labels.revenueByType.types.corporate}</p>
-            <p className="text-xl font-bold text-gray-900">
-              S/ {revenueByType.corporate.amount.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {revenueByType.corporate.percentage.toFixed(0)}%
-            </p>
-          </div>
-
-          {/* Particular */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">{labels.revenueByType.types.particular}</p>
-            <p className="text-xl font-bold text-gray-900">
-              S/ {revenueByType.particular.amount.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {revenueByType.particular.percentage.toFixed(0)}%
-            </p>
-          </div>
-
-          {/* Manual */}
-          <div className="text-center">
-            <p className="text-sm text-gray-600 mb-1">{labels.revenueByType.types.manual}</p>
-            <p className="text-xl font-bold text-gray-900">
-              S/ {revenueByType.manual.amount.toLocaleString()}
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              {revenueByType.manual.percentage.toFixed(0)}%
-            </p>
+          <h3 className="text-2xl font-bold text-gray-800">89</h3>
+          <p className="text-sm text-gray-600 mt-1">Clientes Activos</p>
+          <div className="flex items-center mt-2 text-purple-600 text-sm">
+            <i className="fas fa-arrow-up mr-1"></i>
+            <span>5 nuevos este mes</span>
           </div>
         </div>
       </div>
 
-      {/* Tabla de Últimas Transacciones */}
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-800">{labels.transactions.title}</h3>
-          <p className="text-sm text-gray-500">{labels.transactions.subtitle}</p>
+      {/* Gráficos */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ingresos Mensuales</h3>
+          <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p className="text-gray-500">Gráfico de líneas de ingresos mensuales</p>
+          </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">{labels.transactions.headers.date}</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">{labels.transactions.headers.concept}</th>
-                <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">{labels.transactions.headers.type}</th>
-                <th className="text-right py-3 px-4 font-medium text-gray-700 text-sm">{labels.transactions.headers.amount}</th>
-                <th className="text-center py-3 px-4 font-medium text-gray-700 text-sm">{labels.transactions.headers.status}</th>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribución de Ingresos</h3>
+          <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p className="text-gray-500">Gráfico circular de distribución</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Componente Transacciones
+const TransaccionesContent = ({ transactions }) => {
+  return (
+    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-gray-50 border-b">
+            <tr>
+              <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">ID</th>
+              <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">Fecha</th>
+              <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">Concepto</th>
+              <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">Cliente</th>
+              <th className="text-left py-3 px-4 font-medium text-gray-700 text-sm">Tipo</th>
+              <th className="text-right py-3 px-4 font-medium text-gray-700 text-sm">Monto</th>
+              <th className="text-center py-3 px-4 font-medium text-gray-700 text-sm">Estado</th>
+              <th className="text-center py-3 px-4 font-medium text-gray-700 text-sm">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions.map((transaction, index) => (
+              <tr key={transaction.id} className="border-b hover:bg-gray-50">
+                <td className="py-3 px-4 text-sm font-medium text-gray-900">{transaction.id}</td>
+                <td className="py-3 px-4 text-sm text-gray-700">{transaction.fecha}</td>
+                <td className="py-3 px-4 text-sm text-gray-700">{transaction.concepto}</td>
+                <td className="py-3 px-4 text-sm text-gray-700">{transaction.cliente}</td>
+                <td className="py-3 px-4 text-sm">
+                  <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-medium">
+                    {transaction.tipo}
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-sm text-right font-medium">S/ {transaction.monto.toFixed(2)}</td>
+                <td className="py-3 px-4 text-sm text-center">
+                  <span className={`px-2 py-1 rounded text-xs font-medium ${transaction.estadoColor}`}>
+                    {transaction.estado}
+                  </span>
+                </td>
+                <td className="py-3 px-4 text-sm text-center">
+                  <div className="flex items-center justify-center space-x-2">
+                    <button className="text-blue-600 hover:text-blue-800">
+                      <i className="fas fa-eye"></i>
+                    </button>
+                    <button className="text-green-600 hover:text-green-800">
+                      <i className="fas fa-edit"></i>
+                    </button>
+                    <button className="text-red-600 hover:text-red-800">
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {transactions && transactions.length > 0 ? (
-                transactions.slice(0, 10).map((transaction, index) => (
-                  <tr key={transaction.id || index} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4 text-sm text-gray-600">
-                      {new Date(transaction.date || Date.now()).toLocaleDateString('es-PE')}
-                    </td>
-                    <td className="py-3 px-4 text-sm text-gray-800">
-                      {transaction.concept || labels.transactions.defaultConcept}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                        transaction.type === 'SUBSCRIPTION' 
-                          ? 'bg-blue-100 text-blue-800'
-                          : transaction.type === 'ADDITIONAL'
-                          ? 'bg-purple-100 text-purple-800'
-                          : transaction.type === 'CORPORATE'
-                          ? 'bg-green-100 text-green-800'
-                          : transaction.type === 'PARTICULAR'
-                          ? 'bg-orange-100 text-orange-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
-                        {transaction.type === 'SUBSCRIPTION' ? labels.transactions.types.subscription
-                          : transaction.type === 'ADDITIONAL' ? labels.transactions.types.additional
-                          : transaction.type === 'CORPORATE' ? labels.transactions.types.corporate
-                          : transaction.type === 'PARTICULAR' ? labels.transactions.types.particular
-                          : labels.transactions.types.manual}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-sm font-semibold text-gray-900 text-right">
-                      S/ {(transaction.amount || 0).toLocaleString()}
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className={`px-2 py-1 text-xs rounded-full font-medium ${
-                        transaction.status === 'COMPLETED' 
-                          ? 'bg-green-100 text-green-800' 
-                          : transaction.status === 'PENDING'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-red-100 text-red-800'
-                      }`}>
-                        {transaction.status === 'COMPLETED' ? labels.transactions.status.completed 
-                          : transaction.status === 'PENDING' ? labels.transactions.status.pending
-                          : labels.transactions.status.cancelled}
-                      </span>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="py-8 text-center text-gray-500">
-                    {labels.transactions.empty}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Paginación */}
+      <div className="flex items-center justify-between p-4 border-t">
+        <div className="text-sm text-gray-600">
+          Mostrando 1-5 de 156 registros
+        </div>
+        <div className="flex space-x-2">
+          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-sm">
+            Anterior
+          </button>
+          <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm">1</button>
+          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-sm">2</button>
+          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-sm">3</button>
+          <button className="px-3 py-1 border border-gray-300 rounded hover:bg-gray-50 text-sm">
+            Siguiente
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Componente Pendientes
+const PendientesContent = ({ transactions }) => {
+  return (
+    <div className="bg-white rounded-xl shadow-sm p-6">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">Pagos Pendientes</h3>
+      <div className="space-y-4">
+        {transactions.length > 0 ? (
+          transactions.map((transaction) => (
+            <div key={transaction.id} className="border border-yellow-200 bg-yellow-50 rounded-lg p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="font-medium text-gray-900">{transaction.concepto}</h4>
+                  <p className="text-sm text-gray-600 mt-1">Cliente: {transaction.cliente}</p>
+                  <p className="text-sm text-gray-500">Fecha: {transaction.fecha}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xl font-bold text-gray-900">S/ {transaction.monto.toFixed(2)}</p>
+                  <button className="mt-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded text-sm">
+                    Marcar como Pagado
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            <i className="fas fa-check-circle text-4xl mb-2"></i>
+            <p>No hay pagos pendientes</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// Componente Análisis
+const AnalisisContent = () => {
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Ingresos por Mes</h3>
+        <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p className="text-gray-500">Gráfico de barras de ingresos mensuales</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribución por Tipo</h3>
+        <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+          <p className="text-gray-500">Gráfico circular de tipos de servicio</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Top Clientes</h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-700">Empresa ABC S.A.</span>
+            <span className="font-medium">S/ 12,500</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-700">Roberto Silva</span>
+            <span className="font-medium">S/ 4,920</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-700">Juan Pérez García</span>
+            <span className="font-medium">S/ 3,360</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Estados de Pago</h3>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+              <span className="text-sm text-gray-700">Pagados</span>
+            </div>
+            <span className="font-medium">S/ 38,450 (85%)</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+              <span className="text-sm text-gray-700">Pendientes</span>
+            </div>
+            <span className="font-medium">S/ 3,450 (8%)</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+              <span className="text-sm text-gray-700">Procesando</span>
+            </div>
+            <span className="font-medium">S/ 3,380 (7%)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Componente Modal de Registro de Ingreso
+const RegisterIncomeModal = ({ onClose }) => {
+  const [formData, setFormData] = useState({
+    concepto: '',
+    monto: 0,
+    tipo: 'Entrada Manual',
+    cliente: '',
+    metodoPago: 'Efectivo',
+    notas: '',
+    estado: 'Completado'
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log('Registrando ingreso:', formData)
+    // Aquí iría la lógica para guardar el ingreso
+    onClose()
+  }
+
+  const handleChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b">
+          <h2 className="text-xl font-bold text-gray-800">Registrar Ingreso Manual</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            <i className="fas fa-times text-xl"></i>
+          </button>
         </div>
 
-        {/* Indicador Online */}
-        <div className="flex justify-end mt-4">
-          <span className="px-3 py-1 bg-green-500 text-white text-xs rounded-full font-medium flex items-center gap-2">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-            {labels.indicator.online}
-          </span>
-        </div>
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+          {/* Concepto */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Concepto *
+            </label>
+            <input
+              type="text"
+              value={formData.concepto}
+              onChange={(e) => handleChange('concepto', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {/* Monto y Tipo */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Monto (S/) *
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={formData.monto}
+                onChange={(e) => handleChange('monto', parseFloat(e.target.value))}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Tipo
+              </label>
+              <select
+                value={formData.tipo}
+                onChange={(e) => handleChange('tipo', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Entrada Manual">Entrada Manual</option>
+                <option value="Ajuste">Ajuste</option>
+                <option value="Corrección">Corrección</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Cliente y Método de Pago */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Cliente/Usuario
+              </label>
+              <select
+                value={formData.cliente}
+                onChange={(e) => handleChange('cliente', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Seleccionar cliente...</option>
+                <option value="Juan Pérez García">Juan Pérez García</option>
+                <option value="María López">María López</option>
+                <option value="Empresa ABC S.A.">Empresa ABC S.A.</option>
+                <option value="Carlos Mendoza">Carlos Mendoza</option>
+                <option value="Roberto Silva">Roberto Silva</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Método de Pago
+              </label>
+              <select
+                value={formData.metodoPago}
+                onChange={(e) => handleChange('metodoPago', e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Efectivo">Efectivo</option>
+                <option value="Transferencia">Transferencia</option>
+                <option value="Tarjeta">Tarjeta</option>
+                <option value="Yape">Yape</option>
+                <option value="Plin">Plin</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Notas */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Notas
+            </label>
+            <textarea
+              value={formData.notas}
+              onChange={(e) => handleChange('notas', e.target.value)}
+              rows="3"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              placeholder="Notas adicionales..."
+            />
+          </div>
+
+          {/* Estado */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Estado
+            </label>
+            <select
+              value={formData.estado}
+              onChange={(e) => handleChange('estado', e.target.value)}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="Completado">Completado</option>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Procesando">Procesando</option>
+            </select>
+          </div>
+
+          {/* Botones */}
+          <div className="flex gap-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-lg transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors"
+            >
+              Registrar Ingreso
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

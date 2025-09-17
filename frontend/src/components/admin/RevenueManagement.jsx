@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 const RevenueManagement = () => {
-  const [activeTab, setActiveTab] = useState('transacciones')
+  const [activeTab, setActiveTab] = useState('dashboard')
   const [dateFrom, setDateFrom] = useState('dd/mm/aaaa')
   const [dateTo, setDateTo] = useState('dd/mm/aaaa')
   const [filterType, setFilterType] = useState('todos')
