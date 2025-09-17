@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 import { LABELS } from '../../config/labels'
 
 // Lazy loading de reportes para mejor performance
-const OverviewReport = lazy(() => import('./reports/OverviewReportSimple'))
+const OverviewReport = lazy(() => import('./reports/OverviewReport'))
 const UsersReport = lazy(() => import('./reports/UsersReport'))
 const ServicesReport = lazy(() => import('./reports/ServicesReport'))
 const PerformanceReport = lazy(() => import('./reports/PerformanceReport'))
