@@ -21,7 +21,7 @@ const AssignmentsTab = ({ pendingEmergencies, availableUnits }) => {
     clearError
   } = useEmergencyAssignment()
 
-  const labels = LABELS.admin.assignments
+  const labels = LABELS.admin.affiliateManagement.assignments
   
   // ============================================
   // VALIDACIÓN DE PROPS (Regla #4)

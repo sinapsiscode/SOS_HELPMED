@@ -392,32 +392,81 @@ const PendientesContent = ({ transactions }) => {
 // Componente Análisis
 const AnalisisContent = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Ingresos por Mes</h3>
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p className="text-gray-500">Gráfico de barras de ingresos mensuales</p>
+    <div className="space-y-6">
+      {/* Las 4 tarjetas de métricas financieras que quieres */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Transacción Promedio */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-calculator text-blue-600 text-xl"></i>
+            </div>
+          </div>
+          <h3 className="text-3xl font-bold text-gray-800">S/ 0</h3>
+          <p className="text-sm text-gray-600 mt-1">Transacción Promedio</p>
+        </div>
+
+        {/* Mayor Transacción */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-trophy text-green-600 text-xl"></i>
+            </div>
+          </div>
+          <h3 className="text-3xl font-bold text-gray-800">S/ 0</h3>
+          <p className="text-sm text-gray-600 mt-1">Mayor Transacción</p>
+        </div>
+
+        {/* Total Transacciones */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-list text-purple-600 text-xl"></i>
+            </div>
+          </div>
+          <h3 className="text-3xl font-bold text-gray-800">0</h3>
+          <p className="text-sm text-gray-600 mt-1">Total Transacciones</p>
+        </div>
+
+        {/* Transacciones Completadas */}
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+              <i className="fas fa-check-circle text-orange-600 text-xl"></i>
+            </div>
+          </div>
+          <h3 className="text-3xl font-bold text-gray-800">0</h3>
+          <p className="text-sm text-gray-600 mt-1">Transacciones Completadas</p>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribución por Tipo</h3>
-        <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-          <p className="text-gray-500">Gráfico circular de tipos de servicio</p>
+      {/* Gráficos adicionales debajo */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Ingresos por Mes</h3>
+          <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p className="text-gray-500">Gráfico de barras de ingresos mensuales</p>
+          </div>
         </div>
-      </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Top Clientes</h3>
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-700">Empresa ABC S.A.</span>
-            <span className="font-medium">S/ 12,500</span>
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Distribución por Tipo</h3>
+          <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
+            <p className="text-gray-500">Gráfico circular de tipos de servicio</p>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-700">Roberto Silva</span>
-            <span className="font-medium">S/ 4,920</span>
-          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Top Clientes</h3>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Empresa ABC S.A.</span>
+              <span className="font-medium">S/ 12,500</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-700">Roberto Silva</span>
+              <span className="font-medium">S/ 4,920</span>
+            </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-gray-700">Juan Pérez García</span>
             <span className="font-medium">S/ 3,360</span>
@@ -450,6 +499,7 @@ const AnalisisContent = () => {
             <span className="font-medium">S/ 3,380 (7%)</span>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )
